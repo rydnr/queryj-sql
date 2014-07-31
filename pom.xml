@@ -28,10 +28,34 @@
     <version>latest-SNAPSHOT</version>
   </parent>
 
-  <properties>
-    <!-- to ensure encoding is not platform-dependent -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <scm>
+    <connection>scm:git:http://github.com/rydnr/queryj-sql.git</connection>
+    <developerConnection>scm:git:http://github.com/rydnr/queryj-sql.git</developerConnection>
+    <url>scm:git:http://github.com/rydnr/queryj-sql.git</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>github</system>
+    <url>http://github.com/rydnr/queryj-sql.git/</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>http://jenkins.acm-sl.org/job/queryj-sql</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>true</sendOnSuccess>
+        <sendOnWarning>true</sendOnWarning>
+        <configuration>
+          <address>jenkins@acm-sl.org</address>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
 
   <dependencies>
     <dependency>
