@@ -34,9 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.DoubleField;
 import org.jetbrains.annotations.NotNull;
 
 /*
@@ -56,7 +55,7 @@ public abstract class BigDecimalField
      * @param name the field name.
      * @param table the table.
      */
-    public BigDecimalField(final String name, final Table table)
+    public BigDecimalField(@NotNull final String name, @NotNull final Table table)
     {
         super(name, table);
     }
@@ -67,7 +66,7 @@ public abstract class BigDecimalField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition equals(final BigDecimal value)
+    public Condition equals(@NotNull final BigDecimal value)
     {
         return
             equals(
@@ -83,12 +82,10 @@ public abstract class BigDecimalField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition equals(
-        final BigDecimal value,
+        @NotNull final BigDecimal value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -104,8 +101,9 @@ public abstract class BigDecimalField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
-    public Condition notEquals(final BigDecimal value)
+    public Condition notEquals(@NotNull final BigDecimal value)
     {
         return
             notEquals(
@@ -121,8 +119,6 @@ public abstract class BigDecimalField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition notEquals(
@@ -142,8 +138,9 @@ public abstract class BigDecimalField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
-    public Condition greaterThan(final BigDecimal value)
+    public Condition greaterThan(@NotNull final BigDecimal value)
     {
         return
             greaterThan(
@@ -159,12 +156,10 @@ public abstract class BigDecimalField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition greaterThan(
-        final BigDecimal value,
+        @NotNull final BigDecimal value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -180,6 +175,7 @@ public abstract class BigDecimalField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public Condition lessThan(final BigDecimal value)
     {
@@ -197,12 +193,10 @@ public abstract class BigDecimalField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition lessThan(
-        final BigDecimal value,
+        @NotNull final BigDecimal value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {

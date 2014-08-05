@@ -33,10 +33,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,9 +42,7 @@ import org.jetbrains.annotations.Nullable;
  * Importing some JDK classes.
  */
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -81,14 +77,11 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideField the right-side field.
-     * @precondition leftSideField != null
-     * @precondition operator != null
-     * @precondition rightSideField != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final Field rightSideField)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @Nullable final Field rightSideField)
     {
         immutableSetLeftSideField(leftSideField);
         immutableSetOperator(operator);
@@ -100,14 +93,11 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
-     * @precondition rightSideValue != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final String rightSideValue)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final String rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
 
@@ -119,12 +109,10 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
         final int rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
@@ -136,12 +124,10 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
         final long rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
@@ -153,12 +139,10 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        ConditionOperator operator,
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
         final double rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
@@ -170,14 +154,11 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
-     * @precondition rightSideValue != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final BigDecimal rightSideValue)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final BigDecimal rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
         immutableSetRightSideValue("" + rightSideValue);
@@ -188,14 +169,11 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
-     * @precondition rightSideValue != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final Calendar rightSideValue)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final Calendar rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
         // This should use Functions.toDate or something...
@@ -207,14 +185,11 @@ public class AtomicCondition
      * @param leftSideField the left-side field.
      * @param operator the operator.
      * @param rightSideValue the right-side value.
-     * @precondition leftSideField != null
-     * @precondition operator != null
-     * @precondition rightSideValue != null
      */
     public AtomicCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final Date rightSideValue)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final Date rightSideValue)
     {
         this(leftSideField, operator, (Field) null);
         // This should use Functions.toDate or something...
@@ -225,7 +200,7 @@ public class AtomicCondition
      * Specifies the left-side field.
      * @param leftSideField such field.
      */
-    private void immutableSetLeftSideField(final Field leftSideField)
+    private void immutableSetLeftSideField(@NotNull final Field leftSideField)
     {
         m__LeftSideField = leftSideField;
     }
@@ -234,7 +209,8 @@ public class AtomicCondition
      * Specifies the left side field.
      * @param leftSideField such field.
      */
-    protected void setLeftSideField(final Field leftSideField)
+    @SuppressWarnings("unused")
+    protected void setLeftSideField(@NotNull final Field leftSideField)
     {
         immutableSetLeftSideField(leftSideField);
     }
@@ -253,7 +229,7 @@ public class AtomicCondition
      * Specifies the operator.
      * @param operator such operator.
      */
-    private void immutableSetOperator(final ConditionOperator operator)
+    private void immutableSetOperator(@NotNull final ConditionOperator operator)
     {
         m__Operator = operator;
     }
@@ -262,6 +238,7 @@ public class AtomicCondition
      * Specifies the operator.
      * @param operator such operator.
      */
+    @SuppressWarnings("unused")
     protected void setOperator(final ConditionOperator operator)
     {
         immutableSetOperator(operator);
@@ -281,7 +258,7 @@ public class AtomicCondition
      * Specifies the right-side field.
      * @param rightSideField such field.
      */
-    private void immutableSetRightSideField(final Field rightSideField)
+    private void immutableSetRightSideField(@NotNull final Field rightSideField)
     {
         m__RightSideField = rightSideField;
     }
@@ -290,7 +267,8 @@ public class AtomicCondition
      * Specifies the right side field.
      * @param rightSideField such field.
      */
-    protected void setRightSideField(final Field rightSideField)
+    @SuppressWarnings("unused")
+    protected void setRightSideField(@NotNull final Field rightSideField)
     {
         immutableSetRightSideField(rightSideField);
     }
@@ -309,7 +287,7 @@ public class AtomicCondition
      * Specifies the right-side value.
      * @param rightSideValue such value.
      */
-    private void immutableSetRightSideValue(final String rightSideValue)
+    private void immutableSetRightSideValue(@NotNull final String rightSideValue)
     {
         m__strRightSideValue = rightSideValue;
     }
@@ -318,7 +296,8 @@ public class AtomicCondition
      * Specifies the right side value.
      * @param rightSideValue such value.
      */
-    protected void setRightSideValue(final String rightSideValue)
+    @SuppressWarnings("unused")
+    protected void setRightSideValue(@NotNull final String rightSideValue)
     {
         immutableSetRightSideValue(rightSideValue);
     }
@@ -334,9 +313,10 @@ public class AtomicCondition
     }
 
     /**
-     * Outputs a text version of the condition.
-     * @return the condition.
+     * {@inheritDoc}
      */
+    @Override
+    @NotNull
     public String toString()
     {
         return toString(false);
@@ -346,6 +326,8 @@ public class AtomicCondition
      * Outputs a brief version of the condition.
      * @return such text.
      */
+    @NotNull
+    @Override
     public String toSimplifiedString()
     {
         return toString(true);
@@ -357,9 +339,10 @@ public class AtomicCondition
      * without explicit table information.
      * @return the condition.
      */
+    @NotNull
     protected String toString(final boolean simplify)
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         if  (getInnerCondition() != null)
         {

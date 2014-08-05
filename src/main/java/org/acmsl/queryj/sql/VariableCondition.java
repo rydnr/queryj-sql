@@ -39,6 +39,7 @@ package org.acmsl.queryj.sql;
 import org.acmsl.queryj.sql.Condition;
 import org.acmsl.queryj.sql.ConditionOperator;
 import org.acmsl.queryj.sql.Field;
+import org.jetbrains.annotations.NotNull;
 
 /*
  * Importing JDK classes.
@@ -70,6 +71,7 @@ public class VariableCondition
      * Retrieves the variable conditions.
      * @return such collection.
      */
+    @NotNull
     public Collection getVariableConditions()
     {
         Collection result = super.getVariableConditions();

@@ -35,7 +35,6 @@ package org.acmsl.queryj.sql;
 /*
  * Importing some ACM-SL classes.
  */
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -156,17 +155,16 @@ public abstract class Condition
     protected Collection<VariableCondition> getVariableConditions(
         @Nullable final Collection<VariableCondition> explicitConditions)
     {
-        @NotNull Collection<VariableCondition> result = new ArrayList<VariableCondition>();
+        @NotNull final Collection<VariableCondition> result = new ArrayList<VariableCondition>();
 
-        Condition t_InnerCondition = getInnerCondition();
+        final Condition t_InnerCondition = getInnerCondition();
 
         if  (t_InnerCondition != null)
         {
-            Collection<VariableCondition> t_cInnerVariableConditions =
+            @NotNull final Collection<VariableCondition> t_cInnerVariableConditions =
                 t_InnerCondition.getVariableConditions();
 
-            if  (   (t_cInnerVariableConditions != null)
-                 && (t_cInnerVariableConditions.size() > 0))
+            if  (t_cInnerVariableConditions.size() > 0)
             {
                 result.addAll(t_cInnerVariableConditions);
             }
@@ -185,7 +183,6 @@ public abstract class Condition
      * @param condition the condition to evaluate.
      * @param operator the operator.
      * @return the resulting condition.
-     * @precondition condition != null
      */
     @NotNull
     public Condition operate(
@@ -206,8 +203,6 @@ public abstract class Condition
      * @param innerCondition the inner condition.
      * @param conditionFactory the {@link ConditionFactory} instance.
      * @return the resulting condition.
-     * @precondition condition != null
-     * @precondition conditionFactory != null
      */
     @NotNull
     protected Condition operate(
@@ -216,7 +211,7 @@ public abstract class Condition
         @Nullable final Condition innerCondition,
         @NotNull final ConditionFactory conditionFactory)
     {
-        @NotNull Condition t_InnerCondition = innerCondition;
+        @Nullable Condition t_InnerCondition = innerCondition;
 
         if  (t_InnerCondition != null)
         {
@@ -227,9 +222,9 @@ public abstract class Condition
             t_InnerCondition = this; // Subclasses override toString()
         }                            //            |
                                      //            v
-        @NotNull String t_strPrefix =
+        @NotNull final String t_strPrefix =
             "(" + t_InnerCondition.toString() + ") " + operator + " (";
-        @NotNull String t_strSuffix = ")";
+        @NotNull final String t_strSuffix = ")";
 
         setInnerCondition(
             conditionFactory.wrap(condition, t_strPrefix, t_strSuffix));
@@ -241,7 +236,6 @@ public abstract class Condition
      * Requests AND evaluation with given condition.
      * @param condition the condition to evaluate.
      * @return the resulting condition.
-     * @precondition condition != null
      */
     @NotNull
     public Condition and(@NotNull final Condition condition)
@@ -253,7 +247,6 @@ public abstract class Condition
      * Requests OR evaluation with given condition.
      * @param condition the condition to evaluate.
      * @return the resulting condition.
-     * @precondition condition != null
      */
     @NotNull
     public Condition or(@NotNull final Condition condition)
@@ -270,7 +263,7 @@ public abstract class Condition
      * @return such text.
      */
     @NotNull
-    protected String toString(@NotNull final Field field, @NotNull final boolean simplify)
+    protected String toString(@Nullable final Field field, final boolean simplify)
     {
         String result = "null";
 
@@ -305,7 +298,7 @@ public abstract class Condition
      * @return the condition.
      */
     @NotNull
-    public String toSimplifiedString(@NotNull final Condition innerCondition)
+    public String toSimplifiedString(@Nullable final Condition innerCondition)
     {
         String result = "";
 
@@ -318,9 +311,9 @@ public abstract class Condition
     }
 
     /**
-     * Outputs a text version of the condition.
-     * @return the condition.
+     * {@inheritDoc}
      */
+    @Override
     @NotNull
     public String toString()
     {
@@ -333,8 +326,8 @@ public abstract class Condition
      * @return the condition.
      */
     @NotNull
-    protected String toString(@NotNull final Condition innerCondition)
+    protected String toString(@Nullable final Condition innerCondition)
     {
-        return "" + innerCondition;
+        return innerCondition != null ? innerCondition.toString() : "";
     }
 }

@@ -34,9 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 
 /*
@@ -55,10 +54,8 @@ public class DateField
      * Creates a Date field using given information.
      * @param name the field name.
      * @param table the table.
-     * @precondition name != null
-     * @precondition table != null
      */
-    public DateField(final String name, final Table table)
+    public DateField(@NotNull final String name, @NotNull final Table table)
     {
         super(name, table);
     }
@@ -69,7 +66,7 @@ public class DateField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition equals(final Date value)
+    public Condition equals(@NotNull final Date value)
     {
         return
             equals(
@@ -85,12 +82,10 @@ public class DateField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition equals(
-        final Date value,
+        @NotNull final Date value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -106,8 +101,9 @@ public class DateField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
-    public Condition notEquals(final Date value)
+    public Condition notEquals(@NotNull final Date value)
     {
         return
             notEquals(
@@ -123,12 +119,10 @@ public class DateField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition notEquals(
-        final Date value,
+        @NotNull final Date value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {

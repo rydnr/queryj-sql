@@ -95,8 +95,6 @@ public class TransactionTokenFactory
      * Creates a DataSourceTransactionToken using given connection.
      * @param dataSource the data source to use inside the same transaction.
      * @return the transaction token, or null if the connection is invalid.
-     * @precondition transactionStatus != null
-     * @precondition dataSource != null
      */
     @Nullable
     public DataSourceTransactionToken createTransactionToken(

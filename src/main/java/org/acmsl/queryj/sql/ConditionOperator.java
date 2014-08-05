@@ -53,9 +53,8 @@ public class ConditionOperator
     /**
      * Creates a operator using given information.
      * @param symbol the operator symbol.
-     * @precondition symbol != null
      */
-    public ConditionOperator(final String symbol)
+    public ConditionOperator(@NotNull final String symbol)
     {
         immutableSetSymbol(symbol);
     }
@@ -64,7 +63,7 @@ public class ConditionOperator
      * Specifies the operator symbol.
      * @param symbol the symbol.
      */
-    private void immutableSetSymbol(final String symbol)
+    protected final void immutableSetSymbol(@NotNull final String symbol)
     {
         m__strSymbol = symbol;
     }
@@ -74,7 +73,7 @@ public class ConditionOperator
      * @param symbol the symbol.
      */
     @SuppressWarnings("unused")
-    protected void setSymbol(final String symbol)
+    protected void setSymbol(@NotNull final String symbol)
     {
         immutableSetSymbol(symbol);
     }
@@ -83,15 +82,17 @@ public class ConditionOperator
      * Retrieves the operator symbol.
      * @return such symbol.
      */
+    @NotNull
     public String getSymbol()
     {
         return m__strSymbol;
     }
 
     /**
-     * Retrieves a text version of the object.
-     * @return such representation.
+     * {@inheritDoc}
      */
+    @Override
+    @NotNull
     public String toString()
     {
         return getSymbol();
@@ -102,7 +103,8 @@ public class ConditionOperator
      * @param candidate the object to check.
      * @return <code>true</code> if both objects are logically equal.
      */
-    public boolean equals(final Object candidate)
+    @Override
+    public boolean equals(@Nullable final Object candidate)
     {
         boolean result = false;
 
@@ -119,7 +121,6 @@ public class ConditionOperator
      * @param candidate the object to check.
      * @param symbol the symbol.
      * @return <code>true</code> if both objects are logically equal.
-     * @precondition symbol != null
      */
     protected boolean equals(@Nullable final Object candidate, @Nullable final String symbol)
     {
@@ -132,11 +133,9 @@ public class ConditionOperator
 
         if  (!result)
         {
-            @NotNull ConditionOperator t_Candidate = (ConditionOperator) candidate;
+            @NotNull final ConditionOperator t_Candidate = (ConditionOperator) candidate;
 
-            result = (t_Candidate.getSymbol() != null);
-
-            if  (result)
+            if  (t_Candidate.getSymbol() != null)
             {
                 result = (t_Candidate.getSymbol().equals(symbol));
             }
@@ -153,6 +152,7 @@ public class ConditionOperator
      * Retrieves the hash code.
      * @return such information.
      */
+    @Override
     public int hashCode()
     {
         return hashCode(getSymbol());
@@ -163,7 +163,7 @@ public class ConditionOperator
      * @param symbol the symbol.
      * @return such information.
      */
-    protected int hashCode(final String symbol)
+    protected int hashCode(@NotNull final String symbol)
     {
         return (ConditionOperator.class + symbol).hashCode();
     }

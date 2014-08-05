@@ -34,9 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -50,10 +49,8 @@ public class ClobField
      * Creates a Clob field using given information.
      * @param name the field name.
      * @param table the table.
-     * @precondition name != null
-     * @precondition table != null
      */
-    public ClobField(final String name, final Table table)
+    public ClobField(@NotNull final String name, @NotNull final Table table)
     {
         super(name, table);
     }
@@ -64,7 +61,7 @@ public class ClobField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition equals(final String value)
+    public Condition equals(@NotNull final String value)
     {
         return
             equals(
@@ -80,12 +77,10 @@ public class ClobField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition equals(
-        final String value,
+        @NotNull final String value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -102,7 +97,8 @@ public class ClobField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition notEquals(final String value)
+    @SuppressWarnings("unused")
+    public Condition notEquals(@NotNull final String value)
     {
         return
             notEquals(
@@ -118,12 +114,10 @@ public class ClobField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition notEquals(
-        final String value,
+        @NotNull final String value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {

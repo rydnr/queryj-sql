@@ -81,9 +81,8 @@ public class DeleteQuery
     /**
      * Indicates which table the delete applies to.
      * @param table the table.
-     * @precondition table != null
      */
-    public void deleteFrom(final Table table)
+    public void deleteFrom(@NotNull final Table table)
     {
         setTable(table);
     }
@@ -91,7 +90,6 @@ public class DeleteQuery
     /**
      * Indicates a query condition.
      * @param condition such condition.
-     * @precondition condition != null
      */
     public void where(@NotNull final Condition condition)
     {
@@ -101,7 +99,6 @@ public class DeleteQuery
     /**
      * Indicates a query variable condition.
      * @param variableCondition such variable condition.
-     * @precondition variableCondition != null
      */
     public void where(@NotNull final VariableCondition variableCondition)
     {
@@ -112,9 +109,10 @@ public class DeleteQuery
     // Serialization methods //
 
     /**
-     * Outputs a text version of the query, in SQL format.
-     * @return the SQL query.
+     * {@inheritDoc}
      */
+    @Override
+    @NotNull
     public String toString()
     {
         return
@@ -132,17 +130,14 @@ public class DeleteQuery
      * @param conditions the conditions.
      * @param queryUtils the <code>QueryUtils</code> instance.
      * @return the SQL query.
-     * @precondition table != null
-     * @precondition fields != null
-     * @precondition queryUtils != null
      */
     protected String toString(
-        final Table table,
-        final List fields,
+        @NotNull final Table table,
+        @SuppressWarnings("unused") @NotNull final List fields,
         @Nullable final List conditions,
         @NotNull final QueryUtils queryUtils)
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         t_sbResult.append("DELETE FROM ");
 

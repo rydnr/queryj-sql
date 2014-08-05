@@ -36,7 +36,6 @@ package org.acmsl.queryj.sql;
 /*
  * Importing some project-specific classes.
  */
-import org.acmsl.queryj.sql.QueryResultSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,32 +86,32 @@ public abstract class Query
     /**
      * The fields.
      */
-    private List m__lFields;
+    private List<Field> m__lFields;
 
     /**
      * The tables.
      */
-    private List m__lTables;
+    private List<Table> m__lTables;
 
     /**
      * The conditions.
      */
-    private List m__lConditions;
+    private List<Condition> m__lConditions;
 
     /**
      * The variable conditions.
      */
-    private List m__lVariableConditions;
+    private List<VariableCondition> m__lVariableConditions;
 
     /**
      * Constructs a query.
      */
     public Query()
     {
-        immutableSetFields(new ArrayList());
-        immutableSetTables(new ArrayList());
-        immutableSetConditions(new ArrayList());
-        immutableSetVariableConditions(new ArrayList());
+        immutableSetFields(new ArrayList<Field>());
+        immutableSetTables(new ArrayList<Table>());
+        immutableSetConditions(new ArrayList<Condition>());
+        immutableSetVariableConditions(new ArrayList<VariableCondition>());
     }
 
     /**
@@ -120,7 +119,7 @@ public abstract class Query
      * @param statement the prepared statement.
      */
     protected final void immutableSetPreparedStatement(
-        final PreparedStatement statement)
+        @NotNull final PreparedStatement statement)
     {
         m__PreparedStatement = statement;
     }
@@ -129,7 +128,7 @@ public abstract class Query
      * Specifies the statement.
      * @param statement the prepared statement.
      */
-    protected void setPreparedStatement(final PreparedStatement statement)
+    protected void setPreparedStatement(@NotNull final PreparedStatement statement)
     {
         immutableSetPreparedStatement(statement);
     }
@@ -138,6 +137,7 @@ public abstract class Query
      * Retrieves the statement.
      * @return such statement.
      */
+    @Nullable
     protected PreparedStatement getPreparedStatement()
     {
         return m__PreparedStatement;
@@ -150,10 +150,11 @@ public abstract class Query
      * @return the statement.
      * @throws SQLException in such invalid API usage.
      */
+    @NotNull
     protected PreparedStatement retrievePreparedStatement()
         throws SQLException
     {
-        PreparedStatement result = getPreparedStatement();
+        @Nullable final PreparedStatement result = getPreparedStatement();
 
         if  (result == null)
         {
@@ -167,7 +168,7 @@ public abstract class Query
      * Specifies new field collection.
      * @param list the new list.
      */
-    private void immutableSetFields(final List list)
+    private void immutableSetFields(@NotNull final List<Field> list)
     {
         m__lFields = list;
     }
@@ -176,7 +177,7 @@ public abstract class Query
      * Specifies new field collection.
      * @param list the new list.
      */
-    protected void setFields(final List list)
+    protected void setFields(@NotNull final List<Field> list)
     {
         immutableSetFields(list);
     }
@@ -185,7 +186,7 @@ public abstract class Query
      * Retrieves the field collection.
      * @return such list.
      */
-    protected List getFields()
+    protected List<Field> getFields()
     {
         return m__lFields;
     }
@@ -193,9 +194,8 @@ public abstract class Query
     /**
      * Adds a new field.
      * @param field the field to add.
-     * @precondition field != null
      */
-    protected void addField(final Field field)
+    protected void addField(@NotNull final Field field)
     {
         addField(field, getFields());
     }
@@ -204,10 +204,8 @@ public abstract class Query
      * Adds a new field.
      * @param field the field to add.
      * @param fields the fields.
-     * @precondition field != null
-     * @precondition fields != null
      */
-    protected final void addField(final Field field, @NotNull final List fields)
+    protected final void addField(@NotNull final Field field, @NotNull final List<Field> fields)
     {
         fields.add(field);
     }
@@ -218,7 +216,7 @@ public abstract class Query
      * @return its position, or <code>-1</code> if such field doesn't belong to
      * this query.
      */
-    protected int getFieldIndex(final Field field)
+    protected int getFieldIndex(@NotNull final Field field)
     {
         return getIndex(getFields(), field);
     }
@@ -227,7 +225,7 @@ public abstract class Query
      * Specifies new table collection.
      * @param list the new list.
      */
-    private void immutableSetTables(final List list)
+    private void immutableSetTables(@NotNull final List<Table> list)
     {
         m__lTables = list;
     }
@@ -236,7 +234,7 @@ public abstract class Query
      * Specifies new table collection.
      * @param list the new list.
      */
-    protected void setTables(final List list)
+    protected void setTables(@NotNull final List<Table> list)
     {
         immutableSetTables(list);
     }
@@ -245,7 +243,8 @@ public abstract class Query
      * Retrieves the table collection.
      * @return such list.
      */
-    protected List getTables()
+    @NotNull
+    protected List<Table> getTables()
     {
         return m__lTables;
     }
@@ -253,9 +252,8 @@ public abstract class Query
     /**
      * Adds a new table.
      * @param table the table to add.
-     * @precondition table != null
      */
-    protected void addTable(final Table table)
+    protected void addTable(@NotNull final Table table)
     {
         addTable(table, getTables());
     }
@@ -264,11 +262,8 @@ public abstract class Query
      * Adds a new table.
      * @param table the table to add.
      * @param tables the tables.
-     * @precondition table != null
-     * @precondition tables != null
      */
-    protected final void addTable(
-        final Table table, @NotNull final List tables)
+    protected final void addTable(@NotNull final Table table, @NotNull final List<Table> tables)
     {
         tables.add(table);
     }
@@ -277,7 +272,7 @@ public abstract class Query
      * Specifies new condition collection.
      * @param list the new list.
      */
-    private void immutableSetConditions(final List list)
+    private void immutableSetConditions(@NotNull final List<Condition> list)
     {
         m__lConditions = list;
     }
@@ -286,7 +281,7 @@ public abstract class Query
      * Specifies new condition collection.
      * @param list the new list.
      */
-    protected void setConditions(final List list)
+    protected void setConditions(@NotNull final List<Condition> list)
     {
         immutableSetConditions(list);
     }
@@ -295,7 +290,8 @@ public abstract class Query
      * Retrieves the condition collection.
      * @return such list.
      */
-    protected List getConditions()
+    @NotNull
+    protected List<Condition> getConditions()
     {
         return m__lConditions;
     }
@@ -303,7 +299,6 @@ public abstract class Query
     /**
      * Adds a new condition.
      * @param condition the condition to add.
-     * @precondition condition != null
      */
     protected void addCondition(@NotNull final Condition condition)
     {
@@ -315,7 +310,6 @@ public abstract class Query
      * @param condition the condition to add.
      * @param processNestedVariableConditions <code>true</code> to include
      * any nested variable conditions.
-     * @precondition condition != null
      */
     protected void addCondition(
         @NotNull final Condition condition,
@@ -335,13 +329,11 @@ public abstract class Query
      * @param conditions the conditions.
      * @param variableConditions the variable conditions, or <code>null</code> if
      * no nested conditions process is desired.
-     * @precondition condition != null
-     * @precondition conditions != null
      */
     protected final void addCondition(
         @NotNull final Condition condition,
-        @NotNull final List conditions,
-        @Nullable final List variableConditions)
+        @NotNull final List<Condition> conditions,
+        @Nullable final List<VariableCondition> variableConditions)
     {
         conditions.add(condition);
 
@@ -357,7 +349,7 @@ public abstract class Query
      * Specifies new variable condition collection.
      * @param list the new list.
      */
-    private void immutableSetVariableConditions(final List list)
+    private void immutableSetVariableConditions(@NotNull final List<VariableCondition> list)
     {
         m__lVariableConditions = list;
     }
@@ -366,7 +358,8 @@ public abstract class Query
      * Specifies new variable condition collection.
      * @param list the new list.
      */
-    protected void setVariableConditions(final List list)
+    @SuppressWarnings("unused")
+    protected void setVariableConditions(@NotNull final List<VariableCondition> list)
     {
         immutableSetVariableConditions(list);
     }
@@ -375,7 +368,8 @@ public abstract class Query
      * Retrieves the variable condition collection.
      * @return such list.
      */
-    protected List getVariableConditions()
+    @NotNull
+    protected List<VariableCondition> getVariableConditions()
     {
         return m__lVariableConditions;
     }
@@ -383,7 +377,6 @@ public abstract class Query
     /**
      * Adds a new variable condition.
      * @param variableCondition the variable condition to add.
-     * @precondition variableCondition != null
      */
     protected void addVariableCondition(
         @NotNull final VariableCondition variableCondition)
@@ -395,12 +388,10 @@ public abstract class Query
      * Adds a new variable condition.
      * @param variableCondition the variable condition to add.
      * @param variableConditions the variable conditions.
-     * @precondition variableCondition != null
-     * @precondition variableConditions != null
      */
     protected void addVariableCondition(
         @NotNull final VariableCondition variableCondition,
-        @NotNull final List variableConditions)
+        @NotNull final List<VariableCondition> variableConditions)
     {
         addVariableConditions(
             variableCondition,
@@ -412,11 +403,10 @@ public abstract class Query
      * Adds given new variable conditions.
      * @param newVariableConditions the variable conditions to add.
      * @param variableConditions the variable conditions.
-     * @precondition variableConditions != null
      */
     protected final void addVariableConditions(
-        final Collection newVariableConditions,
-        @NotNull final List variableConditions)
+        @NotNull final Collection<VariableCondition> newVariableConditions,
+        @NotNull final List<VariableCondition> variableConditions)
     {
         addVariableConditions(null, newVariableConditions, variableConditions);
     }
@@ -426,12 +416,11 @@ public abstract class Query
      * @param variableCondition the variable condition (optional).
      * @param newVariableConditions the variable conditions to add.
      * @param variableConditions the variable conditions.
-     * @precondition variableConditions != null
      */
     protected final void addVariableConditions(
         @Nullable final VariableCondition variableCondition,
-        @Nullable final Collection newVariableConditions,
-        @NotNull final List variableConditions)
+        @Nullable final Collection<VariableCondition> newVariableConditions,
+        @NotNull final List<VariableCondition> variableConditions)
     {
         int offset = 0;
 
@@ -457,16 +446,14 @@ public abstract class Query
      * @param object the object to find.
      * @return its position, or -1 if such item doesn't belong to
      * this query.
-     * @precondition list != null
-     * @precondition object != null
      */
-    protected final int getIndex(@NotNull final List list, final Object object)
+    protected final <T> int getIndex(@NotNull final List<T> list, final T object)
     {
         int result = list.indexOf(object);
 
         if  (result != list.lastIndexOf(object))
         {
-            list.set(result, list.indexOf(object) + "");
+            list.set(result, object);
         }
 
         result++;
@@ -481,10 +468,8 @@ public abstract class Query
      * @param index the index within the array.
      * @return its position, or -1 if such item doesn't belong to
      * this query.
-     * @precondition list != null
-     * @precondition object != null
      */
-    protected final int getIndex(@NotNull final List list, final Object object, final int index)
+    protected final <T> int getIndex(@NotNull final List<T> list, final T object, final int index)
     {
         int result = getIndex(list, object);
 
@@ -500,13 +485,11 @@ public abstract class Query
      * @return its position, or -1 if such item doesn't belong to
      * this query.
      * @throws SQLException if the element is not found.
-     * @precondition list != null
-     * @precondition object != null
      */
-    protected int retrieveIndex(@NotNull final List list, final Object object)
+    protected <T> int retrieveIndex(@NotNull final List<T> list, final T object)
         throws  SQLException
     {
-        int result = getIndex(list, object);
+        final int result = getIndex(list, object);
 
         if  (result < 1)
         {
@@ -524,13 +507,11 @@ public abstract class Query
      * @return its position, or -1 if such item doesn't belong to
      * this query.
      * @throws SQLException if the element is not found.
-     * @precondition list != null
-     * @precondition object != null
      */
-    protected int retrieveIndex(@NotNull final List list, final Object object, final int index)
+    protected <T> int retrieveIndex(@NotNull final List<T> list, final T object, final int index)
         throws  SQLException
     {
-        int result = getIndex(list, object, index);
+        final int result = getIndex(list, object, index);
 
         if  (result < 1)
         {
@@ -561,8 +542,6 @@ public abstract class Query
      * @param queryUtils the {@link QueryUtils} instance.
      * @return the clob contents.
      * @throws SQLException if the clob cannot be processed.
-     * @precondition clob != null
-     * @precondition queryUtils != null
      */
     protected String clobToString(
         @NotNull final Clob clob, @NotNull final QueryUtils queryUtils)
@@ -576,8 +555,8 @@ public abstract class Query
      * @param connection the JDBC connection.
      * @return the statement.
      * @throws SQLException if an error occurs.
-     * @precondition connection != null
      */
+    @SuppressWarnings("unused")
     @NotNull
     public PreparedStatement prepareStatement(@NotNull final Connection connection)
         throws  SQLException
@@ -594,11 +573,9 @@ public abstract class Query
      * @param resultSetConcurrency one of the ResultSet concurrency flags.
      * @return the statement.
      * @throws SQLException if an error occurs.
-     * @precondition connection != null
-     * @precondition (resultSetType == ResultSet.TYPE_FORWARD_ONLY) || (resultSetType == ResultSet.TYPE_SCROLL_INSENSITIVE) || (resultSetType == ResultSet.TYPE_SCROLL_SENSITIVE)
-     * @precondition (resultSetConcurrency == ResultSet.CONCUR_READ_ONLY) || (resultSetConcurrency == ResultSet.CONCUR_UPDATABLE)
      */
     @NotNull
+    @SuppressWarnings("unused")
     public PreparedStatement prepareStatement(
         @NotNull final Connection connection,
         final int resultSetType,
@@ -622,10 +599,6 @@ public abstract class Query
      * @param resultSetHoldability one of the ResultSet holdability flags.
      * @return the statement.
      * @throws SQLException if an error occurs.
-     * @precondition connection != null
-     * @precondition (resultSetType == ResultSet.TYPE_FORWARD_ONLY) || (resultSetType == ResultSet.TYPE_SCROLL_INSENSITIVE) || (resultSetType == ResultSet.TYPE_SCROLL_SENSITIVE)
-     * @precondition (resultSetConcurrency == ResultSet.CONCUR_READ_ONLY) || (resultSetConcurrency == ResultSet.CONCUR_UPDATABLE)
-     * @precondition (resultSetHoldability == ResultSet.HOLD_CURSORS_OVER_COMMIT) || (resultSetHoldability == ResultSet.CLOSE_CURSORS_AT_COMMIT)
      */
     @NotNull
     public PreparedStatement prepareStatement(
@@ -661,8 +634,8 @@ public abstract class Query
     /**
      * See java.sql.Statement#execute(String).
      * @see java.sql.Statement#execute(String)
-     * @param sql (Taken from Sun's Javadoc) any SQL statement.
-     * @return (Taken from Sun's Javadoc) <code>true</code> if the first
+     * @param sql (Taken from Sun Javadoc) any SQL statement.
+     * @return (Taken from Sun Javadoc) <code>true</code> if the first
      * result is a ResultSet object; false if it is an update count
      * or there are no results.
      * @throws SQLException if an error occurs.
@@ -676,7 +649,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getConnection().
      * @see java.sql.Statement#getConnection()
-     * @return (Taken from Sun's Javadoc) the connection that produced
+     * @return (Taken from Sun Javadoc) the connection that produced
      * this statement.
      * @throws SQLException if an error occurs
      */
@@ -689,7 +662,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getWarnings().
      * @see java.sql.Statement#getWarnings()
-     * @return (Taken from Sun's Javadoc) the first SQLWarning object
+     * @return (Taken from Sun Javadoc) the first SQLWarning object
      * or null if there are no warnings .
      * @throws SQLException if an error occurs.
      */
@@ -713,15 +686,14 @@ public abstract class Query
     /**
      * See java.sql.Statement#executeQuery(String).
      * @see java.sql.Statement#executeQuery(String)
-     * @param sql (Taken from Sun's Javadoc) an SQL statement to be sent
+     * @param sql (Taken from Sun Javadoc) an SQL statement to be sent
      * to the database, typically a static SQL SELECT statement.
-     * @return (Taken from Sun's Javadoc) a ResultSet object that
+     * @return (Taken from Sun Javadoc) a ResultSet object that
      * contains the data produced by the given query; never null. 
      * @throws SQLException if an error occurs.
-     * @precondition sql != null
      */
     @NotNull
-    public ResultSet executeQuery(final String sql)
+    public ResultSet executeQuery(@NotNull final String sql)
         throws  SQLException
     {
         return
@@ -733,9 +705,9 @@ public abstract class Query
     /**
      * See java.sql.Statement#executeUpdate(String).
      * @see java.sql.Statement#executeUpdate(String)
-     * @param sql (Taken from Sun's Javadoc) an SQL INSERT, UPDATE or
+     * @param sql (Taken from Sun Javadoc) an SQL INSERT, UPDATE or
      * DELETE statement or an SQL statement that returns nothing.
-     * @return (Taken from Sun's Javadoc) a ResultSet object that
+     * @return (Taken from Sun Javadoc) a ResultSet object that
      * contains the data produced by the given query; never null.
      * @throws SQLException if an error occurs.
      */
@@ -748,7 +720,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getMaxFieldSize().
      * @see java.sql.Statement#getMaxFieldSize()
-     * @return (Taken from Sun's Javadoc) the current
+     * @return (Taken from Sun Javadoc) the current
      * column size limit for columns storing character
      * and binary values; zero means there is no limit.
      * @throws SQLException if an error occurs.
@@ -762,7 +734,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setMaxFieldSize(int).
      * @see java.sql.Statement#setMaxFieldSize(int)
-     * @param size (Taken from Sun's Javadoc) the new column size
+     * @param size (Taken from Sun Javadoc) the new column size
      * limit in bytes; zero means there is no limit.
      * @throws SQLException if an error occurs
      */
@@ -775,7 +747,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getMaxRows().
      * @see java.sql.Statement#getMaxRows()
-     * @return (Taken from Sun's Javadoc) the current maximum
+     * @return (Taken from Sun Javadoc) the current maximum
      * number of rows for a ResultSet object produced by this
      * Statement object; zero means there is no limit.
      * @throws SQLException if an error occurs
@@ -789,7 +761,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setMaxRows(int).
      * @see java.sql.Statement#setMaxRows(int)
-     * @param max (Taken from Sun's Javadoc) the new max rows
+     * @param max (Taken from Sun Javadoc) the new max rows
      * limit; zero means there is no limit.
      * @throws SQLException if an error occurs
      */
@@ -802,7 +774,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setEscapeProcessing(boolean).
      * @see java.sql.Statement#setEscapeProcessing(boolean)
-     * @param flag (Taken from Sun's Javadoc) <code>true</code>
+     * @param flag (Taken from Sun Javadoc) <code>true</code>
      * to enable escape processing; <code>false</code> to
      * disable it.
      * @throws SQLException if an error occurs
@@ -816,7 +788,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getQueryTimeout().
      * @see java.sql.Statement#getQueryTimeout()
-     * @return (Taken from Sun's Javadoc) the current query
+     * @return (Taken from Sun Javadoc) the current query
      * timeout limit in seconds; zero means there is no limit.
      * @throws SQLException if an error occurs.
      */
@@ -829,7 +801,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setQueryTimeout(int).
      * @see java.sql.Statement#setQueryTimeout(int)
-     * @param timeout (Taken from Sun's Javadoc) the new query
+     * @param timeout (Taken from Sun Javadoc) the new query
      * timeout limit in seconds; zero means there is no limit.
      * @throws SQLException if an error occurs
      */
@@ -853,7 +825,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setCursorName(String).
      * @see java.sql.Statement#setCursorName(String)
-     * @param name (Taken from Sun's Javadoc) the new
+     * @param name (Taken from Sun Javadoc) the new
      * cursor name, which must be unique within a connection.
      * @throws SQLException if an error occurs.
      */
@@ -866,7 +838,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getResultSet().
      * @see java.sql.Statement#getResultSet()
-     * @return (Taken from Sun's Javadoc) the current result
+     * @return (Taken from Sun Javadoc) the current result
      * as a ResultSet object or null if the result is an
      * update count or there are no more results.
      * @throws SQLException if an error occurs.
@@ -880,7 +852,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getUpdateCount().
      * @see java.sql.Statement#getUpdateCount()
-     * @return (Taken from Sun's Javadoc) the current
+     * @return (Taken from Sun Javadoc) the current
      * result as an update count; -1 if the current result
      * is a ResultSet object or there are no more results.
      * @throws SQLException if an error occurs.
@@ -894,7 +866,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getMoreResults().
      * @see java.sql.Statement#getMoreResults()
-     * @return (Taken from Sun's Javadoc) <code>true</code>
+     * @return (Taken from Sun Javadoc) <code>true</code>
      * if the next result is a ResultSet object;
      * <code>false</code> if it is an update count
      * or there are no more results.
@@ -909,7 +881,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setFetchDirection(int).
      * @see java.sql.Statement#setFetchDirection(int)
-     * @param direction (Taken from Sun's Javadoc) the initial
+     * @param direction (Taken from Sun Javadoc) the initial
      * direction for processing rows.
      * @throws SQLException if an error occurs.
      */
@@ -922,7 +894,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getFetchDirection().
      * @see java.sql.Statement#getFetchDirection()
-     * @return (Taken from Sun's Javadoc) the default
+     * @return (Taken from Sun Javadoc) the default
      * fetch direction for result sets generated
      * from this Statement object.
      * @throws SQLException if an error occurs.
@@ -936,7 +908,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#setFetchSize(int).
      * @see java.sql.Statement#setFetchSize(int)
-     * @param size (Taken from Sun's Javadoc) the number of rows to fetch.
+     * @param size (Taken from Sun Javadoc) the number of rows to fetch.
      * @throws SQLException if an error occurs.
      */
     public void setFetchSize(final int size)
@@ -948,7 +920,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getFetchSize().
      * @see java.sql.Statement#getFetchSize()
-     * @return (Taken from Sun's Javadoc) the default fetch
+     * @return (Taken from Sun Javadoc) the default fetch
      * size for result sets generated from this Statement object.
      * @throws SQLException if an error occurs.
      */
@@ -961,7 +933,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getResultSetConcurrency().
      * @see java.sql.Statement#getResultSetConcurrency()
-     * @return (Taken from Sun's Javadoc) either
+     * @return (Taken from Sun Javadoc) either
      * ResultSet.CONCUR_READ_ONLY or ResultSet.CONCUR_UPDATABLE.
      * @throws SQLException if an error occurs.
      */
@@ -974,7 +946,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#getResultSetType().
      * @see java.sql.Statement#getResultSetType()
-     * @return (Taken from Sun's Javadoc) one of
+     * @return (Taken from Sun Javadoc) one of
      * ResultSet.TYPE_FORWARD_ONLY,
      * ResultSet.TYPE_SCROLL_INSENSITIVE, or
      * ResultSet.TYPE_SCROLL_SENSITIVE.
@@ -989,7 +961,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#addBatch(String).
      * @see java.sql.Statement#addBatch(String)
-     * @param sql (Taken from Sun's Javadoc) typically this
+     * @param sql (Taken from Sun Javadoc) typically this
      * is a static SQL INSERT or UPDATE statement.
      * @throws SQLException if an error occurs.
      */
@@ -1013,7 +985,7 @@ public abstract class Query
     /**
      * See java.sql.Statement#executeBatch().
      * @see java.sql.Statement#executeBatch()
-     * @return (Taken from Sun's Javadoc) an array of update
+     * @return (Taken from Sun Javadoc) an array of update
      * counts containing one element for each command in the
      * batch. The elements of the array are ordered according
      * to the order in which commands were added to the batch.
@@ -1030,9 +1002,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTime(int,java.sql.Time).
      * @see java.sql.PreparedStatement#setTime(int,java.sql.Time)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param time (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param time (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setTime(final int index, final Time time)
@@ -1044,10 +1016,10 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTime(int,Time,Calendar).
      * @see java.sql.PreparedStatement#setTime(int,java.sql.Time,java.util.Calendar)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param time (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param time (Taken from Sun Javadoc) the parameter value (!!).
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @throws SQLException if an error occurs.
      */
@@ -1061,7 +1033,7 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#execute().
      * @see java.sql.PreparedStatement#execute()
-     * @return (Taken from Sun's Javadoc) <code>true</code> if
+     * @return (Taken from Sun Javadoc) <code>true</code> if
      * the first result is a ResultSet object; <code>false</code>
      * if the first result is an update count or there is no result.
      * @throws SQLException if an error occurs.
@@ -1075,7 +1047,7 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#executeQuery().
      * @see java.sql.PreparedStatement#executeQuery()
-     * @return (Taken from Sun's Javadoc) a ResultSet object
+     * @return (Taken from Sun Javadoc) a ResultSet object
      * that contains the data produced by the query; never null.
      * @throws SQLException if an error occurs.
      */
@@ -1091,9 +1063,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setBoolean(int,boolean).
      * @see java.sql.PreparedStatement#setBoolean(int,boolean)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param flag (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param flag (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setBoolean(final int index, final boolean flag)
@@ -1105,9 +1077,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setByte(int,byte).
      * @see java.sql.PreparedStatement#setByte(int,byte)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param b (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param b (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setByte(final int index, final byte b)
@@ -1119,9 +1091,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setShort(int,short).
      * @see java.sql.PreparedStatement#setShort(int,short)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param s (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param s (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setShort(final int index, final short s)
@@ -1133,9 +1105,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setInt(int,int).
      * @see java.sql.PreparedStatement#setInt(int,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setInt(final int index, final int value)
@@ -1147,9 +1119,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setLong(int,long).
      * @see java.sql.PreparedStatement#setLong(int,long)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setLong(final int index, final long value)
@@ -1161,9 +1133,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setFloat(int,float).
      * @see java.sql.PreparedStatement#setFloat(int,float)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setFloat(final int index, final float value)
@@ -1175,9 +1147,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setDouble(int,double).
      * @see java.sql.PreparedStatement#setDouble(int,double)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setDouble(final int index, final double value)
@@ -1189,7 +1161,7 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#getMetaData().
      * @see java.sql.PreparedStatement#getMetaData()
-     * @return (Taken from Sun's Javadoc) a ParameterMetaData
+     * @return (Taken from Sun Javadoc) a ParameterMetaData
      * object that contains information about the number,
      * types and properties of this PreparedStatement
      * object's parameters.
@@ -1204,7 +1176,7 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#executeUpdate().
      * @see java.sql.PreparedStatement#executeUpdate()
-     * @return (Taken from Sun's Javadoc) either (1) the row
+     * @return (Taken from Sun Javadoc) either (1) the row
      * count for INSERT, UPDATE, or DELETE statements or
      * (2) 0 for SQL statements that return nothing.
      * @throws SQLException if an error occurs.
@@ -1229,9 +1201,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setNull(int,int).
      * @see java.sql.PreparedStatement#setNull(int,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * code defined in java.sql.Types.
      * @throws SQLException if an error occurs.
      */
@@ -1244,11 +1216,11 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setNull(int,int,String).
      * @see java.sql.PreparedStatement#setNull(int,int,String)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * code defined in java.sql.Types.
-     * @param typeName (Taken from Sun's Javadoc) the fully-qualified
+     * @param typeName (Taken from Sun Javadoc) the fully-qualified
      * name of an SQL user-defined type; ignored if the
      * parameter is not a user-defined type or REF.
      * @throws SQLException if an error occurs.
@@ -1263,9 +1235,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setString(int,String).
      * @see java.sql.PreparedStatement#setString(int,String)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setString(final int index, final String value)
@@ -1288,9 +1260,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setArray(int,Array).
      * @see java.sql.PreparedStatement#setArray(int,java.sql.Array)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setArray(final int index, final Array value)
@@ -1302,11 +1274,11 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setAsciiStream(int,InputStram,int).
      * @see java.sql.PreparedStatement#setAsciiStream(int,java.io.InputStream,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the ASCII parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @throws SQLException if an error occurs.
      */
@@ -1322,9 +1294,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setBigDecimal(int,BigDecimal).
      * @see java.sql.PreparedStatement#setBigDecimal(int,java.math.BigDecimal)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setBigDecimal(final int index, final BigDecimal value)
@@ -1336,11 +1308,11 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setBinaryStream(int,InputStream).
      * @see java.sql.PreparedStatement#setBinaryStream(int,java.io.InputStream,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the binary parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @throws SQLException if an error occurs.
      */
@@ -1357,9 +1329,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setBlob(int,Blob).
      * @see java.sql.PreparedStatement#setBlob(int,java.sql.Blob)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setBlob(final int index, final Blob value)
@@ -1371,9 +1343,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setBytes(int,byte[]).
      * @see java.sql.PreparedStatement#setBytes(int,byte[])
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setBytes(final int index, final byte[] value)
@@ -1385,11 +1357,11 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setCharacterStream(int,Reader,int).
      * @see java.sql.PreparedStatement#setCharacterStream(int,java.io.Reader,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param reader (Taken from Sun's Javadoc) the java.io.Reader
+     * @param reader (Taken from Sun Javadoc) the java.io.Reader
      * object that contains the Unicode data.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @throws SQLException if an error occurs.
      */
@@ -1405,9 +1377,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setClob(int,Clob).
      * @see java.sql.PreparedStatement#setClob(int,java.sql.Clob)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setClob(final int index, final Clob value)
@@ -1419,9 +1391,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setClob(int,Clob).
      * @see java.sql.PreparedStatement#setClob(int,java.sql.Clob)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setClob(final int index, @NotNull final String value)
@@ -1434,9 +1406,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setDate(int,Date).
      * @see java.sql.PreparedStatement#setDate(int,java.sql.Date)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setDate(final int index, final Date value)
@@ -1452,9 +1424,8 @@ public abstract class Query
      * @param value the time value.
      * @see java.sql.PreparedStatement#setDate(int,Date)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setDate(final VariableCondition condition, final Date value)
+    public void setDate(@NotNull final VariableCondition condition, @NotNull final Date value)
         throws  SQLException
     {
         setDate(retrieveIndex(getVariableConditions(), condition), value);
@@ -1463,15 +1434,15 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setDate(int,Date,Calendar).
      * @see java.sql.PreparedStatement#setDate(int,java.sql.Date,java.util.Calendar)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @throws SQLException if an error occurs.
      */
     public void setDate(
-        final int index, final Date value, final Calendar calendar)
+        final int index, @NotNull final Date value, @NotNull final Calendar calendar)
       throws  SQLException
     {
         retrievePreparedStatement().setDate(index, value, calendar);
@@ -1480,13 +1451,12 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setDate(int,Date).
      * @see java.sql.PreparedStatement#setDate(int,Date)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
-     * @precondition value != null
      */
-    public void setDate(final int index, final java.util.Date value)
+    public void setDate(final int index, @NotNull final java.util.Date value)
         throws  SQLException
     {
         setDate(index, value, retrievePreparedStatement());
@@ -1495,13 +1465,11 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setDate(int,Date).
      * @see java.sql.PreparedStatement#setDate(int,Date)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @param preparedStatement the prepared statement.
      * @throws SQLException if an error occurs.
-     * @precondition value != null
-     * @precondition preparedStatement != null
      */
     protected void setDate(
         final int index,
@@ -1537,13 +1505,13 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setObject(int,Object,int,int).
      * @see java.sql.PreparedStatement#setObject(int,Object,int,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * (as defined in java.sql.Types) to be sent to the database.
      * The scale argument may further qualify this type.
-     * @param scale (Taken from Sun's Javadoc) for
+     * @param scale (Taken from Sun Javadoc) for
      * java.sql.Types.DECIMAL or java.sql.Types.NUMERIC types,
      * this is the number of digits after the decimal point. For all
      * other types, this value will be ignored.
@@ -1562,10 +1530,10 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setObject(int,Object,int).
      * @see java.sql.PreparedStatement#setObject(int,Object,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * (as defined in java.sql.Types) to be sent to the database.
      * The scale argument may further qualify this type.
      * @throws SQLException if an error occurs.
@@ -1580,9 +1548,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setObject(int,Object).
      * @see java.sql.PreparedStatement#setObject(int,Object)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setObject(final int index, final Object value)
@@ -1594,9 +1562,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setRef(int,Ref).
      * @see java.sql.PreparedStatement#setRef(int,java.sql.Ref)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setRef(final int index, final Ref value)
@@ -1608,9 +1576,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTimestamp(int,Timestamp).
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setTimestamp(final int index, final Timestamp value)
@@ -1622,10 +1590,10 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTimestamp(int,Timestamp,Calendar).
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp,java.util.Calendar)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @throws SQLException if an error occurs.
      */
@@ -1639,9 +1607,9 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTimestamp(int,Timestamp).
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setTimestamp(final int index, final java.util.Date value)
@@ -1653,12 +1621,11 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTimestamp(int,Timestamp).
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @param preparedStatement the prepared statement.
      * @throws SQLException if an error occurs.
-     * @precondition preparedStatement != null
      */
     protected void setTimestamp(
         final int index,
@@ -1680,10 +1647,10 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTimestamp(int,Timestamp,Calendar).
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp,java.util.Calendar)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @throws SQLException if an error occurs.
      */
@@ -1697,10 +1664,10 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setTimestamp(int,Timestamp,Calendar).
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp,java.util.Calendar)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if an error occurs.
@@ -1739,20 +1706,19 @@ public abstract class Query
     /**
      * See java.sql.PreparedStatement#setUnicodeStream(int,InputStream,int).
      * @see java.sql.PreparedStatement#setUnicodeStream(int,java.io.InputStream,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the Unicode parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if an error occurs.
      * @deprecated since it's deprecated in JDK 1.4 as well.
-     * @precondition preparedStatement != null
      */
     protected void setUnicodeStream(
         final int index,
-        final InputStream inputStream,
+        @NotNull final InputStream inputStream,
         final int length,
         @NotNull final PreparedStatement preparedStatement)
       throws  SQLException
@@ -1769,9 +1735,8 @@ public abstract class Query
      * @param value the time value.
      * @see java.sql.PreparedStatement#setTime(int,java.sql.Time)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setTime(@NotNull final Field field, final Time value)
+    public void setTime(@NotNull final Field field, @NotNull final Time value)
         throws  SQLException
     {
         setTime(field.equals(), value);
@@ -1784,9 +1749,8 @@ public abstract class Query
      * @param value the time value.
      * @see java.sql.PreparedStatement#setTime(int,java.sql.Time)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setTime(final VariableCondition condition, final Time value)
+    public void setTime(@NotNull final VariableCondition condition, @NotNull final Time value)
         throws  SQLException
     {
         setTime(retrieveIndex(getVariableConditions(), condition), value);
@@ -1797,16 +1761,15 @@ public abstract class Query
      * previously specified variable condition for given field.
      * @param field the field.
      * @param value the time value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @see java.sql.PreparedStatement#setTime(int,java.sql.Time)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setTime(
         @NotNull final Field field,
-        final Time value,
-        final Calendar calendar)
+        @NotNull final Time value,
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setTime(field.equals(), value, calendar);
@@ -1817,16 +1780,15 @@ public abstract class Query
      * previously specified variable condition.
      * @param condition the variable condition.
      * @param value the time value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the time.
      * @see java.sql.PreparedStatement#setTime(int,java.sql.Time)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setTime(
-        final VariableCondition condition,
-        final Time value,
-        final Calendar calendar)
+        @NotNull final VariableCondition condition,
+        @NotNull final Time value,
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setTime(
@@ -1842,10 +1804,8 @@ public abstract class Query
      * @param value the boolean value.
      * @see java.sql.PreparedStatement#setBoolean(int,boolean)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setBoolean(
-        @NotNull final Field field, final boolean value)
+    public void setBoolean(@NotNull final Field field, final boolean value)
       throws  SQLException
     {
         setBoolean(field.equals(), value);
@@ -1858,10 +1818,9 @@ public abstract class Query
      * @param value the boolean value.
      * @see java.sql.PreparedStatement#setBoolean(int,boolean)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setBoolean(
-        final VariableCondition condition, final boolean value)
+        @NotNull final VariableCondition condition, final boolean value)
       throws  SQLException
     {
         setBoolean(retrieveIndex(getVariableConditions(), condition), value);
@@ -1874,7 +1833,6 @@ public abstract class Query
      * @param value the byte value.
      * @see java.sql.PreparedStatement#setByte(int,byte)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setByte(@NotNull final Field field, final byte value)
         throws  SQLException
@@ -1889,9 +1847,8 @@ public abstract class Query
      * @param value the byte value.
      * @see java.sql.PreparedStatement#setByte(int,byte)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setByte(final VariableCondition condition, final byte value)
+    public void setByte(@NotNull final VariableCondition condition, final byte value)
         throws  SQLException
     {
         setByte(retrieveIndex(getVariableConditions(), condition), value);
@@ -1904,7 +1861,6 @@ public abstract class Query
      * @param value the short value.
      * @see java.sql.PreparedStatement#setShort(int,short)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setShort(@NotNull final Field field, final short value)
         throws  SQLException
@@ -1919,9 +1875,8 @@ public abstract class Query
      * @param value the short value.
      * @see java.sql.PreparedStatement#setShort(int,short)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setShort(final VariableCondition condition, final short value)
+    public void setShort(@NotNull final VariableCondition condition, final short value)
         throws  SQLException
     {
         setShort(retrieveIndex(getVariableConditions(), condition), value);
@@ -1931,9 +1886,9 @@ public abstract class Query
      * Specifies an integer value, or <code>null</code>, depending
      * on given value.
      * @see java.sql.PreparedStatement#setInt(int,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setInt(final int index, final Integer value)
@@ -1946,12 +1901,11 @@ public abstract class Query
      * Specifies an integer value, or <code>null</code>, depending
      * on given value.
      * @see java.sql.PreparedStatement#setInt(int,int)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @param preparedStatement != null
      * @throws SQLException if an error occurs.
-     * @precondition preparedStatement != null
      */
     protected void setInt(
         final int index,
@@ -1976,7 +1930,6 @@ public abstract class Query
      * @param value the int value.
      * @see java.sql.PreparedStatement#setInt(int,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setInt(@NotNull final Field field, final int value)
         throws  SQLException
@@ -1991,9 +1944,8 @@ public abstract class Query
      * @param value the int value.
      * @see java.sql.PreparedStatement#setInt(int,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setInt(@NotNull final Field field, final Integer value)
+    public void setInt(@NotNull final Field field, @NotNull final Integer value)
         throws  SQLException
     {
         setInt(field.equals(), value);
@@ -2006,9 +1958,8 @@ public abstract class Query
      * @param value the int value.
      * @see java.sql.PreparedStatement#setInt(int,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setInt(final VariableCondition condition, final int value)
+    public void setInt(@NotNull final VariableCondition condition, final int value)
         throws  SQLException
     {
         setInt(retrieveIndex(getVariableConditions(), condition), value);
@@ -2021,9 +1972,8 @@ public abstract class Query
      * @param value the int value.
      * @see java.sql.PreparedStatement#setInt(int,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setInt(final VariableCondition condition, final Integer value)
+    public void setInt(@NotNull final VariableCondition condition, @NotNull final Integer value)
         throws  SQLException
     {
         setInt(retrieveIndex(getVariableConditions(), condition), value);
@@ -2033,9 +1983,9 @@ public abstract class Query
      * Specifies a long value, or <code>null</code>, depending
      * on given value.
      * @see java.sql.PreparedStatement#setLong(int,long)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setLong(final int index, final Long value)
@@ -2048,12 +1998,11 @@ public abstract class Query
      * Specifies a long value, or <code>null</code>, depending
      * on given value.
      * @see java.sql.PreparedStatement#setLong(int,long)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @param preparedStatement the prepared statement.
      * @throws SQLException if an error occurs.
-     * @precondition preparedStatement != null
      */
     protected void setLong(
         final int index,
@@ -2078,7 +2027,6 @@ public abstract class Query
      * @param value the long value.
      * @see java.sql.PreparedStatement#setLong(int,long)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setLong(@NotNull final Field field, final long value)
         throws  SQLException
@@ -2093,9 +2041,8 @@ public abstract class Query
      * @param value the long value.
      * @see java.sql.PreparedStatement#setLong(int,long)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setLong(@NotNull final Field field, final Long value)
+    public void setLong(@NotNull final Field field, @Nullable final Long value)
         throws  SQLException
     {
         setLong(field.equals(), value);
@@ -2108,9 +2055,8 @@ public abstract class Query
      * @param value the long value.
      * @see java.sql.PreparedStatement#setLong(int,long)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setLong(final VariableCondition condition, final long value)
+    public void setLong(@NotNull final VariableCondition condition, final long value)
         throws  SQLException
     {
         setLong(retrieveIndex(getVariableConditions(), condition), value);
@@ -2123,10 +2069,9 @@ public abstract class Query
      * @param value the long value.
      * @see java.sql.PreparedStatement#setLong(int,long)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setLong(
-        final VariableCondition condition, final Long value)
+        @NotNull final VariableCondition condition, @Nullable final Long value)
         throws  SQLException
     {
         setLong(retrieveIndex(getVariableConditions(), condition), value);
@@ -2139,7 +2084,6 @@ public abstract class Query
      * @param value the float value.
      * @see java.sql.PreparedStatement#setFloat(int,float)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setFloat(@NotNull final Field field, final float value)
         throws  SQLException
@@ -2154,9 +2098,8 @@ public abstract class Query
      * @param value the float value.
      * @see java.sql.PreparedStatement#setFloat(int,float)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setFloat(final VariableCondition condition, final float value)
+    public void setFloat(@NotNull final VariableCondition condition, final float value)
         throws  SQLException
     {
         setFloat(retrieveIndex(getVariableConditions(), condition), value);
@@ -2166,9 +2109,9 @@ public abstract class Query
      * Specifies a double value, or <code>null</code>, depending
      * on given value.
      * @see java.sql.PreparedStatement#setDouble(int,double)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @throws SQLException if an error occurs.
      */
     public void setDouble(final int index, final Double value)
@@ -2181,12 +2124,11 @@ public abstract class Query
      * Specifies a double value, or <code>null</code>, depending
      * on given value.
      * @see java.sql.PreparedStatement#setDouble(int,double)
-     * @param index (Taken from Sun's Javadoc) the first parameter
+     * @param index (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param value (Taken from Sun's Javadoc) the parameter value (!!).
+     * @param value (Taken from Sun Javadoc) the parameter value (!!).
      * @param preparedStatement the prepared statement.
      * @throws SQLException if an error occurs.
-     * @precondition preparedStatement != null
      */
     protected void setDouble(
         final int index,
@@ -2211,7 +2153,6 @@ public abstract class Query
      * @param value the double value.
      * @see java.sql.PreparedStatement#setDouble(int,double)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setDouble(@NotNull final Field field, final double value)
       throws  SQLException
@@ -2226,9 +2167,8 @@ public abstract class Query
      * @param value the double value.
      * @see java.sql.PreparedStatement#setDouble(int,double)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setDouble(@NotNull final Field field, final Double value)
+    public void setDouble(@NotNull final Field field, @Nullable final Double value)
       throws  SQLException
     {
         setDouble(field.equals(), value);
@@ -2241,10 +2181,9 @@ public abstract class Query
      * @param value the double value.
      * @see java.sql.PreparedStatement#setDouble(int,double)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setDouble(
-        final VariableCondition condition, final double value)
+        @NotNull final VariableCondition condition, final double value)
       throws  SQLException
     {
         setDouble(retrieveIndex(getVariableConditions(), condition), value);
@@ -2257,10 +2196,9 @@ public abstract class Query
      * @param value the double value.
      * @see java.sql.PreparedStatement#setDouble(int,double)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setDouble(
-        final VariableCondition condition, final Double value)
+        @NotNull final VariableCondition condition, @Nullable final Double value)
       throws  SQLException
     {
         setDouble(retrieveIndex(getVariableConditions(), condition), value);
@@ -2271,11 +2209,10 @@ public abstract class Query
      * associated with a previously specified variable condition for given
      * field.
      * @param field the field.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * code defined in java.sql.Types.
      * @see java.sql.PreparedStatement#setNull(int,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setNull(@NotNull final Field field, final int sqlType)
         throws  SQLException
@@ -2287,13 +2224,12 @@ public abstract class Query
      * Specifies as <code>null</code> the value of a parameter,
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * code defined in java.sql.Types.
      * @see java.sql.PreparedStatement#setNull(int,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setNull(final VariableCondition condition, final int sqlType)
+    public void setNull(@NotNull final VariableCondition condition, final int sqlType)
         throws  SQLException
     {
         setNull(retrieveIndex(getVariableConditions(), condition), sqlType);
@@ -2304,19 +2240,18 @@ public abstract class Query
      * associated with a previously specified variable condition for given
      * field.
      * @param field the field.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * code defined in java.sql.Types.
-     * @param typeName (Taken from Sun's Javadoc) the fully-qualified
+     * @param typeName (Taken from Sun Javadoc) the fully-qualified
      * name of an SQL user-defined type; ignored if the
      * parameter is not a user-defined type or REF.
      * @see java.sql.PreparedStatement#setNull(int,int,String)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setNull(
         @NotNull final Field field,
         final int sqlType,
-        final String typeName)
+        @NotNull final String typeName)
       throws  SQLException
     {
         setNull(field.equals(), sqlType, typeName);
@@ -2326,19 +2261,18 @@ public abstract class Query
      * Specifies as <code>null</code> the value of a parameter,
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * code defined in java.sql.Types.
-     * @param typeName (Taken from Sun's Javadoc) the fully-qualified
+     * @param typeName (Taken from Sun Javadoc) the fully-qualified
      * name of an SQL user-defined type; ignored if the
      * parameter is not a user-defined type or REF.
      * @see java.sql.PreparedStatement#setNull(int,int,String)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setNull(
-        final VariableCondition condition,
+        @NotNull final VariableCondition condition,
         final int sqlType,
-        final String typeName)
+        @NotNull final String typeName)
       throws  SQLException
     {
         setNull(
@@ -2355,7 +2289,6 @@ public abstract class Query
      * @param value the String value.
      * @see java.sql.PreparedStatement#setString(int,String)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setString(@NotNull final ClobField field, @NotNull final String value)
         throws  SQLException
@@ -2371,9 +2304,8 @@ public abstract class Query
      * @param value the String value.
      * @see java.sql.PreparedStatement#setString(int,String)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setString(@NotNull final Field field, final String value)
+    public void setString(@NotNull final Field field, @Nullable final String value)
         throws  SQLException
     {
         setString(field.equals(), value);
@@ -2386,10 +2318,9 @@ public abstract class Query
      * @param value the String value.
      * @see java.sql.PreparedStatement#setString(int,String)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setString(
-        final VariableCondition condition, final String value)
+        @NotNull final VariableCondition condition, @Nullable final String value)
       throws  SQLException
     {
         setString(retrieveIndex(getVariableConditions(), condition), value);
@@ -2401,13 +2332,12 @@ public abstract class Query
      * @param condition the variable condition.
      * @param values the String values.
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setStrings(
         final VariableCondition condition, @Nullable final String[] values)
       throws  SQLException
     {
-        int t_iCount = (values != null) ? values.length : 0;
+        final int t_iCount = (values != null) ? values.length : 0;
 
         for (int t_iIndex = 0; t_iIndex < t_iCount; t_iIndex++)
         {
@@ -2424,7 +2354,6 @@ public abstract class Query
      * @param value the Array value.
      * @see java.sql.PreparedStatement#setArray(int,java.sql.Array)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setArray(@NotNull final Field field, final Array value)
         throws  SQLException
@@ -2439,7 +2368,6 @@ public abstract class Query
      * @param value the Array value.
      * @see java.sql.PreparedStatement#setArray(int,java.sql.Array)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setArray(final VariableCondition condition, final Array value)
         throws  SQLException
@@ -2452,13 +2380,12 @@ public abstract class Query
      * associated with a previously specified variable condition for given
      * field.
      * @param field the field.
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the ASCII parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setAsciiStream(int,java.io.InputStream,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setAsciiStream(
         @NotNull final Field field,
@@ -2473,13 +2400,12 @@ public abstract class Query
      * Specifies the value of a parameter formatted as an ASCII stream,
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the ASCII parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setAsciiStream(int,java.io.InputStream,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setAsciiStream(
         final VariableCondition condition,
@@ -2501,7 +2427,6 @@ public abstract class Query
      * @param value the big decimal value.
      * @see java.sql.PreparedStatement#setBigDecimal(int,java.math.BigDecimal)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setBigDecimal(
         @NotNull final Field  field, final BigDecimal value)
@@ -2517,7 +2442,6 @@ public abstract class Query
      * @param value the big decimal value.
      * @see java.sql.PreparedStatement#setBigDecimal(int,java.math.BigDecimal)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setBigDecimal(
         final VariableCondition  condition,
@@ -2533,13 +2457,12 @@ public abstract class Query
      * associated with a previously specified variable condition for given
      * field.
      * @param field the field.
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the binary parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setBinaryStream(int,java.io.InputStream,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setBinaryStream(
         @NotNull final Field field,
@@ -2554,17 +2477,16 @@ public abstract class Query
      * Specifies the value of a parameter formatted as a binary stream,
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the binary parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setBinaryStream(int,java.io.InputStream,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setBinaryStream(
-        final VariableCondition condition,
-        final InputStream inputStream,
+        @NotNull final VariableCondition condition,
+        @NotNull final InputStream inputStream,
         final int length)
       throws  SQLException
     {
@@ -2582,9 +2504,8 @@ public abstract class Query
      * @param value the blob value.
      * @see java.sql.PreparedStatement#setBlob(int,java.sql.Blob)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setBlob(@NotNull final Field field, final Blob value)
+    public void setBlob(@NotNull final Field field, @NotNull final Blob value)
         throws  SQLException
     {
         setBlob(field.equals(), value);
@@ -2597,9 +2518,8 @@ public abstract class Query
      * @param value the blob value.
      * @see java.sql.PreparedStatement#setBlob(int,java.sql.Blob)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setBlob(final VariableCondition condition, final Blob value)
+    public void setBlob(@NotNull final VariableCondition condition, @NotNull final Blob value)
         throws  SQLException
     {
         setBlob(retrieveIndex(getVariableConditions(), condition), value);
@@ -2613,9 +2533,8 @@ public abstract class Query
      * @param value the byte array value.
      * @see java.sql.PreparedStatement#setBytes(int,byte[])
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setBytes(@NotNull final Field field, final byte[] value)
+    public void setBytes(@NotNull final Field field, @NotNull final byte[] value)
         throws  SQLException
     {
         setBytes(field.equals(), value);
@@ -2628,9 +2547,8 @@ public abstract class Query
      * @param value the byte array value.
      * @see java.sql.PreparedStatement#setBytes(int,byte[])
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setBytes(final VariableCondition condition, final byte[] value)
+    public void setBytes(@NotNull final VariableCondition condition, @NotNull final byte[] value)
         throws  SQLException
     {
         setBytes(retrieveIndex(getVariableConditions(), condition), value);
@@ -2641,17 +2559,16 @@ public abstract class Query
      * associated with a previously specified variable condition for given
      * field.
      * @param field the field.
-     * @param reader (Taken from Sun's Javadoc) the java.io.Reader object
+     * @param reader (Taken from Sun Javadoc) the java.io.Reader object
      * that contains the Unicode data.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setCharacterStream(int,java.io.Reader,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setCharacterStream(
         @NotNull final Field field,
-        final Reader reader,
+        @NotNull final Reader reader,
         final int length)
       throws  SQLException
     {
@@ -2662,17 +2579,16 @@ public abstract class Query
      * Specifies the value of a parameter formatted as a binary stream,
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
-     * @param reader (Taken from Sun's Javadoc) the java.io.Reader object
+     * @param reader (Taken from Sun Javadoc) the java.io.Reader object
      * that contains the Unicode data.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setCharacterStream(int,java.io.Reader,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setCharacterStream(
-        final VariableCondition condition,
-        final Reader reader,
+        @NotNull final VariableCondition condition,
+        @NotNull final Reader reader,
         final int length)
       throws  SQLException
     {
@@ -2688,9 +2604,8 @@ public abstract class Query
      * @param value the clob value.
      * @see java.sql.PreparedStatement#setClob(int,java.sql.Clob)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setClob(@NotNull final Field field, final Clob value)
+    public void setClob(@NotNull final Field field, @NotNull final Clob value)
         throws  SQLException
     {
         setClob(field.equals(), value);
@@ -2704,7 +2619,6 @@ public abstract class Query
      * @param value the clob value.
      * @see java.sql.PreparedStatement#setClob(int,java.sql.Clob)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setClob(@NotNull final Field field, @NotNull final String value)
         throws  SQLException
@@ -2719,9 +2633,8 @@ public abstract class Query
      * @param value the clob value.
      * @see java.sql.PreparedStatement#setClob(int,java.sql.Clob)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setClob(final VariableCondition condition, final Clob value)
+    public void setClob(@NotNull final VariableCondition condition, @NotNull final Clob value)
         throws  SQLException
     {
         setClob(retrieveIndex(getVariableConditions(), condition), value);
@@ -2734,9 +2647,8 @@ public abstract class Query
      * @param value the clob value.
      * @see java.sql.PreparedStatement#setClob(int,java.sql.Clob)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setClob(final VariableCondition condition, @NotNull final String value)
+    public void setClob(@NotNull final VariableCondition condition, @NotNull final String value)
         throws  SQLException
     {
         setClob(retrieveIndex(getVariableConditions(), condition), value);
@@ -2749,9 +2661,8 @@ public abstract class Query
      * @param value the date value.
      * @see java.sql.PreparedStatement#setDate(int,java.sql.Date)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setDate(@NotNull final Field field, final Date value)
+    public void setDate(@NotNull final Field field, @NotNull final Date value)
         throws  SQLException
     {
         setDate(field.equals(), value);
@@ -2762,16 +2673,14 @@ public abstract class Query
      * previously specified variable condition for given field.
      * @param field the field.
      * @param value the date value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the date.
      * @see java.sql.PreparedStatement#setDate(int,java.sql.Date)
-     * @thows SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setDate(
         @NotNull final Field field,
-        final Date value,
-        final Calendar calendar)
+        @NotNull final Date value,
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setDate(field.equals(), value, calendar);
@@ -2782,16 +2691,15 @@ public abstract class Query
      * previously specified variable condition.
      * @param condition the variable condition.
      * @param value the date value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the date.
      * @see java.sql.PreparedStatement#setDate(int,java.sql.Date)
-     * @thows SQLException if an error occurs.
-     * @precondition variableCondition != null
+     * @throws SQLException if an error occurs.
      */
     public void setDate(
-        final VariableCondition condition,
-        final Date value,
-        final Calendar calendar)
+        @NotNull final VariableCondition condition,
+        @NotNull final Date value,
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setDate(
@@ -2805,20 +2713,19 @@ public abstract class Query
      * field.
      * @param field the field.
      * @param value the object value.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * (as defined in java.sql.Types) to be sent to the database.
      * The scale argument may further qualify this type.
-     * @param scale (Taken from Sun's Javadoc) for
+     * @param scale (Taken from Sun Javadoc) for
      * java.sql.Types.DECIMAL or java.sql.Types.NUMERIC types,
      * this is the number of digits after the decimal point. For all
      * other types, this value will be ignored.
      * @see java.sql.PreparedStatement#setObject(int,Object,int,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setObject(
         @NotNull final Field field,
-        final Object value,
+        @NotNull final Object value,
         final int sqlType,
         final int scale)
       throws  SQLException
@@ -2831,20 +2738,19 @@ public abstract class Query
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
      * @param value the object value.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * (as defined in java.sql.Types) to be sent to the database.
      * The scale argument may further qualify this type.
-     * @param scale (Taken from Sun's Javadoc) for
+     * @param scale (Taken from Sun Javadoc) for
      * java.sql.Types.DECIMAL or java.sql.Types.NUMERIC types,
      * this is the number of digits after the decimal point. For all
      * other types, this value will be ignored.
      * @see java.sql.PreparedStatement#setObject(int,Object,int,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setObject(
-        final VariableCondition condition,
-        final Object value,
+        @NotNull final VariableCondition condition,
+        @NotNull final Object value,
         final int sqlType,
         final int scale)
       throws  SQLException
@@ -2862,15 +2768,14 @@ public abstract class Query
      * field.
      * @param field the field.
      * @param value the object value.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * (as defined in java.sql.Types) to be sent to the database.
      * @see java.sql.PreparedStatement#setObject(int,Object,int)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setObject(
         @NotNull final Field field,
-        final Object value,
+        @NotNull final Object value,
         final int sqlType)
       throws  SQLException
     {
@@ -2882,15 +2787,14 @@ public abstract class Query
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
      * @param value the object value.
-     * @param sqlType (Taken from Sun's Javadoc) the SQL type
+     * @param sqlType (Taken from Sun Javadoc) the SQL type
      * (as defined in java.sql.Types) to be sent to the database.
      * @see java.sql.PreparedStatement#setObject(int,Object,int)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setObject(
-        final VariableCondition condition,
-        final Object value,
+        @NotNull final VariableCondition condition,
+        @NotNull final Object value,
         final int sqlType)
       throws  SQLException
     {
@@ -2906,10 +2810,8 @@ public abstract class Query
      * @param value the object value.
      * @see java.sql.PreparedStatement#setObject(int,Object)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setObject(
-        @NotNull final Field field, final Object value)
+    public void setObject(@NotNull final Field field, @NotNull final Object value)
       throws  SQLException
     {
         setObject(field.equals(), value);
@@ -2922,10 +2824,9 @@ public abstract class Query
      * @param value the object value.
      * @see java.sql.PreparedStatement#setObject(int,Object)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setObject(
-        final VariableCondition condition, final Object value)
+        @NotNull final VariableCondition condition, @NotNull final Object value)
       throws  SQLException
     {
         setObject(retrieveIndex(getVariableConditions(), condition), value);
@@ -2939,9 +2840,8 @@ public abstract class Query
      * @param value the ref value.
      * @see java.sql.PreparedStatement#setRef(int,java.sql.Ref)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
-    public void setRef(@NotNull final Field field, final Ref value)
+    public void setRef(@NotNull final Field field, @NotNull final Ref value)
         throws  SQLException
     {
         setRef(field.equals(), value);
@@ -2954,9 +2854,8 @@ public abstract class Query
      * @param value the ref value.
      * @see java.sql.PreparedStatement#setRef(int,java.sql.Ref)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
-    public void setRef(final VariableCondition condition, final Ref value)
+    public void setRef(@NotNull final VariableCondition condition, @NotNull final Ref value)
         throws  SQLException
     {
         setRef(retrieveIndex(getVariableConditions(), condition), value);
@@ -2969,10 +2868,9 @@ public abstract class Query
      * @param value the timestamp value.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setTimestamp(
-        @NotNull final Field field, final Timestamp value)
+        @NotNull final Field field, @NotNull final Timestamp value)
       throws  SQLException
     {
         setTimestamp(field.equals(), value);
@@ -2985,10 +2883,9 @@ public abstract class Query
      * @param value the timestamp value.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setTimestamp(
-        final VariableCondition condition, final Timestamp value)
+        @NotNull final VariableCondition condition, @NotNull final Timestamp value)
       throws  SQLException
     {
         setTimestamp(retrieveIndex(getVariableConditions(), condition), value);
@@ -2999,16 +2896,15 @@ public abstract class Query
      * previously specified variable condition for given field.
      * @param field the field.
      * @param value the timestamp value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the timestamp.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setTimestamp(
         @NotNull final Field field,
-        final Timestamp value,
-        final Calendar calendar)
+        @NotNull final Timestamp value,
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setTimestamp(field.equals(), value, calendar);
@@ -3019,16 +2915,15 @@ public abstract class Query
      * previously specified variable condition.
      * @param condition the variable condition.
      * @param value the timestamp value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the timestamp.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
      */
     public void setTimestamp(
-        final VariableCondition condition,
-        final Timestamp value,
-        final Calendar calendar)
+        @NotNull final VariableCondition condition,
+        @NotNull final Timestamp value,
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setTimestamp(
@@ -3044,7 +2939,6 @@ public abstract class Query
      * @param value the date value.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
      */
     public void setTimestamp(
         @NotNull final Field field, @Nullable final java.util.Date value)
@@ -3062,11 +2956,9 @@ public abstract class Query
      * @param value the date value.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
-     * @precondition value != null
      */
     public void setTimestamp(
-        final VariableCondition condition, @Nullable final java.util.Date value)
+        @NotNull final VariableCondition condition, @Nullable final java.util.Date value)
       throws  SQLException
     {
         setTimestamp(
@@ -3080,17 +2972,15 @@ public abstract class Query
      * previously specified variable condition for given field.
      * @param field the field.
      * @param value the timestamp value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the timestamp.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition field != null
-     * @precondition value != null
      */
     public void setTimestamp(
         @NotNull final Field field,
-        @Nullable final java.util.Date value,
-        final Calendar calendar)
+        @NotNull final java.util.Date value,
+        @Nullable final Calendar calendar)
       throws  SQLException
     {
         setTimestamp(
@@ -3104,17 +2994,15 @@ public abstract class Query
      * previously specified variable condition.
      * @param condition the variable condition.
      * @param value the timestamp value.
-     * @param calendar (Taken from Sun's Javadoc) the Calendar object
+     * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the timestamp.
      * @see java.sql.PreparedStatement#setTimestamp(int,java.sql.Timestamp)
      * @throws SQLException if an error occurs.
-     * @precondition variableCondition != null
-     * @precondition value != null
      */
     public void setTimestamp(
-        final VariableCondition condition,
+        @NotNull final VariableCondition condition,
         @Nullable final java.util.Date value,
-        final Calendar calendar)
+        @NotNull final Calendar calendar)
       throws  SQLException
     {
         setTimestamp(
@@ -3128,15 +3016,15 @@ public abstract class Query
      * associated with a previously specified variable condition for given
      * field.
      * @param field the field.
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the Unicode parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setUnicodeStream(int,java.io.InputStream,int)
      * @throws SQLException if an error occurs.
      * @deprecated since it's deprecated in JDK 1.4 as well.
-     * @precondition field != null
      */
+    @SuppressWarnings("unused")
     public void setUnicodeStream(
         @NotNull final Field field,
         final InputStream inputStream,
@@ -3150,18 +3038,17 @@ public abstract class Query
      * Specifies the value of a parameter formatted as an Unicode stream,
      * associated with a previously specified variable condition.
      * @param condition the variable condition.
-     * @param inputStream (Taken from Sun's Javadoc) the Java input stream
+     * @param inputStream (Taken from Sun Javadoc) the Java input stream
      * that contains the Unicode parameter value.
-     * @param length (Taken from Sun's Javadoc) the number of bytes
+     * @param length (Taken from Sun Javadoc) the number of bytes
      * in the stream.
      * @see java.sql.PreparedStatement#setUnicodeStream(int,java.io.InputStream,int)
      * @throws SQLException if an error occurs.
      * @deprecated since it's deprecated in JDK 1.4 as well.
-     * @precondition variableCondition != null
      */
     public void setUnicodeStream(
-        final VariableCondition condition,
-        final InputStream inputStream,
+        @NotNull final VariableCondition condition,
+        @NotNull final InputStream inputStream,
         final int length)
       throws  SQLException
     {
@@ -3176,11 +3063,11 @@ public abstract class Query
     /**
      * See Statement#getMoreResults(int)
      * @see java.sql.Statement#getMoreResults(int)
-     * @param current (Taken from Sun's Javadoc) one of the following
+     * @param current (Taken from Sun Javadoc) one of the following
      * Statement constants indicating what should happen to current ResultSet
      * objects obtained using the method getResultSetCLOSE_CURRENT_RESULT,
      * KEEP_CURRENT_RESULT, or CLOSE_ALL_RESULTS.
-     * @return (Taken from Sun's Javadoc) <code>true</code> if the next result
+     * @return (Taken from Sun Javadoc) <code>true</code> if the next result
      * is a ResultSet object; <code>false</code> if it is an update count or
      * there are no more results.
      * @throws SQLException if an error occurs.
@@ -3194,7 +3081,7 @@ public abstract class Query
     /**
      * See Statement#getGeneratedKeys()
      * @see java.sql.Statement#getGeneratedKeys()
-     * @return (Taken from Sun's Javadoc) a ResultSet object containing the
+     * @return (Taken from Sun Javadoc) a ResultSet object containing the
      * auto-generated key(s) generated by the execution of this Statement
      * object.
      * @throws SQLException if an error occurs.
@@ -3211,18 +3098,18 @@ public abstract class Query
     /**
      * See Statement#executeUpdate(String,int)
      * @see java.sql.Statement#executeUpdate(java.lang.String,int)
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
-     * @param autogeneratedKeys (Taken from Sun's Javadoc) a flag indicating
+     * @param autogeneratedKeys (Taken from Sun Javadoc) a flag indicating
      * whether auto-generated keys should be made available for retrieval;
      * one of the following constants: Statement.RETURN_GENERATED_KEYS
      * Statement.NO_GENERATED_KEYS.
-     * @return (Taken from Sun's Javadoc) either the row count for INSERT,
+     * @return (Taken from Sun Javadoc) either the row count for INSERT,
      * UPDATE or DELETE statements, or 0 for SQL statements that return
      * nothing.
      * @throws SQLException if an error occurs.
      */
-    public int executeUpdate(final String sql, final int autogeneratedKeys)
+    public int executeUpdate(@NotNull final String sql, final int autogeneratedKeys)
         throws  SQLException
     {
         return
@@ -3232,17 +3119,17 @@ public abstract class Query
     /**
      * See Statement#executeUpdate(String,int[])
      * @see java.sql.Statement#executeUpdate(java.lang.String,int[])
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
-     * @param columnIndexes (Taken from Sun's Javadoc) an array of column
+     * @param columnIndexes (Taken from Sun Javadoc) an array of column
      * indexes indicating the columns that should be returned from the
      * inserted row.
-     * @return (Taken from Sun's Javadoc) either the row count for INSERT,
+     * @return (Taken from Sun Javadoc) either the row count for INSERT,
      * UPDATE or DELETE statements, or 0 for SQL statements that return
      * nothing.
      * @throws SQLException if an error occurs.
      */
-    public int executeUpdate(final String sql, final int[] columnIndexes)
+    public int executeUpdate(@NotNull final String sql, @NotNull final int[] columnIndexes)
         throws  SQLException
     {
         return retrievePreparedStatement().executeUpdate(sql, columnIndexes);
@@ -3251,17 +3138,17 @@ public abstract class Query
     /**
      * See Statement#executeUpdate(String,String[])
      * @see java.sql.Statement#executeUpdate(java.lang.String,String[])
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
-     * @param columnNames (Taken from Sun's Javadoc) an array of column
+     * @param columnNames (Taken from Sun Javadoc) an array of column
      * names indicating the columns that should be returned from the
      * inserted row.
-     * @return (Taken from Sun's Javadoc) either the row count for INSERT,
+     * @return (Taken from Sun Javadoc) either the row count for INSERT,
      * UPDATE or DELETE statements, or 0 for SQL statements that return
      * nothing.
      * @throws SQLException if an error occurs.
      */
-    public int executeUpdate(final String sql, final String[] columnNames)
+    public int executeUpdate(@NotNull final String sql, @NotNull final String[] columnNames)
         throws  SQLException
     {
         return retrievePreparedStatement().executeUpdate(sql, columnNames);
@@ -3270,18 +3157,18 @@ public abstract class Query
     /**
      * See Statement#execute(String,int)
      * @see java.sql.Statement#execute(java.lang.String,int)
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
-     * @param autogeneratedKeys (Taken from Sun's Javadoc) a flag indicating
+     * @param autogeneratedKeys (Taken from Sun Javadoc) a flag indicating
      * whether auto-generated keys should be made available for retrieval;
      * one of the following constants: Statement.RETURN_GENERATED_KEYS
      * Statement.NO_GENERATED_KEYS.
-     * @return (Taken from Sun's Javadoc) true if the first result is a
+     * @return (Taken from Sun Javadoc) true if the first result is a
      * ResultSet object; false if it is an update count or there are no
      * results.
      * @throws SQLException if an error occurs.
      */
-    public boolean execute(final String sql, final int autogeneratedKeys)
+    public boolean execute(@NotNull final String sql, final int autogeneratedKeys)
         throws  SQLException
     {
         return retrievePreparedStatement().execute(sql, autogeneratedKeys);
@@ -3290,17 +3177,17 @@ public abstract class Query
     /**
      * See Statement#execute(String,int[])
      * @see java.sql.Statement#execute(java.lang.String,int[])
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
-     * @param columnIndexes (Taken from Sun's Javadoc) an array of column
+     * @param columnIndexes (Taken from Sun Javadoc) an array of column
      * indexes indicating the columns that should be returned from the
      * inserted row.
-     * @return (Taken from Sun's Javadoc) true if the first result is a
+     * @return (Taken from Sun Javadoc) true if the first result is a
      * ResultSet object; false if it is an update count or there are no
      * results.
      * @throws SQLException if an error occurs.
      */
-    public boolean execute(final String sql, final int[] columnIndexes)
+    public boolean execute(@NotNull final String sql, @NotNull final int[] columnIndexes)
         throws  SQLException
     {
         return retrievePreparedStatement().execute(sql, columnIndexes);
@@ -3309,17 +3196,17 @@ public abstract class Query
     /**
      * See Statement#execute(String,String[])
      * @see java.sql.Statement#execute(java.lang.String,java.lang.String[])
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
-     * @param columnNames (Taken from Sun's Javadoc) an array of column
+     * @param columnNames (Taken from Sun Javadoc) an array of column
      * names indicating the columns that should be returned from the
      * inserted row.
-     * @return (Taken from Sun's Javadoc) true if the first result is a
+     * @return (Taken from Sun Javadoc) true if the first result is a
      * ResultSet object; false if it is an update count or there are no
      * results.
      * @throws SQLException if an error occurs.
      */
-    public boolean execute(final String sql, final String[] columnNames)
+    public boolean execute(final String sql, @NotNull final String[] columnNames)
         throws  SQLException
     {
         return retrievePreparedStatement().execute(sql, columnNames);
@@ -3328,7 +3215,7 @@ public abstract class Query
     /**
      * See Statement#getResultSetHoldability()
      * @see java.sql.Statement#getResultSetHoldability()
-     * @return (Taken from Sun's Javadoc) either
+     * @return (Taken from Sun Javadoc) either
      * ResultSet.HOLD_CURSORS_OVER_COMMIT or
      * ResultSet.CLOSE_CURSORS_AT_COMMIT.
      * @throws SQLException if an error occurs.
@@ -3344,12 +3231,12 @@ public abstract class Query
     /**
      * See PreparedStatement#setURL(int,URL)
      * @see java.sql.PreparedStatement#setURL(int,java.net.URL)
-     * @param parameterIndex (Taken from Sun's Javadoc) the first parameter
+     * @param parameterIndex (Taken from Sun Javadoc) the first parameter
      * is 1, the second is 2, ...
-     * @param url (Taken from Sun's Javadoc) the java.net.URL object to be set.
+     * @param url (Taken from Sun Javadoc) the java.net.URL object to be set.
      * @throws SQLException if an error occurs.
      */
-    public void setURL(final int parameterIndex, final URL url)
+    public void setURL(final int parameterIndex, @NotNull final URL url)
         throws  SQLException
     {
         retrievePreparedStatement().setURL(parameterIndex, url);
@@ -3358,11 +3245,12 @@ public abstract class Query
     /**
      * See PreparedStatement#getParameterMetaData()
      * @see java.sql.PreparedStatement#getParameterMetaData()
-     * @return (Taken from Sun's Javadoc) a ParameterMetaData object that
+     * @return (Taken from Sun Javadoc) a ParameterMetaData object that
      * contains information about the number, types and properties of this
      * PreparedStatement object's parameters.
      * @throws SQLException if an error occurs.
      */
+    @NotNull
     public ParameterMetaData getParameterMetaData()
         throws  SQLException
     {
@@ -3373,7 +3261,7 @@ public abstract class Query
     /**
      * {@inheritDoc}
      */
-    public void setClob(final int index, final Reader reader)
+    public void setClob(final int index, @NotNull final Reader reader)
         throws SQLException
     {
         setClob(index, reader, retrievePreparedStatement());
@@ -3385,10 +3273,9 @@ public abstract class Query
      * @param reader the Clob reader.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setClob(
-        final int index, final Reader reader, @NotNull final PreparedStatement preparedStatement)
+        final int index, @NotNull final Reader reader, @NotNull final PreparedStatement preparedStatement)
       throws SQLException
     {
         preparedStatement.setClob(index, reader);
@@ -3397,7 +3284,7 @@ public abstract class Query
     /**
      * {@inheritDoc}
      */
-    public void setClob(final int index, final Reader reader, final long length)
+    public void setClob(final int index, @NotNull final Reader reader, final long length)
         throws SQLException
     {
         setClob(index, reader, length, retrievePreparedStatement());
@@ -3410,11 +3297,10 @@ public abstract class Query
      * @param length the length.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setClob(
         final int index,
-        final Reader reader,
+        @NotNull final Reader reader,
         final long length,
         @NotNull final PreparedStatement preparedStatement)
       throws SQLException
@@ -3425,7 +3311,7 @@ public abstract class Query
     /**
      * {@inheritDoc}
      */
-    public void setNClob(final int index, final Reader reader)
+    public void setNClob(final int index, @NotNull final Reader reader)
         throws SQLException
     {
         setNClob(index, reader, retrievePreparedStatement());
@@ -3437,10 +3323,9 @@ public abstract class Query
      * @param reader the Clob reader.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setNClob(
-        final int index, final Reader reader, @NotNull final PreparedStatement preparedStatement)
+        final int index, @NotNull final Reader reader, @NotNull final PreparedStatement preparedStatement)
       throws SQLException
     {
         preparedStatement.setNClob(index, reader);
@@ -3462,7 +3347,6 @@ public abstract class Query
      * @param length the length.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setNClob(
         final int index,
@@ -3489,11 +3373,10 @@ public abstract class Query
      * @param nclob the Clob reader.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setNClob(
         final int index,
-        final NClob nclob,
+        @NotNull final NClob nclob,
         @NotNull final PreparedStatement preparedStatement)
       throws SQLException
     {
@@ -3515,7 +3398,6 @@ public abstract class Query
      * @param stream the input stream.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setBlob(
         final int index, final InputStream stream, @NotNull final PreparedStatement preparedStatement)
@@ -3540,7 +3422,6 @@ public abstract class Query
      * @param length the length.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setBlob(
         final int index,
@@ -3567,7 +3448,6 @@ public abstract class Query
      * @param reader the reader.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setNCharacterStream(
         final int index, final Reader reader, @NotNull final PreparedStatement preparedStatement)
@@ -3592,7 +3472,6 @@ public abstract class Query
      * @param length the length.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setNCharacterStream(
         final int index,
@@ -3619,7 +3498,6 @@ public abstract class Query
      * @param reader the reader.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setCharacterStream(
         final int index, final Reader reader, @NotNull final PreparedStatement preparedStatement)
@@ -3644,7 +3522,6 @@ public abstract class Query
      * @param preparedStatement the actual prepared statement.
      * @param length the length.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setCharacterStream(
         final int index,
@@ -3671,7 +3548,6 @@ public abstract class Query
      * @param stream the input stream.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setBinaryStream(
         final int index, final InputStream stream, @NotNull final PreparedStatement preparedStatement)
@@ -3696,7 +3572,6 @@ public abstract class Query
      * @param length the length.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setBinaryStream(
         final int index,
@@ -3723,7 +3598,6 @@ public abstract class Query
      * @param stream the input stream.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setAsciiStream(
         final int index, final InputStream stream, @NotNull final PreparedStatement preparedStatement)
@@ -3748,7 +3622,6 @@ public abstract class Query
      * @param length the length.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setAsciiStream(
         final int index,
@@ -3775,7 +3648,6 @@ public abstract class Query
      * @param sqlXml the SQL XML value.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setSQLXML(
         final int index, final SQLXML sqlXml, @NotNull final PreparedStatement preparedStatement)
@@ -3800,7 +3672,6 @@ public abstract class Query
      * @param nstring the NString.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setNString(
         final int index,
@@ -3826,7 +3697,6 @@ public abstract class Query
      * @param rowId the row id.
      * @param preparedStatement the actual prepared statement.
      * @throws SQLException if the operation fails.
-     * @precondition preparedStatement != null
      */
     protected void setRowId(
         final int index, final RowId rowId, @NotNull final PreparedStatement preparedStatement)
@@ -3850,7 +3720,6 @@ public abstract class Query
      * @param statement the statement.
      * @return such information.
      * @throws SQLException if the check fails.
-     * @precondition statement != null
      */
     protected boolean isPoolable(@NotNull final Statement statement)
         throws SQLException
@@ -3872,7 +3741,6 @@ public abstract class Query
      * @param flag the flag.
      * @param statement the statement.
      * @throws SQLException if the check fails.
-     * @precondition statement != null
      */
     protected void setPoolable(final boolean flag, @NotNull final Statement statement)
         throws SQLException
@@ -3894,7 +3762,6 @@ public abstract class Query
      * @param statement the statement.
      * @return such information.
      * @throws SQLException if the check fails.
-     * @precondition statement != null
      */
     protected boolean isClosed(@NotNull final Statement statement)
         throws SQLException

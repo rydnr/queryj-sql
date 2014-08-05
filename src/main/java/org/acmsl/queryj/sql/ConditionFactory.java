@@ -1,6 +1,6 @@
 //;-*- mode: java -*-
 /*
-                        QueryJ
+                        QueryJ SQL
 
     Copyright (C) 2002-today  Jose San Leandro Armendariz
                               chous@acm-sl.org
@@ -28,22 +28,20 @@
  *
  * Author: Jose San Leandro Armendariz
  *
- * Description: Has the responsiblity of knowing how to create conditions.
+ * Description: Has the responsibility of knowing how to create conditions.
  *
  */
 package org.acmsl.queryj.sql;
-
-/*
- * Importing ACM-SL classes.
- */
-import org.acmsl.queryj.sql.Query;
-import org.acmsl.queryj.sql.SelectQuery;
 
 /*
  * Importing some ACM-SL Commons classes.
  */
 import org.acmsl.commons.patterns.Factory;
 import org.acmsl.commons.patterns.Singleton;
+
+/*
+ * Importing Jetbrains annotations.
+ */
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +55,7 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * Has the responsiblity of knowing how to create conditions.
+ * Has the responsibility of knowing how to create conditions.
  * @author <a href="mailto:chous@acm-sl.org">Jose San Leandro Armendariz</a>
  */
 public class ConditionFactory
@@ -99,14 +97,12 @@ public class ConditionFactory
      * @param operator the operator.
      * @param rightSideField the right-side field.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final Field rightSideField)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final Field rightSideField)
     {
         return
             new AtomicCondition(
@@ -119,13 +115,11 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
         final int value)
     {
         return new AtomicCondition(leftSideField, operator, value);
@@ -137,13 +131,11 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
         final long value)
     {
         return new AtomicCondition(leftSideField, operator, value);
@@ -155,13 +147,11 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
         final double value)
     {
         return new AtomicCondition(leftSideField, operator, value);
@@ -173,14 +163,12 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final BigDecimal value)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final BigDecimal value)
     {
         return new AtomicCondition(leftSideField, operator, value);
     }
@@ -191,14 +179,12 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final String value)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final String value)
     {
         return new AtomicCondition(leftSideField, operator, value);
     }
@@ -209,14 +195,12 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final Calendar value)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final Calendar value)
     {
         return new AtomicCondition(leftSideField, operator, value);
     }
@@ -227,14 +211,12 @@ public class ConditionFactory
      * @param operator the operator.
      * @param value the fixed value.
      * @return such type of instance.
-     * @precondition leftSideField != null
-     * @precondition operator != null
      */
     @NotNull
     public Condition createCondition(
-        final Field leftSideField,
-        final ConditionOperator operator,
-        final Date value)
+        @NotNull final Field leftSideField,
+        @NotNull final ConditionOperator operator,
+        @NotNull final Date value)
     {
         return new AtomicCondition(leftSideField, operator, value);
     }
@@ -244,13 +226,11 @@ public class ConditionFactory
      * @param field the field.
      * @param operator the operator.
      * @return such type of instance.
-     * @precondition field != null
-     * @precondition operator != null
      */
     @NotNull
     public VariableCondition createVariableCondition(
-        final Field field,
-        final ConditionOperator operator)
+        @NotNull final Field field,
+        @NotNull final ConditionOperator operator)
     {
         return new VariableCondition(field, operator);
     }
@@ -261,11 +241,10 @@ public class ConditionFactory
      * @param prefix the prefix.
      * @param suffix the suffix.
      * @return the wrapped condition.
-     * @precondition condition != null
      */
     @NotNull
     public Condition wrap(
-        final Condition condition, final String prefix, final String suffix)
+        @NotNull final Condition condition, @NotNull final String prefix, @NotNull final String suffix)
     {
         return new _ConditionWrapper(condition, prefix, suffix);
     }
@@ -276,13 +255,12 @@ public class ConditionFactory
      * @param prefix the prefix.
      * @param suffix the suffix.
      * @return the wrapped condition.
-     * @precondition condition != null
      */
     @NotNull
     public Condition wrap(
         @NotNull final AtomicCondition condition,
-        final String prefix,
-        final String suffix)
+        @NotNull final String prefix,
+        @NotNull final String suffix)
     {
         return new _AtomicConditionWrapper(condition, prefix, suffix);
     }
@@ -293,21 +271,19 @@ public class ConditionFactory
      * @param prefix the prefix.
      * @param suffix the suffix.
      * @return the wrapped condition.
-     * @precondition condition != null
      */
     @NotNull
     public VariableCondition wrap(
         @NotNull final VariableCondition condition,
-        final String prefix,
-        final String suffix)
+        @NotNull final String prefix,
+        @NotNull final String suffix)
     {
         return new _VariableConditionWrapper(condition, prefix, suffix);
     }
 
     /**
-     * Envelopes a condition surrounding it with appropiate prefix and suffix.
+     * Envelopes a condition surrounding it with a prefix and suffix.
      * @author <a href="mailto:chous@acm-sl.org">Jose San Leandro</a>
-     * @version $Revision$
      */
     protected static class _ConditionWrapper
         extends  Condition
@@ -334,9 +310,9 @@ public class ConditionFactory
          * @param suffix the suffix.
          */
         public _ConditionWrapper(
-            final Condition condition,
-            final String prefix,
-            final String suffix)
+            @NotNull final Condition condition,
+            @NotNull final String prefix,
+            @NotNull final String suffix)
         {
             super();
 
@@ -348,7 +324,7 @@ public class ConditionFactory
          * Specifies the condition to wrap.
          * @param condition such condition.
          */
-        private void immutableSetCondition(final Condition condition)
+        private void immutableSetCondition(@NotNull final Condition condition)
         {
             m__Condition = condition;
         }
@@ -357,7 +333,7 @@ public class ConditionFactory
          * Specifies the condition to wrap.
          * @param condition such condition.
          */
-        protected void setCondition(final Condition condition)
+        protected void setCondition(@NotNull final Condition condition)
         {
             immutableSetCondition(condition);
         }
@@ -366,6 +342,7 @@ public class ConditionFactory
          * Retrieves the wrapped condition.
          * @return such condition.
          */
+        @NotNull
         public Condition getCondition()
         {
             return m__Condition;
@@ -375,7 +352,7 @@ public class ConditionFactory
          * Specifies the prefix.
          * @param prefix such prefix.
          */
-        private void immutableSetPrefix(final String prefix)
+        private void immutableSetPrefix(@NotNull final String prefix)
         {
             m__strPrefix = prefix;
         }
@@ -384,7 +361,7 @@ public class ConditionFactory
          * Specifies the prefix.
          * @param prefix such prefix.
          */
-        protected void setPrefix(final String prefix)
+        protected void setPrefix(@NotNull final String prefix)
         {
             immutableSetPrefix(prefix);
         }
@@ -393,6 +370,7 @@ public class ConditionFactory
          * Retrieves the prefix.
          * @return such prefix.
          */
+        @NotNull
         public String getPrefix()
         {
             return m__strPrefix;
@@ -402,7 +380,7 @@ public class ConditionFactory
          * Specifies the suffix.
          * @param suffix such suffix.
          */
-        private void immutableSetSuffix(final String suffix)
+        private void immutableSetSuffix(@NotNull final String suffix)
         {
             m__strSuffix = suffix;
         }
@@ -411,7 +389,8 @@ public class ConditionFactory
          * Specifies the suffix.
          * @param suffix such suffix.
          */
-        protected void setSuffix(final String suffix)
+        @SuppressWarnings("unused")
+        protected void setSuffix(@NotNull final String suffix)
         {
             immutableSetSuffix(suffix);
         }
@@ -432,6 +411,8 @@ public class ConditionFactory
          * Retrieves the variable conditions.
          * @return such collection.
          */
+        @Override
+        @NotNull
         public Collection<VariableCondition> getVariableConditions()
         {
             return
@@ -444,19 +425,19 @@ public class ConditionFactory
          * Retrieves the variable conditions.
          * @return such collection.
          */
+        @NotNull
         protected Collection<VariableCondition> getVariableConditions(
-            final Collection<VariableCondition> parentVariableConditions,
+            @Nullable final Collection<VariableCondition> parentVariableConditions,
             @Nullable final Condition condition)
         {
-            Collection<VariableCondition> result = parentVariableConditions;
+            @Nullable Collection<VariableCondition> result = parentVariableConditions;
 
             if  (condition != null) 
             {
-                Collection<VariableCondition> t_cVariableConditions =
+                @NotNull final Collection<VariableCondition> t_cVariableConditions =
                     condition.getVariableConditions();
 
-                if  (   (t_cVariableConditions != null)
-                     && (t_cVariableConditions.size() > 0))
+                if  (t_cVariableConditions.size() > 0)
                 {
                     if  (result == null)
                     {
@@ -465,6 +446,11 @@ public class ConditionFactory
 
                     result.addAll(t_cVariableConditions);
                 }
+            }
+
+            if  (result == null)
+            {
+                result = new ArrayList<VariableCondition>();
             }
 
             return result;
@@ -493,9 +479,9 @@ public class ConditionFactory
          */
         @NotNull
         protected String toSimplifiedString(
-            final String prefix,
+            @NotNull final String prefix,
             @Nullable final Condition condition,
-            final String suffix)
+            @NotNull final String suffix)
         {
             @NotNull String result = "";
 
@@ -511,9 +497,9 @@ public class ConditionFactory
         }
 
         /**
-         * Outputs a text version of the condition.
-         * @return such text.
+         * {@inheritDoc}
          */
+        @Override
         @NotNull
         public String toString()
         {
@@ -529,9 +515,9 @@ public class ConditionFactory
          */
         @NotNull
         public String toString(
-            final String prefix,
-            final Condition condition,
-            final String suffix)
+            @NotNull final String prefix,
+            @NotNull final Condition condition,
+            @NotNull final String suffix)
         {
             return prefix + condition + suffix;
         }
@@ -568,8 +554,8 @@ public class ConditionFactory
          */
         public _AtomicConditionWrapper(
             @NotNull final AtomicCondition condition,
-            final String prefix,
-            final String suffix)
+            @NotNull final String prefix,
+            @NotNull final String suffix)
         {
             super(
                 condition.getLeftSideField(),
@@ -585,7 +571,7 @@ public class ConditionFactory
          * Specifies the condition to wrap.
          * @param condition such condition.
          */
-        private void immutableSetCondition(final AtomicCondition condition)
+        private void immutableSetCondition(@NotNull final AtomicCondition condition)
         {
             m__Condition = condition;
         }
@@ -594,7 +580,7 @@ public class ConditionFactory
          * Specifies the condition to wrap.
          * @param condition such condition.
          */
-        protected void setCondition(final AtomicCondition condition)
+        protected void setCondition(@NotNull final AtomicCondition condition)
         {
             immutableSetCondition(condition);
         }
@@ -603,6 +589,7 @@ public class ConditionFactory
          * Retrieves the wrapped condition.
          * @return such condition.
          */
+        @NotNull
         public AtomicCondition getCondition()
         {
             return m__Condition;
@@ -612,7 +599,7 @@ public class ConditionFactory
          * Specifies the prefix.
          * @param prefix such prefix.
          */
-        private void immutableSetPrefix(final String prefix)
+        private void immutableSetPrefix(@NotNull final String prefix)
         {
             m__strPrefix = prefix;
         }
@@ -621,7 +608,7 @@ public class ConditionFactory
          * Specifies the prefix.
          * @param prefix such prefix.
          */
-        protected void setPrefix(final String prefix)
+        protected void setPrefix(@NotNull final String prefix)
         {
             immutableSetPrefix(prefix);
         }
@@ -630,6 +617,7 @@ public class ConditionFactory
          * Retrieves the prefix.
          * @return such prefix.
          */
+        @NotNull
         public String getPrefix()
         {
             return m__strPrefix;
@@ -639,7 +627,7 @@ public class ConditionFactory
          * Specifies the suffix.
          * @param suffix such suffix.
          */
-        private void immutableSetSuffix(final String suffix)
+        private void immutableSetSuffix(@NotNull final String suffix)
         {
             m__strSuffix = suffix;
         }
@@ -648,7 +636,8 @@ public class ConditionFactory
          * Specifies the suffix.
          * @param suffix such suffix.
          */
-        protected void setSuffix(final String suffix)
+        @SuppressWarnings("unused")
+        protected void setSuffix(@NotNull final String suffix)
         {
             immutableSetSuffix(suffix);
         }
@@ -657,6 +646,7 @@ public class ConditionFactory
          * Retrieves the suffix.
          * @return such suffix.
          */
+        @NotNull
         public String getSuffix()
         {
             return m__strSuffix;
@@ -696,6 +686,7 @@ public class ConditionFactory
          * Retrieves the condition operator.
          * @return such reference.
          */
+        @Override
         @Nullable
         public ConditionOperator getOperator()
         {
@@ -724,6 +715,7 @@ public class ConditionFactory
          * Retrieves the right-side field.
          * @return such reference.
          */
+        @Override
         @Nullable
         public Field getRightSideField()
         {
@@ -738,9 +730,13 @@ public class ConditionFactory
         @Nullable
         protected Field getRightSideField(@Nullable final AtomicCondition condition)
         {
-            @Nullable Field result = null;
+            @Nullable final Field result;
 
-            if  (condition != null) 
+            if  (condition == null)
+            {
+                result = null;
+            }
+            else
             {
                 result = condition.getRightSideField();
             }
@@ -752,6 +748,7 @@ public class ConditionFactory
          * Retrieves the right-side value.
          * @return such reference.
          */
+        @Override
         @Nullable
         public String getRightSideValue()
         {
@@ -780,6 +777,8 @@ public class ConditionFactory
          * Retrieves the variable conditions.
          * @return such collection.
          */
+        @Override
+        @NotNull
         public Collection<VariableCondition> getVariableConditions()
         {
             return
@@ -794,19 +793,19 @@ public class ConditionFactory
          * @param condition the condition.
          * @return such collection.
          */
+        @NotNull
         public Collection<VariableCondition> getVariableConditions(
-            final Collection<VariableCondition> parentVariableConditions,
+            @Nullable final Collection<VariableCondition> parentVariableConditions,
             @Nullable final Condition condition)
         {
-            Collection<VariableCondition> result = parentVariableConditions;
+            @Nullable Collection<VariableCondition> result = parentVariableConditions;
 
             if  (condition != null) 
             {
-                Collection<VariableCondition> t_cVariableConditions =
+                final Collection<VariableCondition> t_cVariableConditions =
                     condition.getVariableConditions();
 
-                if  (   (t_cVariableConditions != null)
-                     && (t_cVariableConditions.size() > 0))
+                if  (t_cVariableConditions.size() > 0)
                 {
                     if  (result == null)
                     {
@@ -817,6 +816,11 @@ public class ConditionFactory
                 }
             }
 
+            if  (result == null)
+            {
+                result = new ArrayList<VariableCondition>();
+            }
+
             return result;
         }
 
@@ -824,6 +828,7 @@ public class ConditionFactory
          * Outputs a brief text version of the condition.
          * @return such text.
          */
+        @Override
         @NotNull
         public String toSimplifiedString()
         {
@@ -840,9 +845,9 @@ public class ConditionFactory
          */
         @NotNull
         protected String toSimplifiedString(
-            final String prefix,
+            @NotNull final String prefix,
             @Nullable final Condition condition,
-            final String suffix)
+            @NotNull final String suffix)
         {
             @NotNull String result = "";
 
@@ -858,9 +863,9 @@ public class ConditionFactory
         }
 
         /**
-         * Outputs a text version of the condition.
-         * @return such text.
+         * {@inheritDoc}
          */
+        @Override
         @NotNull
         public String toString()
         {
@@ -876,9 +881,9 @@ public class ConditionFactory
          */
         @NotNull
         protected String toString(
-            final String prefix,
-            final Condition condition,
-            final String suffix)
+            @NotNull final String prefix,
+            @NotNull final Condition condition,
+            @NotNull final String suffix)
         {
             return prefix + condition + suffix;
         }
@@ -886,7 +891,8 @@ public class ConditionFactory
         /**
          * {@inheritDoc}
          */
-        public boolean equals(final Object object)
+        @Override
+        public boolean equals(@Nullable final Object object)
         {
             return super.equals(object);
         }
@@ -894,6 +900,7 @@ public class ConditionFactory
         /**
          * {@inheritDoc}
          */
+        @Override
         public int hashCode()
         {
             return super.hashCode();
@@ -932,8 +939,8 @@ public class ConditionFactory
          */
         public _VariableConditionWrapper(
             @NotNull final VariableCondition condition,
-            final String prefix,
-            final String suffix)
+            @NotNull final String prefix,
+            @NotNull final String suffix)
         {
             super(
                 condition.getLeftSideField(),
@@ -948,7 +955,7 @@ public class ConditionFactory
          * Specifies the condition to wrap.
          * @param condition such condition.
          */
-        private void immutableSetCondition(final VariableCondition condition)
+        private void immutableSetCondition(@NotNull final VariableCondition condition)
         {
             m__Condition = condition;
         }
@@ -957,7 +964,7 @@ public class ConditionFactory
          * Specifies the condition to wrap.
          * @param condition such condition.
          */
-        protected void setCondition(final VariableCondition condition)
+        protected void setCondition(@NotNull final VariableCondition condition)
         {
             immutableSetCondition(condition);
         }
@@ -966,6 +973,7 @@ public class ConditionFactory
          * Retrieves the wrapped condition.
          * @return such condition.
          */
+        @NotNull
         public VariableCondition getCondition()
         {
             return m__Condition;
@@ -975,7 +983,7 @@ public class ConditionFactory
          * Specifies the prefix.
          * @param prefix such prefix.
          */
-        private void immutableSetPrefix(final String prefix)
+        private void immutableSetPrefix(@NotNull final String prefix)
         {
             m__strPrefix = prefix;
         }
@@ -984,7 +992,7 @@ public class ConditionFactory
          * Specifies the prefix.
          * @param prefix such prefix.
          */
-        protected void setPrefix(final String prefix)
+        protected void setPrefix(@NotNull final String prefix)
         {
             immutableSetPrefix(prefix);
         }
@@ -993,6 +1001,7 @@ public class ConditionFactory
          * Retrieves the prefix.
          * @return such prefix.
          */
+        @NotNull
         public String getPrefix()
         {
             return m__strPrefix;
@@ -1002,7 +1011,7 @@ public class ConditionFactory
          * Specifies the suffix.
          * @param suffix such suffix.
          */
-        private void immutableSetSuffix(final String suffix)
+        private void immutableSetSuffix(@NotNull final String suffix)
         {
             m__strSuffix = suffix;
         }
@@ -1011,7 +1020,8 @@ public class ConditionFactory
          * Specifies the suffix.
          * @param suffix such suffix.
          */
-        protected void setSuffix(final String suffix)
+        @SuppressWarnings("unused")
+        protected void setSuffix(@NotNull final String suffix)
         {
             immutableSetSuffix(suffix);
         }
@@ -1020,6 +1030,7 @@ public class ConditionFactory
          * Retrieves the suffix.
          * @return such suffix.
          */
+        @NotNull
         public String getSuffix()
         {
             return m__strSuffix;
@@ -1032,6 +1043,7 @@ public class ConditionFactory
          * Retrieves the left-side field.
          * @return such reference.
          */
+        @Override
         @Nullable
         public Field getLeftSideField()
         {
@@ -1046,9 +1058,13 @@ public class ConditionFactory
         @Nullable
         protected Field getLeftSideField(@Nullable final VariableCondition condition)
         {
-            @Nullable Field result = null;
+            @Nullable final Field result;
 
-            if  (condition != null) 
+            if  (condition == null)
+            {
+                result = null;
+            }
+            else
             {
                 result = condition.getLeftSideField();
             }
@@ -1164,9 +1180,9 @@ public class ConditionFactory
          */
         @NotNull
         protected String toSimplifiedString(
-            final String prefix,
+            @NotNull final String prefix,
             @Nullable final VariableCondition condition,
-            final String suffix)
+            @NotNull final String suffix)
         {
             @NotNull String result = "";
 
@@ -1200,9 +1216,9 @@ public class ConditionFactory
          */
         @NotNull
         protected String toString(
-            final String prefix,
-            final Condition condition,
-            final String suffix)
+            @NotNull final String prefix,
+            @NotNull final Condition condition,
+            @NotNull final String suffix)
         {
             return prefix + condition + suffix;
         }
