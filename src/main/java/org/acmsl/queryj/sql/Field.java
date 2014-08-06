@@ -34,9 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Table;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,10 +59,8 @@ public abstract class Field
      * Creates a field using given information.
      * @param name the field name.
      * @param table the table.
-     * @precondition name != null
-     * @precondition table != null
      */
-    public Field(final String name, final Table table)
+    public Field(@NotNull final String name, @NotNull final Table table)
     {
         immutableSetName(name);
         immutableSetTable(table);
@@ -73,7 +70,7 @@ public abstract class Field
      * Specifies the field name.
      * @param name the name.
      */
-    private void immutableSetName(final String name)
+    protected final void immutableSetName(@NotNull final String name)
     {
         m__strName = name;
     }
@@ -82,7 +79,7 @@ public abstract class Field
      * Specifies the field name.
      * @param name the name.
      */
-    protected void setName(final String name)
+    protected void setName(@NotNull final String name)
     {
         immutableSetName(name);
     }
@@ -91,6 +88,7 @@ public abstract class Field
      * Retrieves the field name.
      * @return such reference.
      */
+    @NotNull
     public String getName()
     {
         return m__strName;
@@ -100,7 +98,7 @@ public abstract class Field
      * Specifies the field table.
      * @param table the table.
      */
-    private void immutableSetTable(final Table table)
+    protected final void immutableSetTable(@NotNull final Table table)
     {
         m__Table = table;
     }
@@ -109,7 +107,7 @@ public abstract class Field
      * Specifies the field table.
      * @param table the table.
      */
-    protected void setTable(final Table table)
+    protected void setTable(@NotNull final Table table)
     {
         immutableSetTable(table);
     }
@@ -118,6 +116,7 @@ public abstract class Field
      * Retrieves the field table.
      * @return such reference.
      */
+    @NotNull
     public Table getTable()
     {
         return m__Table;
@@ -129,7 +128,7 @@ public abstract class Field
      * @return such kind of condition.
      */
     @NotNull
-    public Condition equals(final Field field)
+    public Condition equals(@Nullable final Field field)
     {
         return
             equals(
@@ -145,12 +144,10 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition equals(
-        final Field field,
+        @Nullable final Field field,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -178,8 +175,6 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition equals(
@@ -210,8 +205,6 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition notEquals(
@@ -242,8 +235,6 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition greaterThan(
@@ -260,6 +251,7 @@ public abstract class Field
      * values.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public VariableCondition lessThan()
     {
@@ -275,8 +267,6 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition lessThan(
@@ -292,10 +282,9 @@ public abstract class Field
      * Retrieves the variable condition to be able to filter for values using
      * belongs-to relationships.
      * @return such kind of condition.
-     * @precondition query != null
      */
     @NotNull
-    public VariableCondition in(final SelectQuery query)
+    public VariableCondition in(@NotNull final SelectQuery query)
     {
         return
             in(
@@ -312,13 +301,10 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition query != null
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition in(
-        final SelectQuery query,
+        @NotNull final SelectQuery query,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -332,6 +318,7 @@ public abstract class Field
      * not-belongs-to relationships.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public VariableCondition notIn(final SelectQuery query)
     {
@@ -350,13 +337,10 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition query != null
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition notIn(
-        final SelectQuery query,
+        @NotNull final SelectQuery query,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository)
     {
@@ -385,8 +369,6 @@ public abstract class Field
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition isNull(
@@ -403,9 +385,10 @@ public abstract class Field
     // Serialization methods //
 
     /**
-     * Outputs a text version of the field.
-     * @return the field.
+     * {@inheritDoc}
      */
+    @Override
+    @NotNull
     public String toString()
     {
         return toString(getTable(), getName());
@@ -417,9 +400,10 @@ public abstract class Field
      * @param name the name.
      * @return the field.
      */
-    protected String toString(@Nullable final Table table, final String name)
+    @NotNull
+    protected String toString(@Nullable final Table table, @NotNull final String name)
     {
-        @NotNull StringBuffer result = new StringBuffer();
+        @NotNull final StringBuilder result = new StringBuilder();
 
         if  (table != null) 
         {

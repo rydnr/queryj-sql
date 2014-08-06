@@ -32,34 +32,19 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.BigDecimalField;
-import org.acmsl.queryj.sql.CalendarField;
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.DoubleField;
-import org.acmsl.queryj.sql.Field;
-import org.acmsl.queryj.sql.IntField;
-import org.acmsl.queryj.sql.LongField;
-import org.acmsl.queryj.sql.Query;
-import org.acmsl.queryj.sql.Table;
 import org.jetbrains.annotations.NotNull;
 
 /*
  * Importing some JDK classes.
  */
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents standard SQL insert queries.
@@ -80,9 +65,8 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final StringField field, final String value)
+    public void value(@NotNull final StringField field, @NotNull final String value)
     {
         addValue(field, value);
     }
@@ -92,10 +76,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final StringField field, final String value, final boolean escape)
+        @NotNull final StringField field, @NotNull final String value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -104,9 +87,8 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final IntField field, final int value)
+    public void value(@NotNull final IntField field, final int value)
     {
         addValue(field, value);
     }
@@ -115,9 +97,8 @@ public class InsertQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final IntField field, final String value)
+    public void value(@NotNull final IntField field, @NotNull final String value)
     {
         addValue(field, value);
     }
@@ -127,10 +108,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final IntField field, final String value, final boolean escape)
+        @NotNull final IntField field, @NotNull final String value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -139,9 +119,8 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final LongField field, final long value)
+    public void value(@NotNull final LongField field, final long value)
     {
         addValue(field, value);
     }
@@ -150,9 +129,8 @@ public class InsertQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final LongField field, final String value)
+    public void value(@NotNull final LongField field, @NotNull final String value)
     {
         addValue(field, value);
     }
@@ -162,10 +140,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final LongField field, final String value, final boolean escape)
+        @NotNull final LongField field, @NotNull final String value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -174,9 +151,8 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final DoubleField field, final double value)
+    public void value(@NotNull final DoubleField field, final double value)
     {
         addValue(field, value);
     }
@@ -185,9 +161,8 @@ public class InsertQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final DoubleField field, final String value)
+    public void value(@NotNull final DoubleField field, @NotNull final String value)
     {
         addValue(field, value);
     }
@@ -197,10 +172,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final DoubleField field, final String value, final boolean escape)
+        @NotNull final DoubleField field, @NotNull final String value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -209,9 +183,8 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final CalendarField field, final Calendar value)
+    public void value(@NotNull final CalendarField field, @NotNull final Calendar value)
     {
         addValue(field, value);
     }
@@ -220,9 +193,8 @@ public class InsertQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final CalendarField field, final String value)
+    public void value(@NotNull final CalendarField field, @NotNull final String value)
     {
         addValue(field, value);
     }
@@ -232,10 +204,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final CalendarField field, final String value, final boolean escape)
+        @NotNull final CalendarField field, @NotNull final String value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -244,9 +215,8 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final DateField field, final Date value)
+    public void value(@NotNull final DateField field, @NotNull final Date value)
     {
         addValue(field, value);
     }
@@ -255,44 +225,8 @@ public class InsertQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final DateField field, final String value)
-    {
-        addValue(field, value);
-    }
-
-    /**
-     * Specifies the keyword of a field.
-     * @param field the field.
-     * @param value the value.
-     * @param escape to forcing value escaping or not.
-     * @precondition field != null
-     */
-    public void value(
-        final DateField field, final String value, final boolean escape)
-    {
-        addValue(field, value, escape);
-    }
-
-    /**
-     * Specifies the value of a field.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    public void value(final BigDecimalField field, final BigDecimal value)
-    {
-        addValue(field, value);
-    }
-
-    /**
-     * Specifies the keyword of a field.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    public void value(final BigDecimalField field, final String value)
+    public void value(@NotNull final DateField field, @NotNull final String value)
     {
         addValue(field, value);
     }
@@ -302,10 +236,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final BigDecimalField field, final String value, final boolean escape)
+        @NotNull final DateField field, @NotNull final String value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -314,9 +247,40 @@ public class InsertQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    public void value(final Field field, final Object value)
+    public void value(@NotNull final BigDecimalField field, @NotNull final BigDecimal value)
+    {
+        addValue(field, value);
+    }
+
+    /**
+     * Specifies the keyword of a field.
+     * @param field the field.
+     * @param value the value.
+     */
+    public void value(@NotNull final BigDecimalField field, @NotNull final String value)
+    {
+        addValue(field, value);
+    }
+
+    /**
+     * Specifies the keyword of a field.
+     * @param field the field.
+     * @param value the value.
+     * @param escape to forcing value escaping or not.
+     */
+    public void value(
+        @NotNull final BigDecimalField field, @NotNull final String value, final boolean escape)
+    {
+        addValue(field, value, escape);
+    }
+
+    /**
+     * Specifies the value of a field.
+     * @param field the field.
+     * @param value the value.
+     */
+    public void value(@NotNull final Field field, @NotNull final Object value)
     {
         addValue(field, value);
     }
@@ -326,10 +290,9 @@ public class InsertQuery
      * @param field the field.
      * @param value the value.
      * @param escape to forcing value escaping or not.
-     * @precondition field != null
      */
     public void value(
-        final Field field, final Object value, final boolean escape)
+        @NotNull final Field field, @NotNull final Object value, final boolean escape)
     {
         addValue(field, value, escape);
     }
@@ -337,7 +300,6 @@ public class InsertQuery
     /**
      * Specifies the value of a field.
      * @param field the field.
-     * @precondition field != null
      */
     public void value(@NotNull final Field field)
     {
@@ -348,9 +310,8 @@ public class InsertQuery
     /**
      * Indicates which table the insert applies to.
      * @param table the table.
-     * @precondition table != null
      */
-    public void insertInto(final Table table)
+    public void insertInto(@NotNull final Table table)
     {
         setTable(table);
     }
@@ -361,6 +322,8 @@ public class InsertQuery
      * Outputs a text version of the query, in SQL format.
      * @return the SQL query.
      */
+    @Override
+    @NotNull
     public String toString()
     {
         return
@@ -376,16 +339,14 @@ public class InsertQuery
      * @param fields the fields.
      * @param queryUtils the <code>QueryUtils</code> instance.
      * @return the SQL query.
-     * @precondition table != null
-     * @precondition fields != null
-     * @precondition queryUtils != null
      */
+    @NotNull
     protected String toString(
-        final Table table,
-        @NotNull final List fields,
+        @NotNull final Table table,
+        @NotNull final List<Field> fields,
         @NotNull final QueryUtils queryUtils)
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         t_sbResult.append("INSERT INTO ");
 
@@ -393,23 +354,22 @@ public class InsertQuery
 
         t_sbResult.append(" ( ");
 
-        @NotNull List t_alBriefFields = new ArrayList();
-        @NotNull List t_alValues = new ArrayList();
+        @NotNull final List<String> t_alBriefFields = new ArrayList<String>();
+        @NotNull final List<String> t_alValues = new ArrayList<String>();
 
-        Iterator t_FieldIterator = fields.iterator();
+        final Iterator<Field> t_FieldIterator = fields.iterator();
 
-        while  (   (t_FieldIterator != null)
-                && (t_FieldIterator.hasNext()))
+        while  (t_FieldIterator.hasNext())
         {
-            @NotNull Field t_Field = (Field) t_FieldIterator.next();
+            @NotNull final Field t_Field = t_FieldIterator.next();
 
             if  (t_Field != null)
             {
                 t_alBriefFields.add(t_Field.toSimplifiedString());
 
-                @NotNull String t_strValue = "";
+                @NotNull String t_strValue;
 
-                Object t_Value = getValue(t_Field);
+                final Object t_Value = getValue(t_Field);
 
                 if  (t_Value == null)
                 {

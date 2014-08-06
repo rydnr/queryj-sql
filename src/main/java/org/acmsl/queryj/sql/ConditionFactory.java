@@ -102,7 +102,7 @@ public class ConditionFactory
     public Condition createCondition(
         @NotNull final Field leftSideField,
         @NotNull final ConditionOperator operator,
-        @NotNull final Field rightSideField)
+        @Nullable final Field rightSideField)
     {
         return
             new AtomicCondition(

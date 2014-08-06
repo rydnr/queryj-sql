@@ -836,7 +836,7 @@ public abstract class Query
     }
 
     /**
-     * See java.sql.Statement#getResultSet().
+     * See java.sql.Statement#getResultSetOrDie().
      * @see java.sql.Statement#getResultSet()
      * @return (Taken from Sun Javadoc) the current result
      * as a ResultSet object or null if the result is an

@@ -1,6 +1,6 @@
 //;-*- mode: java -*-
 /*
-                        QueryJ
+                        QueryJ SQL
 
     Copyright (C) 2002-today  Jose San Leandro Armendariz
                               chous@acm-sl.org
@@ -26,18 +26,12 @@
  *
  * Filename: QueryUtils.java
  *
- * Author: Jose San Leandro Armend&aacute;riz
+ * Author: Jose San Leandro Armendariz
  *
  * Description: Provides some useful methods when working with queries.
  *
  */
 package org.acmsl.queryj.sql;
-
-/*
- * Importing project classes.
- */
-import org.acmsl.queryj.sql.Query;
-import org.acmsl.queryj.sql.SelectQuery;
 
 /*
  * Importing ACM-SL Commons classes.
@@ -50,7 +44,6 @@ import org.acmsl.commons.patterns.Utils;
  */
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -60,6 +53,10 @@ import java.util.Iterator;
  * Importing some Commons-Logging classes.
  */
 import org.apache.commons.logging.LogFactory;
+
+/*
+ * Importing NotNull annotations.
+ */
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -116,14 +113,15 @@ public class QueryUtils
      * without explicit table information.
      * @return such concatenation.
      */
+    @NotNull
     public String concatenate(
-        @Nullable final Collection items, final String separator, final boolean simplify)
+        @Nullable final Collection<?> items, final String separator, final boolean simplify)
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         if  (items != null) 
         {
-            Iterator t_itItems = items.iterator();
+            final Iterator<?> t_itItems = items.iterator();
 
             if  (t_itItems.hasNext()) 
             {
@@ -207,16 +205,16 @@ public class QueryUtils
      * @return the clob contents.
      * @throws SQLException if the CLOB cannot be processed.
      * @see <a href="http://www.opengroup.org/bookstore/catalog/c449.htm">SQL 2</a>.
-     * @precondition clob != null
      */
+    @NotNull
     public String clobToString(@NotNull final Clob clob)
         throws  SQLException
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         @Nullable SQLException t_ExceptionToThrow = null;
 
-        @NotNull BufferedReader t_Reader =
+        @NotNull final BufferedReader t_Reader =
             new BufferedReader(clob.getCharacterStream());
 
         try 

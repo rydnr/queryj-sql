@@ -35,11 +35,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.ConditionOperator;
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,10 +56,8 @@ public class NestedConditionOperator
      * Creates a nested operator using given information.
      * @param symbol the symbol.
      * @param query the operator query.
-     * @precondition symbol != null
-     * @precondition query != null
      */
-    public NestedConditionOperator(final String symbol, final SelectQuery query)
+    public NestedConditionOperator(@NotNull final String symbol, @NotNull final SelectQuery query)
     {
         super(symbol);
         immutableSetQuery(query);
@@ -72,7 +67,7 @@ public class NestedConditionOperator
      * Specifies the operator query.
      * @param query the query.
      */
-    private void immutableSetQuery(final SelectQuery query)
+    protected final void immutableSetQuery(@NotNull final SelectQuery query)
     {
         m__Query = query;
     }
@@ -81,7 +76,7 @@ public class NestedConditionOperator
      * Specifies the operator query.
      * @param query the query.
      */
-    protected void setQuery(final SelectQuery query)
+    protected void setQuery(@NotNull final SelectQuery query)
     {
         immutableSetQuery(query);
     }
@@ -90,6 +85,7 @@ public class NestedConditionOperator
      * Retrieves the operator query.
      * @return such query.
      */
+    @NotNull
     public SelectQuery getQuery()
     {
         return m__Query;
@@ -100,7 +96,8 @@ public class NestedConditionOperator
      * @param candidate the object to check.
      * @return <code>true</code> if both objects are logically equal.
      */
-    public boolean equals(final Object candidate)
+    @Override
+    public boolean equals(@Nullable final Object candidate)
     {
         return equals(candidate, getQuery());
     }
@@ -111,7 +108,7 @@ public class NestedConditionOperator
      * @param query the query.
      * @return <code>true</code> if both objects are logically equal.
      */
-    public boolean equals(final Object candidate, @Nullable final SelectQuery query)
+    public boolean equals(@Nullable final Object candidate, @NotNull final SelectQuery query)
     {
         boolean result = super.equals(candidate);
 
@@ -122,7 +119,7 @@ public class NestedConditionOperator
 
         if  (!result)
         {
-            @NotNull NestedConditionOperator t_Candidate =
+            @NotNull final NestedConditionOperator t_Candidate =
                 (NestedConditionOperator) candidate;
 
             result = (t_Candidate.getQuery() == query);
@@ -149,6 +146,7 @@ public class NestedConditionOperator
      * Retrieves the hash code.
      * @return such information.
      */
+    @Override
     public int hashCode()
     {
         return hashCode(getQuery());

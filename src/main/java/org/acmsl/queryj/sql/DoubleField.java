@@ -34,9 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -50,10 +49,8 @@ public class DoubleField
      * Creates a double field using given information.
      * @param name the field name.
      * @param table the table.
-     * @precondition name != null
-     * @precondition table != null
      */
-    public DoubleField(final String name, final Table table)
+    public DoubleField(@NotNull final String name, @NotNull final Table table)
     {
         super(name, table);
     }
@@ -80,8 +77,6 @@ public class DoubleField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition equals(
@@ -101,6 +96,7 @@ public class DoubleField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public Condition notEquals(final double value)
     {
@@ -118,8 +114,6 @@ public class DoubleField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition notEquals(
@@ -139,6 +133,7 @@ public class DoubleField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public Condition greaterThan(final double value)
     {
@@ -156,8 +151,6 @@ public class DoubleField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition greaterThan(
@@ -177,6 +170,7 @@ public class DoubleField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public Condition lessThan(final double value)
     {
@@ -194,8 +188,6 @@ public class DoubleField
      * @param conditionOperatorRepository the
      * <code>ConditionOperatorRepository</code> instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected Condition lessThan(

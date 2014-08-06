@@ -33,12 +33,10 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing Jetbrains annotations.
  */
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.ConditionOperator;
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents condition operators involving multiple bindings.
@@ -56,10 +54,8 @@ public class MultipleConditionOperator
      * Creates a multiple-condition operator using given information.
      * @param symbol the symbol.
      * @param count the binding count.
-     * @precondition symbol != null
-     * @precondition count > 0
      */
-    public MultipleConditionOperator(final String symbol, final int count)
+    public MultipleConditionOperator(@NotNull final String symbol, final int count)
     {
         super(symbol);
         immutableSetBindingCount(count);
@@ -78,6 +74,7 @@ public class MultipleConditionOperator
      * Specifies the binding count.
      * @param count the count.
      */
+    @SuppressWarnings("unused")
     protected void setBindingCount(final int count)
     {
         immutableSetBindingCount(count);
@@ -97,7 +94,8 @@ public class MultipleConditionOperator
      * @param candidate the object to check.
      * @return <code>true</code> if both objects are logically equal.
      */
-    public boolean equals(final Object candidate)
+    @Override
+    public boolean equals(@Nullable final Object candidate)
     {
         return equals(candidate, getBindingCount());
     }
@@ -108,7 +106,7 @@ public class MultipleConditionOperator
      * @param count the count.
      * @return <code>true</code> if both objects are logically equal.
      */
-    public boolean equals(final Object candidate, final int count)
+    public boolean equals(@Nullable final Object candidate, final int count)
     {
         boolean result = super.equals(candidate);
 
@@ -119,7 +117,7 @@ public class MultipleConditionOperator
 
         if  (!result)
         {
-            @NotNull MultipleConditionOperator t_Candidate =
+            @NotNull final MultipleConditionOperator t_Candidate =
                 (MultipleConditionOperator) candidate;
 
             result = (t_Candidate.getBindingCount() == count);
@@ -132,6 +130,7 @@ public class MultipleConditionOperator
      * Retrieves the hash code.
      * @return such information.
      */
+    @Override
     public int hashCode()
     {
         return hashCode(getBindingCount());
