@@ -454,6 +454,8 @@ public class QueryResultSet
      * @see java.sql.ResultSet#getObject(String)
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
+     * @param resultSet the result set.
+     * @return the object.
      * @exception SQLException if an error occurs.
      */
     @Nullable
@@ -542,6 +544,7 @@ public class QueryResultSet
     /**
      * See ResultSet#close()
      * @see java.sql.ResultSet#close()
+     * @param resultSet the result set.
      * @throws SQLException if an error occurs.
      */
     protected void close(@NotNull final ResultSet resultSet)
@@ -769,6 +772,8 @@ public class QueryResultSet
      * @see java.sql.ResultSet#getDate(java.lang.String)
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
+     * @param resultSet the result set.
+     * @return the date.
      * @throws SQLException if an error occurs.
      */
     @Nullable
@@ -905,6 +910,8 @@ public class QueryResultSet
      * @see java.sql.ResultSet#getByte(String)
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
+     * @param resultSet the result set.
+     * @return the byte.
      * @throws SQLException if an error occurs.
      */
     protected byte getByte(@NotNull final String columnName, @NotNull final ResultSet resultSet)
@@ -954,6 +961,8 @@ public class QueryResultSet
      * @see java.sql.ResultSet#getShort(java.lang.String)
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
+     * @param resultSet the result set.
+     * @return the short value.
      * @throws SQLException if an error occurs.
      */
     protected short getShort(
@@ -1004,6 +1013,8 @@ public class QueryResultSet
      * @see java.sql.ResultSet#getInt(java.lang.String)
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
+     * @param resultSet the result set.
+     * @return the int value.
      * @throws SQLException if an error occurs.
      */
     protected int getInt(final String columnName, @NotNull final ResultSet resultSet)
@@ -1053,6 +1064,8 @@ public class QueryResultSet
      * @see java.sql.ResultSet#getFloat(java.lang.String)
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
+     * @param resultSet the result set.
+     * @return the float value.
      * @throws SQLException if an error occurs.
      */
     protected float getFloat(@NotNull final String columnName, @NotNull final ResultSet resultSet)
@@ -1176,6 +1189,7 @@ public class QueryResultSet
     /**
      * See ResultSet#clearWarnings()
      * @see java.sql.ResultSet#clearWarnings()
+     * @param resultSet the result set.
      * @exception SQLException if an error occurs.
      */
     protected void clearWarnings(@NotNull final ResultSet resultSet)
@@ -1208,6 +1222,7 @@ public class QueryResultSet
      * @param direction (Taken from Sun Javadoc) an integer specifying the
      * suggested fetch direction; one of ResultSet.FETCH_FORWARD,
      * ResultSet.FETCH_REVERSE, or ResultSet.FETCH_UNKNOWN.
+     * @param resultSet the result set.
      * @exception SQLException if an error occurs.
      */
     protected void setFetchDirection(
@@ -1359,7 +1374,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    public String getString(final String columnName)
+    public String getString(@NotNull final String columnName)
         throws  SQLException
     {
         return getString(columnName, getResultSetOrDie());
@@ -1371,10 +1386,11 @@ public class QueryResultSet
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
      * @param resultSet the result set.
+     * @return the value.
      * @exception SQLException if an error occurs.
      */
     protected String getString(
-        final String columnName, @NotNull final ResultSet resultSet)
+        @NotNull final String columnName, @NotNull final ResultSet resultSet)
       throws  SQLException
     {
         return resultSet.getString(columnName);
@@ -1410,7 +1426,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    public Array getArray(final String columnName)
+    public Array getArray(@NotNull final String columnName)
         throws  SQLException
     {
         return getArray(columnName, getResultSetOrDie());
@@ -1422,10 +1438,11 @@ public class QueryResultSet
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
      * @param resultSet the result set.
+     * @return the array.
      * @exception SQLException if an error occurs.
      */
     protected Array getArray(
-        final String columnName, @NotNull final ResultSet resultSet)
+        @NotNull final String columnName, @NotNull final ResultSet resultSet)
       throws  SQLException
     {
         return resultSet.getArray(columnName);
@@ -1462,7 +1479,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    public InputStream getAsciiStream(final String columnName)
+    public InputStream getAsciiStream(@NotNull final String columnName)
         throws  SQLException
     {
         return getAsciiStream(columnName, getResultSetOrDie());
@@ -1474,6 +1491,7 @@ public class QueryResultSet
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
      * @param resultSet the result set.
+     * @return the stream.
      * @exception SQLException if an error occurs.
      */
     protected InputStream getAsciiStream(
@@ -1517,7 +1535,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    public BigDecimal getBigDecimal(final String columnName, final int scale)
+    public BigDecimal getBigDecimal(@NotNull final String columnName, final int scale)
         throws  SQLException
     {
         return getBigDecimal(columnName, scale, getResultSetOrDie());
@@ -1531,11 +1549,12 @@ public class QueryResultSet
      * @param scale (Taken from Sun Javadoc) the number of digits to the
      * right of the decimal point.
      * @param resultSet the result set.
+     * @return the big decimal.
      * @exception SQLException if an error occurs.
      * @deprecated since it's deprecated in JDK 1.4 as well.
      */
     protected BigDecimal getBigDecimal(
-        final String columnName, final int scale, @NotNull final ResultSet resultSet)
+        @NotNull final String columnName, final int scale, @NotNull final ResultSet resultSet)
       throws  SQLException
     {
         return resultSet.getBigDecimal(columnName, scale);
@@ -1572,7 +1591,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    public BigDecimal getBigDecimal(final String columnName)
+    public BigDecimal getBigDecimal(@NotNull final String columnName)
         throws  SQLException
     {
         return getBigDecimal(columnName, getResultSetOrDie());
@@ -1584,10 +1603,11 @@ public class QueryResultSet
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
      * @param resultSet the result set.
+     * @return the big decimal.
      * @exception SQLException if an error occurs.
      */
     protected BigDecimal getBigDecimal(
-        final String columnName, @NotNull final ResultSet resultSet)
+        @NotNull final String columnName, @NotNull final ResultSet resultSet)
       throws  SQLException
     {
         return resultSet.getBigDecimal(columnName);
@@ -1624,7 +1644,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    public InputStream getBinaryStream(final String columnName)
+    public InputStream getBinaryStream(@NotNull final String columnName)
         throws  SQLException
     {
         return getBinaryStream(columnName, getResultSetOrDie());
@@ -1636,10 +1656,11 @@ public class QueryResultSet
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
      * @param resultSet the result set.
+     * @return the stream.
      * @exception SQLException if an error occurs.
      */
     protected InputStream getBinaryStream(
-        final String columnName, @NotNull final ResultSet resultSet)
+        @NotNull final String columnName, @NotNull final ResultSet resultSet)
       throws  SQLException
     {
         return resultSet.getBinaryStream(columnName);
@@ -1907,11 +1928,13 @@ public class QueryResultSet
      * @param columnName (Taken from Sun Javadoc) the SQL name of
      * the column.
      * @param resultSet the result set.
+     * @return the stream.
      * @exception SQLException if an error occurs.
      * @deprecated since it's deprecated in JDK 1.4 as well.
      */
+    @NotNull
     protected InputStream getUnicodeStream(
-        final String columnName, @NotNull final ResultSet resultSet)
+        @NotNull final String columnName, @NotNull final ResultSet resultSet)
       throws  SQLException
     {
         return resultSet.getUnicodeStream(columnName);
@@ -3590,15 +3613,7 @@ public class QueryResultSet
      * {@inheritDoc}
      */
     @Override
-    /**
-     * See ResultSet#updateTimestamp(String,Timestamp)
-     * @see java.sql.ResultSet#updateTimestamp(java.lang.String,java.sql.Timestamp)
-     * @param columnName (Taken from Sun Javadoc) the SQL name of
-     * the column.
-     * @param value (Taken from Sun Javadoc) the new column value.
-     * @exception SQLException if an error occurs.
-     */
-    public void updateTimestamp(final String columnName, final Timestamp value)
+    public void updateTimestamp(@NotNull final String columnName, @NotNull final Timestamp value)
         throws  SQLException
     {
         updateTimestamp(columnName, value, getResultSetOrDie());
@@ -3974,6 +3989,7 @@ public class QueryResultSet
     /**
      * Retrieves an object value using the field reference.
      * @param field the field.
+     * @return such object.
      * @exception SQLException if an error occurs.
      */
     @Nullable
@@ -3989,6 +4005,7 @@ public class QueryResultSet
      * @param field the field.
      * @param query the query.
      * @param resultSet the result set.
+     * @return the object.
      * @exception SQLException if an error occurs.
      */
     @Nullable
@@ -4505,6 +4522,7 @@ public class QueryResultSet
      * right of the decimal point.
      * @param query the query.
      * @param resultSet the result set.
+     * @return the value.
      * @exception SQLException if an error occurs.
      * @deprecated since it's deprecated in JDK 1.4 as well.
      */
@@ -5884,7 +5902,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getNCharacterStream(String).
+     * @see java.sql.ResultSet#getNCharacterStream(String)
      * @param name the parameter name.
      * @param resultSet the result set.
      * @return the value.
@@ -5909,7 +5927,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getNCharacterStream(int).
+     * @see java.sql.ResultSet#getNCharacterStream(int)
      * @param index the parameter index.
      * @param resultSet the result set.
      * @return the value.
@@ -6034,7 +6052,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getSQLXML(String).
+     * @see java.sql.ResultSet#getSQLXML(String)
      * @param name the parameter name.
      * @param resultSet the result set.
      * @return the value.
@@ -6058,7 +6076,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getSQLXML(int).
+     * @see java.sql.ResultSet#getSQLXML(int)
      * @param index the parameter index.
      * @param resultSet the result set.
      * @return the value.
@@ -6083,7 +6101,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getNClob(String).
+     * @see java.sql.ResultSet#getNClob(String)
      * @param name the parameter name.
      * @param resultSet the result set.
      * @return the value.
@@ -6108,7 +6126,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getNClob(int).
+     * @see java.sql.ResultSet#getNClob(int)
      * @param index the parameter index.
      * @param resultSet the result set.
      * @return the value.
@@ -6235,7 +6253,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getRowId(String).
+     * @see java.sql.ResultSet#getRowId(String)
      * @param name the parameter name.
      * @param resultSet the result set.
      * @return the value.
@@ -6260,7 +6278,7 @@ public class QueryResultSet
     }
 
     /**
-     * @see java.sql.ResultSet#getRowId(int).
+     * @see java.sql.ResultSet#getRowId(int)
      * @param index the parameter index.
      * @param resultSet the result set.
      * @return the value.

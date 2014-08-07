@@ -106,6 +106,7 @@ public class TransactionManager
     /**
      * Starts a transaction for given connection.
      * @param connection the connection.
+     * @return the transaction token.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
      */
@@ -122,6 +123,7 @@ public class TransactionManager
      * Starts a transaction for given data source.
      * @param connection the connection.
      * @param transactionDefinition the transaction definition.
+     * @return the transaction token.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
      */
@@ -140,6 +142,7 @@ public class TransactionManager
     /**
      * Starts a transaction for given connection.
      * @param dataSource the data source.
+     * @return the transaction token.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
      */
@@ -154,6 +157,7 @@ public class TransactionManager
      * Starts a transaction for given data source.
      * @param dataSource the data source.
      * @param transactionDefinition the transaction definition.
+     * @return the transaction token.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
      */
@@ -176,6 +180,7 @@ public class TransactionManager
      * @param transactionDefinition the transaction definition.
      * @param transactionTokenFactory the <code>TransactionTokenFactory</code>
      * instance.
+     * @return the transaction token.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
      */
@@ -253,6 +258,7 @@ public class TransactionManager
     /**
      * Creates a transaction manager correctly initialized.
      * @param dataSource the data source.
+     * @param initialize whether to initialize the transaction manager or not.
      * @return a <code>PlatformTransactionManager</code> instance.
      */
     @NotNull

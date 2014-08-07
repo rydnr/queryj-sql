@@ -281,6 +281,7 @@ public abstract class Field
     /**
      * Retrieves the variable condition to be able to filter for values using
      * belongs-to relationships.
+     * @param query the query.
      * @return such kind of condition.
      */
     @NotNull
@@ -316,6 +317,7 @@ public abstract class Field
     /**
      * Retrieves the variable condition to be able to filter for values using
      * not-belongs-to relationships.
+     * @param query the query.
      * @return such kind of condition.
      */
     @SuppressWarnings("unused")

@@ -373,6 +373,7 @@ public class MockDataSource
 
     /**
      * Ensures the driver is registered.
+     * @throws SQLException if the operation fails.
      */
     protected void ensureDriverRegistered()
         throws  SQLException

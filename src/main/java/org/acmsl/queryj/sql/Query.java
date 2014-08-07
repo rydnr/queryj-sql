@@ -446,6 +446,7 @@ public abstract class Query
      * @param object the object to find.
      * @return its position, or -1 if such item doesn't belong to
      * this query.
+     * @param <T> the type.
      */
     protected final <T> int getIndex(@NotNull final List<T> list, final T object)
     {
@@ -468,6 +469,7 @@ public abstract class Query
      * @param index the index within the array.
      * @return its position, or -1 if such item doesn't belong to
      * this query.
+     * @param <T> the type.
      */
     protected final <T> int getIndex(@NotNull final List<T> list, final T object, final int index)
     {
@@ -485,6 +487,7 @@ public abstract class Query
      * @return its position, or -1 if such item doesn't belong to
      * this query.
      * @throws SQLException if the element is not found.
+     * @param <T> the type.
      */
     protected <T> int retrieveIndex(@NotNull final List<T> list, final T object)
         throws  SQLException
@@ -507,6 +510,7 @@ public abstract class Query
      * @return its position, or -1 if such item doesn't belong to
      * this query.
      * @throws SQLException if the element is not found.
+     * @param <T> the type.
      */
     protected <T> int retrieveIndex(@NotNull final List<T> list, final T object, final int index)
         throws  SQLException
@@ -2676,6 +2680,7 @@ public abstract class Query
      * @param calendar (Taken from Sun Javadoc) the Calendar object
      * the driver will use to construct the date.
      * @see java.sql.PreparedStatement#setDate(int,java.sql.Date)
+     * @throws SQLException if the operation fails.
      */
     public void setDate(
         @NotNull final Field field,

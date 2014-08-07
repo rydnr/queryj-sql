@@ -423,6 +423,8 @@ public class ConditionFactory
 
         /**
          * Retrieves the variable conditions.
+         * @param parentVariableConditions the variable conditions from the parent.
+         * @param condition the condition.
          * @return such collection.
          */
         @NotNull

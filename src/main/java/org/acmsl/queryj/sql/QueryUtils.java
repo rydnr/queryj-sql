@@ -140,6 +140,7 @@ public class QueryUtils
 
     /**
      * Manages the concatenation of a concrete item.
+     * @param item the item.
      * @param simplify if any fields in given collection should appear
      * without explicit table information.
      * @return such text.
@@ -204,7 +205,7 @@ public class QueryUtils
      * @param clob the clob to convert.
      * @return the clob contents.
      * @throws SQLException if the CLOB cannot be processed.
-     * @see <a href="http://www.opengroup.org/bookstore/catalog/c449.htm">SQL 2</a>.
+     * See <a href="http://www.opengroup.org/bookstore/catalog/c449.htm">SQL 2</a>.
      */
     @NotNull
     public String clobToString(@NotNull final Clob clob)

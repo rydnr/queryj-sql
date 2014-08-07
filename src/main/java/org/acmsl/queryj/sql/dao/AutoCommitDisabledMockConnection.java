@@ -55,6 +55,7 @@ public class AutoCommitDisabledMockConnection
      * Constructs a MockConnection using both objects.
      * @param connection the actual connection to wrap.
      * @param mockDataSource the data source to be notified of events.
+     * @throws SQLException if the operation fails.
      */
     public AutoCommitDisabledMockConnection(
         @NotNull final Connection connection,

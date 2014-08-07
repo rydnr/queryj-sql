@@ -135,6 +135,7 @@ public class   SingleConnectionDataSource
      * @return a Connection to the database.
      * @throws SQLException if a database-access error occurs.
      */
+    @Override
     @NotNull
     public Connection getConnection(
         @NotNull final String username, @NotNull final String password)
@@ -223,7 +224,8 @@ public class   SingleConnectionDataSource
      * @param out the new log writer; to disable, set to null
      * @throws SQLException if a database-access error occurs.
      */
-    public void setLogWriter(final PrintWriter out)
+    @Override
+    public void setLogWriter(@NotNull final PrintWriter out)
         throws SQLException
     {
         immutableSetLogWriter(out);
@@ -244,6 +246,8 @@ public class   SingleConnectionDataSource
      * @return the log writer for this data source, null if disabled.
      * @throws SQLException if a database-access error occurs.
      */
+    @NotNull
+    @Override
     public PrintWriter getLogWriter()
         throws SQLException
     {
@@ -283,6 +287,7 @@ public class   SingleConnectionDataSource
      * @return the data source login time limit.
      * @throws SQLException if a database access error occurs.
      */
+    @Override
     public int getLoginTimeout()
         throws SQLException
     {
@@ -293,6 +298,7 @@ public class   SingleConnectionDataSource
      * {@inheritDoc}
      */
     @Override
+    @Nullable
     public Logger getParentLogger()
     {
         return Logger.getLogger(SingleConnectionDataSource.class.getName());
@@ -303,7 +309,8 @@ public class   SingleConnectionDataSource
      * @param object the object to check.
      * @return <code>true</code> in such case.
      */
-    public boolean equals(final Object object)
+    @Override
+    public boolean equals(@Nullable final Object object)
     {
         return equals(object, getWrappedConnection());
     }
@@ -311,6 +318,7 @@ public class   SingleConnectionDataSource
     /**
      * Checks whether given object is logically equal to this instance.
      * @param object the object to check.
+     * @param connection the connection.
      * @return <code>true</code> in such case.
      */
     protected boolean equals(@Nullable final Object object, @Nullable final Connection connection)
@@ -331,6 +339,7 @@ public class   SingleConnectionDataSource
      * Retrieves the hashcode of wrapped instance.
      * @return such hashcode.
      */
+    @Override
     public int hashCode()
     {
         return hashCode(getWrappedConnection());
@@ -406,6 +415,7 @@ public class   SingleConnectionDataSource
      * Unwraps the wrapped connection if it's compatible with given class.
      * @param wrapperClass the wrapper class.
      * @param wrappedConnection the wrapped connection.
+     * @param <T> the type.
      * @return the wrapped connection if it's compatible.
      */
     @SuppressWarnings("unchecked")

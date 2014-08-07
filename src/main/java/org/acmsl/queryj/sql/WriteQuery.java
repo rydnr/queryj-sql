@@ -131,6 +131,7 @@ public abstract class WriteQuery
     /**
      * Retrieves the value collection.
      * @return such map.
+     * @param <F> the field type.
      */
     @SuppressWarnings("unchecked")
     @NotNull
@@ -230,6 +231,7 @@ public abstract class WriteQuery
     /**
      * Puts a new value.
      * @param field the field.
+     * @param value the value.
      */
     @SuppressWarnings("unchecked")
     protected void putValue(@NotNull final IntField field, final int value)
@@ -283,6 +285,7 @@ public abstract class WriteQuery
      * Puts a new keyword-based value.
      * @param field the field.
      * @param value the value.
+     * @param escape whether to escape the value or not.
      */
     protected void putValue(
         @NotNull final LongField field, @Nullable final String value, final boolean escape)

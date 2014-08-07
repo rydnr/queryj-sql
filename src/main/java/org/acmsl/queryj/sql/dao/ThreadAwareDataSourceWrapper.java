@@ -141,6 +141,7 @@ public class ThreadAwareDataSourceWrapper
      * @param internalConnection the internal connection.
      * @param dataSource the data source.
      * @return the connection.
+     * @throws SQLException if the connection cannot be opened.
      */
     @Nullable
     protected Connection getConnection(
