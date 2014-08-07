@@ -34,20 +34,11 @@
 package org.acmsl.queryj.sql.dao;
 
 /*
- * Importing project-specific classes.
- */
-import org.acmsl.queryj.sql.dao.TransactionTokenFactory;
-import org.acmsl.queryj.sql.dao.TransactionToken;
-
-/*
  * Importing Spring classes.
  */
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionStatus;
@@ -65,12 +56,17 @@ import org.acmsl.commons.patterns.Singleton;
  * Importing some JDK classes.
  */
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /*
  * Importing Java extension classes.
  */
 import javax.sql.DataSource;
+
+/*
+ * Importing NotNull annotations.
+ */
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Simplifies transaction management.
@@ -94,7 +90,6 @@ public class TransactionManager
 
     /**
      * Protected constructor to avoid accidental instantiation.
-     * @param alias the table alias.
      */
     protected TransactionManager() {};
 
@@ -113,10 +108,9 @@ public class TransactionManager
      * @param connection the connection.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
-     * @precondition connection != null
      */
-    @Nullable
-    public TransactionToken begin(final Connection connection)
+    @NotNull
+    public TransactionToken begin(@NotNull final Connection connection)
         throws  TransactionException
     {
         return
@@ -126,17 +120,15 @@ public class TransactionManager
 
     /**
      * Starts a transaction for given data source.
-     * @param dataSource the data source.
+     * @param connection the connection.
      * @param transactionDefinition the transaction definition.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
-     * @precondition dataSource != null
-     * @precondition transactionDefinition != null
      */
-    @Nullable
+    @NotNull
     public TransactionToken begin(
-        final Connection connection,
-        final TransactionDefinition transactionDefinition)
+        @NotNull final Connection connection,
+        @NotNull final TransactionDefinition transactionDefinition)
       throws  TransactionException
     {
         return
@@ -147,13 +139,12 @@ public class TransactionManager
 
     /**
      * Starts a transaction for given connection.
-     * @param connection the connection.
+     * @param dataSource the data source.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
-     * @precondition connection != null
      */
-    @Nullable
-    public TransactionToken begin(final DataSource dataSource)
+    @NotNull
+    public TransactionToken begin(@NotNull final DataSource dataSource)
         throws  TransactionException
     {
         return begin(dataSource, new DefaultTransactionDefinition());
@@ -165,13 +156,11 @@ public class TransactionManager
      * @param transactionDefinition the transaction definition.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
-     * @precondition dataSource != null
-     * @precondition transactionDefinition != null
      */
-    @Nullable
+    @NotNull
     public TransactionToken begin(
-        final DataSource dataSource,
-        final TransactionDefinition transactionDefinition)
+        @NotNull final DataSource dataSource,
+        @NotNull final TransactionDefinition transactionDefinition)
       throws  TransactionException
     {
         return
@@ -189,18 +178,15 @@ public class TransactionManager
      * instance.
      * @throws TransactionException if the transaction cannot be started for
      * some reason.
-     * @precondition dataSource != null
-     * @precondition transactionDefinition != null
-     * @precondition transactionTokenFactory != null
      */
-    @Nullable
+    @NotNull
     protected TransactionToken begin(
-        final DataSource dataSource,
-        final TransactionDefinition transactionDefinition,
+        @NotNull final DataSource dataSource,
+        @NotNull final TransactionDefinition transactionDefinition,
         @NotNull final TransactionTokenFactory transactionTokenFactory)
       throws  TransactionException
     {
-        @Nullable TransactionToken result = null;
+        @NotNull final TransactionToken result;
 
         DataSource t_DataSource = dataSource;
 
@@ -210,24 +196,26 @@ public class TransactionManager
                 new ThreadAwareDataSourceWrapper(t_DataSource);
         }
 
-        @Nullable PlatformTransactionManager t_TransactionManager =
+        @Nullable final PlatformTransactionManager t_TransactionManager =
             createTransactionManager(t_DataSource, true);
 
-        if  (t_TransactionManager != null)
-        {
-            // Performs an implicit transaction start.
-            TransactionStatus t_TransactionStatus =
-                t_TransactionManager.getTransaction(
-                    transactionDefinition);
+        // Performs an implicit transaction start.
+        @Nullable final TransactionStatus t_TransactionStatus =
+            t_TransactionManager.getTransaction(transactionDefinition);
 
-            if  (   (t_TransactionStatus != null)
-                 && (t_TransactionStatus instanceof DefaultTransactionStatus))
-            {
-                result =
-                    transactionTokenFactory.createTransactionToken(
-                        (DefaultTransactionStatus) t_TransactionStatus,
-                        t_DataSource);
-            }
+        if  (   (t_TransactionStatus != null)
+             && (t_TransactionStatus instanceof DefaultTransactionStatus))
+        {
+            result =
+                transactionTokenFactory.createTransactionToken(
+                    (DefaultTransactionStatus) t_TransactionStatus,
+                    t_DataSource);
+        }
+        else
+        {
+            throw
+                new TransactionManagerException(
+                    "Cannot begin transaction. Unknown transaction status: " + t_TransactionStatus);
         }
 
         return result;
@@ -237,8 +225,8 @@ public class TransactionManager
      * Creates a transaction manager correctly initialized.
      * @param connection the connection.
      * @return a <code>PlatformTransactionManager</code> instance.
-     * @precondition connection != null
      */
+    @SuppressWarnings("unused")
     @Nullable
     protected PlatformTransactionManager createTransactionManager(
         final Connection connection)
@@ -253,8 +241,8 @@ public class TransactionManager
      * Creates a transaction manager correctly initialized.
      * @param dataSource the data source.
      * @return a <code>PlatformTransactionManager</code> instance.
-     * @precondition dataSource != null
      */
+    @SuppressWarnings("unused")
     @Nullable
     protected PlatformTransactionManager createTransactionManager(
         final DataSource dataSource)
@@ -266,13 +254,12 @@ public class TransactionManager
      * Creates a transaction manager correctly initialized.
      * @param dataSource the data source.
      * @return a <code>PlatformTransactionManager</code> instance.
-     * @precondition dataSource != null
      */
-    @Nullable
+    @NotNull
     protected PlatformTransactionManager createTransactionManager(
-        final DataSource dataSource, final boolean initialize)
+        @NotNull final DataSource dataSource, final boolean initialize)
     {
-        @Nullable PlatformTransactionManager result = null;
+        @NotNull final PlatformTransactionManager result;
 
         if  (initialize)
         {
@@ -287,14 +274,11 @@ public class TransactionManager
 
     /**
      * Commits a transaction identified by given transaction token.
-     * @param trasactionToken the transaction token.
-     * @param transactionManager the <code>PlatformTransactionManager</code>
-     * instance.
+     * @param transactionToken the transaction token.
      * @throws TransactionException if the transaction could not be committed
      * anyway.
-     * @precondition transactionManager != null
      */
-    public void commit(final TransactionStatus transactionToken)
+    public void commit(@NotNull final TransactionStatus transactionToken)
       throws  TransactionException
     {
         if   (transactionToken instanceof DataSourceTransactionToken)
@@ -311,12 +295,9 @@ public class TransactionManager
 
     /**
      * Commits a transaction identified by given transaction token.
-     * @param trasactionToken the transaction token.
-     * @param transactionManager the <code>PlatformTransactionManager</code>
-     * instance.
+     * @param transactionToken the transaction token.
      * @throws TransactionException if the transaction could not be committed
      * anyway.
-     * @precondition transactionManager != null
      */
     protected void commitTransaction(
         @NotNull final DataSourceTransactionToken transactionToken)
@@ -330,15 +311,14 @@ public class TransactionManager
 
     /**
      * Commits a transaction identified by given transaction token.
-     * @param trasactionToken the transaction token.
+     * @param transactionToken the transaction token.
      * @param transactionManager the <code>PlatformTransactionManager</code>
      * instance.
      * @throws TransactionException if the transaction could not be committed
      * anyway.
-     * @precondition transactionManager != null
      */
     protected void commitTransaction(
-        final TransactionToken transactionToken,
+        @NotNull final TransactionToken transactionToken,
         @NotNull final PlatformTransactionManager transactionManager)
       throws  TransactionException
     {
@@ -346,15 +326,13 @@ public class TransactionManager
     }
 
     /**
-     * Rollbacks a transaction identified by given transaction token.
-     * @param trasactionToken the transaction token.
-     * @param transactionManager the <code>PlatformTransactionManager</code>
-     * instance.
-     * @throws TransactionException if the transaction could not be rollbackted
+     * Rolls back a transaction identified by given transaction token.
+     * @param transactionToken the transaction token.
+     * @throws TransactionException if the transaction could not be rolled back
      * anyway.
-     * @precondition transactionManager != null
      */
-    public void rollback(final TransactionStatus transactionToken)
+    @SuppressWarnings("unused")
+    public void rollback(@NotNull final TransactionStatus transactionToken)
       throws  TransactionException
     {
         if   (transactionToken instanceof DataSourceTransactionToken)
@@ -370,13 +348,10 @@ public class TransactionManager
     }
 
     /**
-     * Rollbacks a transaction identified by given transaction token.
-     * @param trasactionToken the transaction token.
-     * @param transactionManager the <code>PlatformTransactionManager</code>
-     * instance.
-     * @throws TransactionException if the transaction could not be rollbackted
+     * Rolls back a transaction identified by given transaction token.
+     * @param transactionToken the transaction token.
+     * @throws TransactionException if the transaction could not be rolled back
      * anyway.
-     * @precondition transactionManager != null
      */
     protected void rollbackTransaction(
         @NotNull final DataSourceTransactionToken transactionToken)
@@ -388,16 +363,15 @@ public class TransactionManager
     }
 
     /**
-     * Rollbacks a transaction identified by given transaction token.
-     * @param trasactionToken the transaction token.
+     * Rolls back a transaction identified by given transaction token.
+     * @param transactionToken the transaction token.
      * @param transactionManager the <code>PlatformTransactionManager</code>
      * instance.
-     * @throws TransactionException if the transaction could not be rollbackted
+     * @throws TransactionException if the transaction could not be rolled back
      * anyway.
-     * @precondition transactionManager != null
      */
     protected void rollbackTransaction(
-        final TransactionToken transactionToken,
+        @NotNull final TransactionToken transactionToken,
         @NotNull final PlatformTransactionManager transactionManager)
       throws  TransactionException
     {
@@ -417,7 +391,7 @@ public class TransactionManager
          * with given message.
          * @param message the message.
          */
-        public TransactionManagerException(final String message)
+        public TransactionManagerException(@NotNull final String message)
         {
             super(message);
         }

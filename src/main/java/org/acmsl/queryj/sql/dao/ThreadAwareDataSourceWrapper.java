@@ -35,9 +35,6 @@ package org.acmsl.queryj.sql.dao;
 /*
  * Importing Spring classes.
  */
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.springframework.jdbc.datasource.SmartDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /*
@@ -45,7 +42,6 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
  */
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.io.PrintWriter;
 
 /*
  * Importing some extension classes.
@@ -56,6 +52,12 @@ import javax.sql.DataSource;
  * Importing Jakarta Commons Logging classes.
  */
 import org.apache.commons.logging.LogFactory;
+
+/*
+ * Importing NotNull annotations.
+ */
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Thread-aware DataSource wrapper.
@@ -80,7 +82,7 @@ public class ThreadAwareDataSourceWrapper
      * given data source.
      * @param dataSource the data source to wrap.
      */
-    public ThreadAwareDataSourceWrapper(final DataSource dataSource)
+    public ThreadAwareDataSourceWrapper(@NotNull final DataSource dataSource)
     {
         super(dataSource);
     }
@@ -88,13 +90,14 @@ public class ThreadAwareDataSourceWrapper
     /**
      * Creates a <code>ThreadAwareDataSourceWrapper</code>.
      */
+    @SuppressWarnings("unused")
     public ThreadAwareDataSourceWrapper() {};
 
     /**
      * Specifies the JDBC connection.
      * @param connection the connection.
      */
-    protected final void immutableSetConnection(final Connection connection)
+    protected final void immutableSetConnection(@NotNull final Connection connection)
     {
         m__Connection = connection;
     }
@@ -103,7 +106,7 @@ public class ThreadAwareDataSourceWrapper
      * Specifies the JDBC connection.
      * @param connection the connection.
      */
-    protected void setConnection(final Connection connection)
+    protected void setConnection(@NotNull final Connection connection)
     {
         immutableSetConnection(connection);
     }
@@ -112,6 +115,7 @@ public class ThreadAwareDataSourceWrapper
      * Retrieves the JDBC connection.
      * @return such connection.
      */
+    @NotNull
     protected Connection getInternalConnection()
     {
         return m__Connection;
@@ -121,8 +125,10 @@ public class ThreadAwareDataSourceWrapper
      * Attempts to establish a database connection.
      * @return the connection.
      */
+    @Override
+    @Nullable
     public Connection getConnection()
-      throws  SQLException
+        throws  SQLException
     {
         return
             getConnection(
@@ -136,8 +142,9 @@ public class ThreadAwareDataSourceWrapper
      * @param dataSource the data source.
      * @return the connection.
      */
+    @Nullable
     protected Connection getConnection(
-        final Connection internalConnection,
+        @Nullable final Connection internalConnection,
         @Nullable final DataSource dataSource)
       throws  SQLException
     {
@@ -165,7 +172,7 @@ public class ThreadAwareDataSourceWrapper
      * Specifies the thread-based hash code.
      * @param hashCode such hash code.
      */
-    private void immutableSetThreadBasedHashCode(final int hashCode)
+    protected final void immutableSetThreadBasedHashCode(final int hashCode)
     {
         m__iThreadBasedHashCode = hashCode;
     }
@@ -174,7 +181,7 @@ public class ThreadAwareDataSourceWrapper
      * Specifies the thread-based hash code.
      * @param hashCode such hash code.
      */
-    protected final void setThreadBasedHashCode(final int hashCode)
+    protected void setThreadBasedHashCode(final int hashCode)
     {
         immutableSetThreadBasedHashCode(hashCode);
     }
@@ -192,11 +199,10 @@ public class ThreadAwareDataSourceWrapper
      * Builds a hash code depending on given thread.
      * @param thread the thread.
      * @return the custom hash code.
-     * @precondition thread != null
      */
-    protected int buildThreadBasedHashCode(final Thread thread)
+    protected int buildThreadBasedHashCode(@NotNull final Thread thread)
     {
-        int result =
+        final int result =
             (  getClass().getName()
              + ".queryj."
              + thread).hashCode();
@@ -209,9 +215,10 @@ public class ThreadAwareDataSourceWrapper
      * @param object the object to compare to.
      * @return true if both data sources represents the same entity.
      */
-    public boolean equals(final Object object)
+    @Override
+    public boolean equals(@Nullable final Object object)
     {
-        boolean result =
+        final boolean result =
             equals(
                 object,
                 getThreadBasedHashCode(),
@@ -229,13 +236,12 @@ public class ThreadAwareDataSourceWrapper
      * @param currentThreadBasedHashCode the hash code based on current thread.
      * @param dataSource the data source.
      * @return <code>true</code> if both data sources represents the same entity.
-     * @precondition dataSource != null
      */
     protected boolean equals(
-        final Object object,
+        @Nullable final Object object,
         final int threadBasedHashCode,
         final int currentThreadBasedHashCode,
-        final DataSource dataSource)
+        @NotNull final DataSource dataSource)
     {
         boolean result = (object == this);
 
@@ -260,17 +266,15 @@ public class ThreadAwareDataSourceWrapper
      * @param object the object to compare to.
      * @param dataSource the data source.
      * @return <code>true</code> if both data sources represents the same entity.
-     * @precondition dataSource != null
      */
     protected boolean equals(
-        @Nullable final Object object, final DataSource dataSource)
+        @Nullable final Object object, @NotNull final DataSource dataSource)
     {
         boolean result = false;
 
-        if  (   (object != null)
-             && (object instanceof DataSource))
+        if  (object instanceof DataSource)
         {
-            @NotNull DataSource t_GivenDataSource = (DataSource) object;
+            @NotNull final DataSource t_GivenDataSource = (DataSource) object;
 
             result =
                 (   (t_GivenDataSource == dataSource)
@@ -284,9 +288,10 @@ public class ThreadAwareDataSourceWrapper
      * Retrieves the hash code.
      * @return such value.
      */
+    @Override
     public int hashCode()
     {
-        int result =
+        final int result =
             hashCode(
                 getThreadBasedHashCode(),
                 buildThreadBasedHashCode(
@@ -302,7 +307,6 @@ public class ThreadAwareDataSourceWrapper
      * @param currentThreadBasedHashCode the hash code based on current thread.
      * @param dataSource the data source.
      * @return such value.
-     * @precondition dataSource != null
      */
     protected int hashCode(
         final int threadBasedHashCode,
@@ -323,9 +327,9 @@ public class ThreadAwareDataSourceWrapper
     }
 
     /**
-     * Retrieves the textual version of this instance.
-     * @return such information.
+     * {@inheritDoc}
      */
+    @Override
     @Nullable
     public String toString()
     {
@@ -340,7 +344,7 @@ public class ThreadAwareDataSourceWrapper
     @Nullable
     protected String toString(@Nullable final DataSource dataSource)
     {
-        @Nullable String result = null;
+        @Nullable final String result;
 
         if  (dataSource == null)
         {
@@ -358,7 +362,6 @@ public class ThreadAwareDataSourceWrapper
      * Checks whether given connection is already closed.
      * @param connection the connection.
      * @return <code>true</code> in such case.
-     * @precondition connection != null
      */
     protected boolean isClosed(@NotNull final Connection connection)
     {
@@ -391,11 +394,12 @@ public class ThreadAwareDataSourceWrapper
      * perform a check via this method before invoking <code>close()</code>.
      * <p>However, the JdbcTemplate class in the core package should take care of
      * closing JDBC connections, freeing application code of this responsibility.
-     * @param con connection, which should have been obtained
+     * @param connection connection, which should have been obtained
      * from this data source, to check closure status of.
      * @return whether the given connection should be closed.
      */
-    public boolean shouldClose(final Connection connection)
+    @SuppressWarnings("unused")
+    public boolean shouldClose(@NotNull final Connection connection)
     {
         return false;
     }

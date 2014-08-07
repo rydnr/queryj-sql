@@ -29,22 +29,13 @@
  * Author: Jose San Leandro Armendariz
  *
  * Description: Represents SQL write operations.
+ *
  */
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing NotNull annotations.
  */
-import org.acmsl.queryj.sql.BigDecimalField;
-import org.acmsl.queryj.sql.CalendarField;
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.DateField;
-import org.acmsl.queryj.sql.DoubleField;
-import org.acmsl.queryj.sql.Field;
-import org.acmsl.queryj.sql.IntField;
-import org.acmsl.queryj.sql.LongField;
-import org.acmsl.queryj.sql.Query;
-import org.acmsl.queryj.sql.Table;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,16 +43,10 @@ import org.jetbrains.annotations.Nullable;
  * Importing some JDK classes.
  */
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,7 +59,7 @@ public abstract class WriteQuery
     /**
      * The values.
      */
-    private Map<Field,Object> m__mValues;
+    private Map<Field, ?> m__mValues;
 
     /**
      * The table.
@@ -84,7 +69,7 @@ public abstract class WriteQuery
     /**
      * The escaping flags.
      */
-    private Map<String,Boolean> m__mEscapingFlags;
+    private Map<String, Boolean> m__mEscapingFlags;
 
     /**
      * Constructs a query.
@@ -93,16 +78,15 @@ public abstract class WriteQuery
     {
         super();
 
-        @NotNull Map uniqueMap = new HashMap();
-        immutableSetValues(uniqueMap);
-        immutableSetEscapingFlags(uniqueMap);
+        immutableSetValues(new HashMap<Field, Object>());
+        immutableSetEscapingFlags(new HashMap<String, Boolean>());
     }
 
     /**
      * Specifies the table.
      * @param table the table.
      */
-    protected final void immutableSetTable(final Table table)
+    protected final void immutableSetTable(@NotNull final Table table)
     {
         m__Table = table;
     }
@@ -111,7 +95,7 @@ public abstract class WriteQuery
      * Specifies the table.
      * @param table the table.
      */
-    protected void setTable(final Table table)
+    protected void setTable(@NotNull final Table table)
     {
         immutableSetTable(table);
     }
@@ -120,6 +104,7 @@ public abstract class WriteQuery
      * Retrieves the table.
      * @return such table.
      */
+    @NotNull
     protected Table getTable()
     {
         return m__Table;
@@ -129,7 +114,7 @@ public abstract class WriteQuery
      * Specifies new value collection.
      * @param map the new map.
      */
-    private void immutableSetValues(final Map map)
+    protected final void immutableSetValues(@NotNull final Map<Field, ?> map)
     {
         m__mValues = map;
     }
@@ -138,7 +123,7 @@ public abstract class WriteQuery
      * Specifies new value collection.
      * @param map the new map.
      */
-    protected void setValues(final Map<Field,Object> map)
+    protected void setValues(@NotNull final Map<Field, ?> map)
     {
         immutableSetValues(map);
     }
@@ -147,16 +132,18 @@ public abstract class WriteQuery
      * Retrieves the value collection.
      * @return such map.
      */
-    protected Map<Field,Object> getValues()
+    @SuppressWarnings("unchecked")
+    @NotNull
+    protected <F> Map<F, String> getValues()
     {
-        return m__mValues;
+        return (Map<F, String>) m__mValues;
     }
 
     /**
      * Specifies the escaping flags.
      * @param map such map.
      */
-    protected final void immutableSetEscapingFlags(final Map map)
+    protected final void immutableSetEscapingFlags(final Map<String, Boolean> map)
     {
         m__mEscapingFlags = map;
     }
@@ -165,7 +152,8 @@ public abstract class WriteQuery
      * Specifies the escaping flags.
      * @param map such map.
      */
-    protected void setEscapingFlags(final Map<String,Boolean> map)
+    @SuppressWarnings("unused")
+    protected void setEscapingFlags(@NotNull final Map<String, Boolean> map)
     {
         immutableSetEscapingFlags(map);
     }
@@ -174,6 +162,7 @@ public abstract class WriteQuery
      * Retrieves the escaping flags.
      * @return such map.
      */
+    @NotNull
     protected Map<String,Boolean> getEscapingFlags()
     {
         return m__mEscapingFlags;
@@ -183,9 +172,9 @@ public abstract class WriteQuery
      * Puts a new value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final StringField field, final String value)
+    @SuppressWarnings("unused")
+    protected void putValue(@NotNull final StringField field, @Nullable final String value)
     {
         putValue(field, value, true);
     }
@@ -195,10 +184,10 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
+    @SuppressWarnings("unchecked")
     protected void putValue(
-        final StringField field, final String value, final boolean escape)
+        @NotNull final StringField field, @Nullable final String value, final boolean escape)
     {
         putValue(field, value, escape, getValues(), getEscapingFlags());
     }
@@ -210,27 +199,29 @@ public abstract class WriteQuery
      * @param escape to force value escaping.
      * @param values the values.
      * @param escapingFlags the escaping flags.
-     * @precondition field != null
-     * @precondition values != null
-     * @precondition escapingFlags != null
+     * @param <F> the type.
      */
-    protected void putValue(
-        final StringField field,
-        final String value,
+    protected <F> void putValue(
+        @NotNull final F field,
+        @Nullable final String value,
         final boolean escape,
-        @NotNull final Map<Field,Object> values,
-        @NotNull final Map<String,Boolean> escapingFlags)
+        @NotNull final Map<F, String> values,
+        @NotNull final Map<String, Boolean> escapingFlags)
     {
-        String t_strValue = value;
+        @NotNull final String t_strValue;
 
-        if  (t_strValue == null)
+        if  (value == null)
         {
             t_strValue = "null";
+        }
+        else
+        {
+            t_strValue = value;
         }
 
         if  (!escape)
         {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
+            escapingFlags.put(buildEscapingFlagKey(t_strValue), Boolean.FALSE);
         }
 
         values.put(field, t_strValue);
@@ -239,35 +230,19 @@ public abstract class WriteQuery
     /**
      * Puts a new value.
      * @param field the field.
-     * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final IntField field, final int value)
+    @SuppressWarnings("unchecked")
+    protected void putValue(@NotNull final IntField field, final int value)
     {
-        putValue(field, value, getValues());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final IntField field, final int value, @NotNull final Map values)
-    {
-        values.put(field, Integer.valueOf(value));
+        putValue(field, "" + value);
     }
 
     /**
      * Puts a new keyword-based value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final IntField field, final String value)
+    protected void putValue(@NotNull final IntField field, @Nullable final String value)
     {
         putValue(field, value, true);
     }
@@ -277,70 +252,29 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void putValue(
-        final IntField field, final String value, final boolean escape)
+        @NotNull final IntField field, @Nullable final String value, final boolean escape)
     {
         putValue(field, value, escape, getValues(), getEscapingFlags());
     }
 
     /**
-     * Puts a new keyword-based value.
-     * @param field the field.
-     * @param value the value.
-     * @param escape to force value escaping.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     * @precondition escapingFlags != null
-     */
-    protected void putValue(
-        final IntField field,
-        final String value,
-        final boolean escape,
-        @NotNull final Map values,
-        @NotNull final Map escapingFlags)
-    {
-        values.put(field, value);
-
-        if  (!escape)
-        {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
-        }
-    }
-
-    /**
      * Puts a new value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final LongField field, final long value)
+    protected void putValue(@NotNull final LongField field, final long value)
     {
-        putValue(field, value, getValues());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final LongField field, final long value, @NotNull final Map values)
-    {
-        values.put(field, Long.valueOf(value));
+        putValue(field, "" + value);
     }
 
     /**
      * Puts a new keyword-based value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final LongField field, final String value)
+    protected void putValue(@NotNull final LongField field, @Nullable final String value)
     {
         putValue(field, value, true);
     }
@@ -349,82 +283,9 @@ public abstract class WriteQuery
      * Puts a new keyword-based value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
     protected void putValue(
-        final LongField field, final String value, final boolean escape)
-    {
-        putValue(field, value, escape, getValues(), getEscapingFlags());
-    }
-
-    /**
-     * Puts a new keyword-based value.
-     * @param field the field.
-     * @param value the value.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final LongField field,
-        final String value,
-        final boolean escape,
-        @NotNull final Map values,
-        @NotNull final Map escapingFlags)
-    {
-        values.put(field, value);
-
-        if  (!escape)
-        {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
-        }
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    protected void putValue(final DoubleField field, final double value)
-    {
-        putValue(field, value, getValues());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final DoubleField field, final double value, @NotNull final Map values)
-    {
-        values.put(field, Double.valueOf(value));
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    protected void putValue(final DoubleField field, final String value)
-    {
-        putValue(field, value, true);
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param escape to force value escaping.
-     * @precondition field != null
-     */
-    protected void putValue(
-        final DoubleField field, final String value, final boolean escape)
+        @NotNull final LongField field, @Nullable final String value, final boolean escape)
     {
         putValue(field, value, escape, getValues(), getEscapingFlags());
     }
@@ -433,60 +294,40 @@ public abstract class WriteQuery
      * Puts a new value.
      * @param field the field.
      * @param value the value.
+     */
+    protected void putValue(@NotNull final DoubleField field, final double value)
+    {
+        putValue(field, "" + value);
+    }
+
+    /**
+     * Puts a new value.
+     * @param field the field.
+     * @param value the value.
      * @param escape to force value escaping.
-     * @param values the values.
-     * @param escapingFlags the escaping flags.
-     * @precondition field != null
-     * @precondition values != null
-     * @precondition escapingFlags != null
      */
     protected void putValue(
-        final DoubleField field,
-        final String value,
-        final boolean escape,
-        @NotNull final Map values,
-        @NotNull final Map escapingFlags)
+        @NotNull final DoubleField field, @Nullable final String value, final boolean escape)
     {
-        values.put(field, value);
-
-        if  (!escape)
-        {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
-        }
+        putValue(field, "" + value, escape);
     }
 
     /**
      * Puts a new value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final CalendarField field, final Calendar value)
+    protected void putValue(@NotNull final CalendarField field, @NotNull final Calendar value)
     {
-        putValue(field, value, getValues());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final CalendarField field, final Calendar value, @NotNull final Map values)
-    {
-        values.put(field, value);
+        putValue(field, DateFormat.getTimeInstance().format(value));
     }
 
     /**
      * Puts a new keyword.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final CalendarField field, final String value)
+    protected void putValue(@NotNull final CalendarField field, @Nullable final String value)
     {
         putValue(field, value, true);
     }
@@ -496,74 +337,23 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void putValue(
-        final CalendarField field, final String value, final boolean escape)
+        @NotNull final CalendarField field, @Nullable final String value, final boolean escape)
     {
         putValue(field, value, escape, getValues(), getEscapingFlags());
     }
 
     /**
-     * Puts a new keyword.
-     * @param field the field.
-     * @param value the value.
-     * @param escape to force value escaping.
-     * @param values the values.
-     * @param escapingFlags the escaping flags.
-     * @precondition field != null
-     * @precondition values != null
-     * @precondition escapingFlags != null
-     */
-    protected void putValue(
-        final CalendarField field,
-        final String value,
-        final boolean escape,
-        @NotNull final Map values,
-        @NotNull final Map escapingFlags)
-    {
-        values.put(field, value);
-
-        if  (!escape)
-        {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
-        }
-    }
-
-    /**
      * Puts a new value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(final DateField field, final Date value)
+    protected void putValue(@NotNull final DateField field, @NotNull final Date value)
     {
-        putValue(field, value, getValues());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final DateField field, final Date value, @NotNull final Map values)
-    {
-        values.put(field, value);
-    }
-
-    /**
-     * Puts a new keyword.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    protected void putValue(final DateField field, final String value)
-    {
-        putValue(field, value, true);
+        @NotNull final Calendar t_Calendar = Calendar.getInstance();
+        t_Calendar.setTime(value);
+        putValue(field, t_Calendar);
     }
 
     /**
@@ -571,73 +361,30 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void putValue(
-        final DateField field, final String value, final boolean escape)
+        @NotNull final DateField field, @Nullable final String value, final boolean escape)
     {
         putValue(field, value, escape, getValues(), getEscapingFlags());
     }
 
     /**
-     * Puts a new keyword.
+     * Puts a new value.
      * @param field the field.
      * @param value the value.
-     * @param escape to force value escaping.
-     * @param values the values.
-     * @param escapingFlags the escaping flags.
-     * @precondition field != null
-     * @precondition values != null
-     * @precondition escapingFlags != null
      */
     protected void putValue(
-        final DateField field,
-        final String value,
-        final boolean escape,
-        @NotNull final Map values,
-        @NotNull final Map escapingFlags)
+        @NotNull final BigDecimalField field, final BigDecimal value)
     {
-        values.put(field, value);
-
-        if  (!escape)
-        {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
-        }
+        putValue(field, "" + value);
     }
 
     /**
      * Puts a new value.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void putValue(
-        final BigDecimalField field, final BigDecimal value)
-    {
-        putValue(field, value, getValues());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param values the values.
-     * @precondition field != null
-     * @precondition values != null
-     */
-    protected void putValue(
-        final BigDecimalField field, final BigDecimal value, @NotNull final Map values)
-    {
-        values.put(field, value);
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    protected void putValue(final Field field, final Object value)
+    protected void putValue(@NotNull final Field field, @Nullable final Object value)
     {
         putValue(field, value, true);
     }
@@ -647,47 +394,19 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void putValue(
-        final Field field, final Object value, final boolean escape)
+        @NotNull final Field field, final Object value, final boolean escape)
     {
-        putValue(field, value, escape, getValues(), getEscapingFlags());
-    }
-
-    /**
-     * Puts a new value.
-     * @param field the field.
-     * @param value the value.
-     * @param escape to force value escaping.
-     * @param values the values.
-     * @param escapingFlags the escaping flags.
-     * @precondition field != null
-     * @precondition values != null
-     * @precondition escapingFlags != null
-     */
-    protected void putValue(
-        final Field field,
-        final Object value,
-        final boolean escape,
-        @NotNull final Map values,
-        @NotNull final Map escapingFlags)
-    {
-        values.put(field, value);
-
-        if  (!escape)
-        {
-            escapingFlags.put(buildEscapingFlagKey(value), Boolean.FALSE);
-        }
+        putValue(field, "" + value, escape, getValues(), getEscapingFlags());
     }
 
     /**
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
-    protected Object getValue(final Field field)
+    protected Object getValue(@NotNull final Field field)
     {
         return getValue(field, getValues());
     }
@@ -697,10 +416,8 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
-    protected Object getValue(final Field field, @NotNull final Map values)
+    protected Object getValue(@NotNull final Field field, @NotNull final Map values)
     {
         return values.get(field);
     }
@@ -709,10 +426,9 @@ public abstract class WriteQuery
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
     @NotNull
-    protected String getValue(final StringField field)
+    protected String getValue(@NotNull final org.acmsl.queryj.sql.StringField field)
     {
         return getValue(field, getValues());
     }
@@ -722,15 +438,13 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
     @NotNull
-    protected String getValue(final StringField field, @NotNull final Map values)
+    protected String getValue(@NotNull final org.acmsl.queryj.sql.StringField field, @NotNull final Map values)
     {
         @NotNull String result = "null";
 
-        Object t_Result = values.get(field);
+        @Nullable final Object t_Result = values.get(field);
 
         if  (t_Result instanceof String)
         {
@@ -744,9 +458,8 @@ public abstract class WriteQuery
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
-    protected int getValue(final IntField field)
+    protected int getValue(@NotNull final IntField field)
     {
         return getValue(field, getValues());
     }
@@ -756,14 +469,12 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
-    protected int getValue(final IntField field, @NotNull final Map values)
+    protected int getValue(@NotNull final IntField field, @NotNull final Map values)
     {
         int result = -1;
 
-        Object t_Result = values.get(field);
+        @Nullable final Object t_Result = values.get(field);
 
         if  (t_Result instanceof Integer)
         {
@@ -777,9 +488,8 @@ public abstract class WriteQuery
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
-    protected long getValue(final LongField field)
+    protected long getValue(@NotNull final LongField field)
     {
         return getValue(field, getValues());
     }
@@ -789,14 +499,12 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
-    protected long getValue(final LongField field, @NotNull final Map values)
+    protected long getValue(@NotNull final LongField field, @NotNull final Map values)
     {
         long result = -1;
 
-        Object t_Result = values.get(field);
+        @Nullable final Object t_Result = values.get(field);
 
         if  (t_Result instanceof Long)
         {
@@ -810,9 +518,8 @@ public abstract class WriteQuery
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
-    protected double getValue(final DoubleField field)
+    protected double getValue(@NotNull final DoubleField field)
     {
         return getValue(field, getValues());
     }
@@ -822,14 +529,12 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
-    protected double getValue(final DoubleField field, @NotNull final Map values)
+    protected double getValue(@NotNull final DoubleField field, @NotNull final Map values)
     {
         double result = -1.0;
 
-        Object t_Result = values.get(field);
+        @Nullable final Object t_Result = values.get(field);
 
         if  (t_Result instanceof Double)
         {
@@ -843,10 +548,9 @@ public abstract class WriteQuery
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
     @Nullable
-    protected Calendar getValue(final CalendarField field)
+    protected Calendar getValue(@NotNull final CalendarField field)
     {
         return getValue(field, getValues());
     }
@@ -856,15 +560,13 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
     @Nullable
-    protected Calendar getValue(final CalendarField field, @NotNull final Map values)
+    protected Calendar getValue(@NotNull final CalendarField field, @NotNull final Map values)
     {
         @Nullable Calendar result = null;
 
-        Object t_Result = values.get(field);
+        @Nullable final Object t_Result = values.get(field);
 
         if  (t_Result instanceof Calendar)
         {
@@ -878,10 +580,9 @@ public abstract class WriteQuery
      * Retrieves the value of given field.
      * @param field the field.
      * @return the value.
-     * @precondition field != null
      */
     @Nullable
-    protected BigDecimal getValue(final BigDecimalField field)
+    protected BigDecimal getValue(@NotNull final BigDecimalField field)
     {
         return getValue(field, getValues());
     }
@@ -891,16 +592,14 @@ public abstract class WriteQuery
      * @param field the field.
      * @param values the values.
      * @return the value.
-     * @precondition field != null
-     * @precondition values != null
      */
     @Nullable
     protected BigDecimal getValue(
-        final BigDecimalField field, @NotNull final Map values)
+        @NotNull final BigDecimalField field, @NotNull final Map values)
     {
         @Nullable BigDecimal result = null;
 
-        Object t_Result = values.get(field);
+        @Nullable final Object t_Result = values.get(field);
 
         if  (t_Result instanceof BigDecimal)
         {
@@ -914,9 +613,8 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final StringField field, final String value)
+    protected void addValue(@NotNull final StringField field, @Nullable final String value)
     {
         addValue(field, value, true);
     }
@@ -926,10 +624,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final StringField field, final String value, final boolean escape)
+        @NotNull final StringField field, @Nullable final String value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -939,9 +636,8 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final IntField field, final int value)
+    protected void addValue(@NotNull final IntField field, final int value)
     {
         addField(field);
         putValue(field, value);
@@ -951,9 +647,8 @@ public abstract class WriteQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final IntField field, final String value)
+    protected void addValue(@NotNull final IntField field, @Nullable final String value)
     {
         addValue(field, value, true);
     }
@@ -963,10 +658,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final IntField field, final String value, final boolean escape)
+        @NotNull final IntField field, @Nullable final String value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -976,9 +670,8 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final LongField field, final long value)
+    protected void addValue(@NotNull final LongField field, final long value)
     {
         addField(field);
         putValue(field, value);
@@ -988,9 +681,8 @@ public abstract class WriteQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final LongField field, final String value)
+    protected void addValue(@NotNull final LongField field, @Nullable final String value)
     {
         addValue(field, value, true);
     }
@@ -1000,10 +692,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final LongField field, final String value, final boolean escape)
+        @NotNull final LongField field, @Nullable final String value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -1013,9 +704,8 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final DoubleField field, final double value)
+    protected void addValue(@NotNull final DoubleField field, final double value)
     {
         addField(field);
         putValue(field, value);
@@ -1025,9 +715,8 @@ public abstract class WriteQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final DoubleField field, final String value)
+    protected void addValue(@NotNull final DoubleField field, @Nullable final String value)
     {
         addValue(field, value, true);
     }
@@ -1037,10 +726,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final DoubleField field, final String value, final boolean escape)
+        @NotNull final DoubleField field, @Nullable final String value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -1050,9 +738,8 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final CalendarField field, final Calendar value)
+    protected void addValue(@NotNull final CalendarField field, final Calendar value)
     {
         addField(field);
         putValue(field, value);
@@ -1062,9 +749,8 @@ public abstract class WriteQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final CalendarField field, final String value)
+    protected void addValue(@NotNull final CalendarField field, @Nullable final String value)
     {
         addValue(field, value, true);
     }
@@ -1074,10 +760,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final CalendarField field, final String value, final boolean escape)
+        @NotNull final CalendarField field, @Nullable final String value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -1087,9 +772,46 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final DateField field, final Date value)
+    protected void addValue(@NotNull final DateField field, @Nullable final Date value)
+    {
+        addField(field);
+        if (value != null)
+        {
+            putValue(field, value);
+        }
+    }
+
+    /**
+     * Specifies the keyword of a field.
+     * @param field the field.
+     * @param value the value.
+     */
+    protected void addValue(@NotNull final DateField field, @Nullable final String value)
+    {
+        addValue(field, value, true);
+    }
+
+    /**
+     * Specifies the keyword of a field.
+     * @param field the field.
+     * @param value the value.
+     * @param escape to force value escaping.
+     */
+    protected void addValue(
+        @NotNull final DateField field, @Nullable final String value, final boolean escape)
+    {
+        addField(field);
+        putValue(field, value, escape);
+    }
+
+    /**
+     * Specifies the value of a field.
+     * @param field the field.
+     * @param value the value.
+     */
+    protected void addValue(
+        @NotNull final BigDecimalField field, @NotNull final BigDecimal value)
     {
         addField(field);
         putValue(field, value);
@@ -1099,9 +821,8 @@ public abstract class WriteQuery
      * Specifies the keyword of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(final DateField field, final String value)
+    protected void addValue(@NotNull final BigDecimalField field, @Nullable final String value)
     {
         addValue(field, value, true);
     }
@@ -1111,10 +832,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final DateField field, final String value, final boolean escape)
+        @NotNull final BigDecimalField field, @Nullable final String value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -1124,47 +844,8 @@ public abstract class WriteQuery
      * Specifies the value of a field.
      * @param field the field.
      * @param value the value.
-     * @precondition field != null
      */
-    protected void addValue(
-        final BigDecimalField field, final BigDecimal value)
-    {
-        addField(field);
-        putValue(field, value);
-    }
-
-    /**
-     * Specifies the keyword of a field.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    protected void addValue(final BigDecimalField field, final String value)
-    {
-        addValue(field, value, true);
-    }
-
-    /**
-     * Specifies the keyword of a field.
-     * @param field the field.
-     * @param value the value.
-     * @param escape to force value escaping.
-     * @precondition field != null
-     */
-    protected void addValue(
-        final BigDecimalField field, final String value, final boolean escape)
-    {
-        addField(field);
-        putValue(field, value, escape);
-    }
-
-    /**
-     * Specifies the value of a field.
-     * @param field the field.
-     * @param value the value.
-     * @precondition field != null
-     */
-    protected void addValue(final Field field, final Object value)
+    protected void addValue(@NotNull final Field field, @NotNull final Object value)
     {
         addValue(field, value, true);
     }
@@ -1174,10 +855,9 @@ public abstract class WriteQuery
      * @param field the field.
      * @param value the value.
      * @param escape to force value escaping.
-     * @precondition field != null
      */
     protected void addValue(
-        final Field field, final Object value, final boolean escape)
+        @NotNull final Field field, @NotNull final Object value, final boolean escape)
     {
         addField(field);
         putValue(field, value, escape);
@@ -1187,9 +867,8 @@ public abstract class WriteQuery
      * Checks whether given value should be escaped or not.
      * @param value the value to check.
      * @return <code>true</code> if given value should be escaped.
-     * @precondition value != null
      */
-    protected boolean shouldBeEscaped(final Object value)
+    protected boolean shouldBeEscaped(@NotNull final Object value)
     {
         return
             shouldBeEscaped(
@@ -1202,18 +881,15 @@ public abstract class WriteQuery
      * @param escapingFlags the flags.
      * @param queryUtils the <code>QueryUtils</code> instance.
      * @return <code>true</code> if given value should be escaped.
-     * @precondition value != null
-     * @precondition values != null
-     * @precondition queryUtils != null
      */
     protected boolean shouldBeEscaped(
-        final Object value,
-        @NotNull final Map escapingFlags,
+        @NotNull final Object value,
+        @NotNull final Map<?, ?> escapingFlags,
         @NotNull final QueryUtils queryUtils)
     {
-        boolean result = true;
+        final boolean result;
 
-        Object t_Flag = escapingFlags.get(buildEscapingFlagKey(value));
+        @Nullable final Object t_Flag = escapingFlags.get(buildEscapingFlagKey(value));
 
         if  (t_Flag instanceof Boolean)
         {
@@ -1231,10 +907,9 @@ public abstract class WriteQuery
      * Builds the escaping flag key for given value.
      * @param value the value.
      * @return the escaping flag key.
-     * @precondition value != null
      */
     @NotNull
-    protected String buildEscapingFlagKey(final Object value)
+    protected String buildEscapingFlagKey(@NotNull final Object value)
     {
         return "||queryj||escaping-flag||" + value;
     }

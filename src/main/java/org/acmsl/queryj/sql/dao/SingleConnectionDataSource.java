@@ -34,7 +34,7 @@
 package org.acmsl.queryj.sql.dao;
 
 /*
- * Importing JetBrains annotations.
+ * Importing NotNull annotations.
  */
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -119,6 +119,7 @@ public class   SingleConnectionDataSource
      * @return a Connection to the database
      * @throws SQLException if a database-access error occurs.
      */
+    @Override
     @NotNull
     public Connection getConnection()
         throws SQLException
@@ -148,7 +149,7 @@ public class   SingleConnectionDataSource
 
     /**
      * Attempts to establish a database connection.
-     * @param user the database user on whose behalf the Connection
+     * @param username the database user on whose behalf the Connection
      * is being made.
      * @param password the user's password.
      * @param connection the connection.
@@ -339,7 +340,6 @@ public class   SingleConnectionDataSource
      * Retrieves the hashcode of wrapped instance.
      * @param object the object.
      * @return such hashcode.
-     * @precondition object != null
      */
     protected int hashCode(@NotNull final Object object)
     {
@@ -351,6 +351,7 @@ public class   SingleConnectionDataSource
      * "datasource wrapped: " prefix.
      * @return such text.
      */
+    @Override
     @NotNull
     public String toString()
     {
@@ -362,10 +363,9 @@ public class   SingleConnectionDataSource
      * "datasource wrapped: " prefix.
      * @param object the object.
      * @return such text.
-     * @precondition object != null
      */
     @NotNull
-    protected String toString(final Object object)
+    protected String toString(@NotNull final Object object)
     {
         return "connection wrapped: " + object;
     }
@@ -373,7 +373,8 @@ public class   SingleConnectionDataSource
     /**
      * {@inheritDoc}
      */
-    public boolean isWrapperFor(final Class wrapperClass)
+    @Override
+    public boolean isWrapperFor(@NotNull final Class<?> wrapperClass)
     {
         return isWrapperFor(wrapperClass, getWrappedConnection());
     }
@@ -384,7 +385,7 @@ public class   SingleConnectionDataSource
      * @param wrappedConnection the wrapped connection.
      * @return <code>true</code> if the wrapped connection is compatible with given class.
      */
-    protected boolean isWrapperFor(final Class wrapperClass, @Nullable final Object wrappedConnection)
+    protected boolean isWrapperFor(@NotNull final Class<?> wrapperClass, @Nullable final Object wrappedConnection)
     {
         return
             (   (wrappedConnection != null)
@@ -394,8 +395,9 @@ public class   SingleConnectionDataSource
     /**
      * {@inheritDoc}
      */
+    @Override
     @Nullable
-    public Object unwrap(final Class wrapperClass)
+    public <T> T unwrap(@NotNull final Class<T> wrapperClass)
     {
         return unwrap(wrapperClass, getWrappedConnection());
     }
@@ -406,14 +408,19 @@ public class   SingleConnectionDataSource
      * @param wrappedConnection the wrapped connection.
      * @return the wrapped connection if it's compatible.
      */
+    @SuppressWarnings("unchecked")
     @Nullable
-    protected Object unwrap(final Class wrapperClass, final Object wrappedConnection)
+    protected <T> T unwrap(@NotNull final Class<T> wrapperClass, @NotNull final Object wrappedConnection)
     {
-        @Nullable Object result = null;
+        @Nullable final T result;
 
         if  (isWrapperFor(wrapperClass, wrappedConnection))
         {
-            result = wrappedConnection;
+            result = (T) wrappedConnection;
+        }
+        else
+        {
+            result = null;
         }
 
         return result;

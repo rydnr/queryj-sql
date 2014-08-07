@@ -34,18 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing NotNull annotations.
  */
-import org.acmsl.queryj.sql.BigDecimalField;
-import org.acmsl.queryj.sql.CalendarField;
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.DateField;
-import org.acmsl.queryj.sql.DoubleField;
-import org.acmsl.queryj.sql.Field;
-import org.acmsl.queryj.sql.IntField;
-import org.acmsl.queryj.sql.LongField;
-import org.acmsl.queryj.sql.Query;
-import org.acmsl.queryj.sql.Table;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,17 +43,11 @@ import org.jetbrains.annotations.Nullable;
  * Importing some JDK classes.
  */
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents standard SQL update queries.
@@ -173,9 +157,8 @@ public class UpdateQuery
     /**
      * Indicates which table the update applies to.
      * @param table the table.
-     * @precondition table != null
      */
-    public void update(final Table table)
+    public void update(@NotNull final Table table)
     {
         setTable(table);
     }
@@ -183,7 +166,6 @@ public class UpdateQuery
     /**
      * Indicates a query condition.
      * @param condition such condition.
-     * @precondition condition != null
      */
     public void where(@NotNull final Condition condition)
     {
@@ -193,7 +175,6 @@ public class UpdateQuery
     /**
      * Indicates a query variable condition.
      * @param variableCondition such variable condition.
-     * @precondition variableCondition != null
      */
     public void where(@NotNull final VariableCondition variableCondition)
     {
@@ -207,6 +188,8 @@ public class UpdateQuery
      * Outputs a text version of the query, in SQL format.
      * @return the SQL query.
      */
+    @NotNull
+    @Override
     public String toString()
     {
         return
@@ -224,17 +207,15 @@ public class UpdateQuery
      * @param conditions the conditions.
      * @param queryUtils the <code>QueryUtils</code> instance.
      * @return the SQL query.
-     * @precondition tabhle != null
-     * @precondition fields != null
-     * @precondition queryUtils != null
      */
+    @NotNull
     protected String toString(
-        final Table table,
-        @NotNull final List fields,
-        @Nullable final List conditions,
+        @NotNull final Table table,
+        @NotNull final List<Field> fields,
+        @Nullable final List<Condition> conditions,
         @NotNull final QueryUtils queryUtils)
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         t_sbResult.append("UPDATE ");
 
@@ -242,37 +223,34 @@ public class UpdateQuery
 
         t_sbResult.append(" SET ");
 
-        @NotNull List t_alValues = new ArrayList();
+        @NotNull final List<String> t_alValues = new ArrayList<String>();
 
-        Iterator t_FieldIterator = fields.iterator();
+        @NotNull final Iterator<Field> t_FieldIterator = fields.iterator();
 
-        if  (t_FieldIterator != null)
+        while  (t_FieldIterator.hasNext())
         {
-            while  (t_FieldIterator.hasNext())
+            @NotNull final Field t_Field = t_FieldIterator.next();
+
+            @NotNull String t_strValue;
+
+            @Nullable final Object t_Value = getValue(t_Field);
+
+            if  (t_Value == null)
             {
-                @NotNull Field t_Field = (Field) t_FieldIterator.next();
-
-                @NotNull String t_strValue = "";
-
-                Object t_Value = getValue(t_Field);
-
-                if  (t_Value == null)
-                {
-                    t_strValue = "?";
-                }
-                else 
-                {
-                    t_strValue = "" + t_Value;
-
-                    if  (queryUtils.shouldBeEscaped(t_Value))
-                    {
-                        t_strValue = "'" + t_strValue + "'";
-                    }
-                }
-
-                t_alValues.add(
-                    t_Field.toSimplifiedString() + " = " + t_strValue);
+                t_strValue = "?";
             }
+            else
+            {
+                t_strValue = "" + t_Value;
+
+                if  (queryUtils.shouldBeEscaped(t_Value))
+                {
+                    t_strValue = "'" + t_strValue + "'";
+                }
+            }
+
+            t_alValues.add(
+                t_Field.toSimplifiedString() + " = " + t_strValue);
         }
 
         t_sbResult.append(

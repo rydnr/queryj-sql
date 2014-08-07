@@ -34,10 +34,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing ACM-SL classes.
+ * Importing NotNull classes.
  */
-import org.acmsl.queryj.sql.Field;
-import org.acmsl.queryj.sql.TableAlias;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,26 +63,27 @@ public abstract class Table
     /**
      * The table alias reference.
      */
-    private WeakReference m__TableAliasReference;
+    private WeakReference<TableAlias> m__TableAliasReference;
 
     /**
      * Builds a table using given information.
      * @param name the name.
      * @param alias the alias.
-     * @precondition name != null
      */
-    protected Table(final String name, final String alias)
+    protected Table(@NotNull final String name, @Nullable final String alias)
     {
         immutableSetName(name);
-        immutableSetTableAliasName(alias);
+        if (alias != null)
+        {
+            immutableSetTableAliasName(alias);
+        }
     }
 
     /**
      * Builds a table using given information.
      * @param name the name.
-     * @precondition name != null
      */
-    protected Table(final String name)
+    protected Table(@NotNull final String name)
     {
         this(name, null);
     }
@@ -101,7 +100,7 @@ public abstract class Table
      * Specifies the table name.
      * @param name the name.
      */
-    private void immutableSetName(final String name)
+    private void immutableSetName(@NotNull final String name)
     {
         m__strName = name;
     }
@@ -110,7 +109,7 @@ public abstract class Table
      * Specifies the table name.
      * @param name the name.
      */
-    protected void setName(final String name)
+    protected void setName(@NotNull final String name)
     {
         immutableSetName(name);
     }
@@ -119,6 +118,7 @@ public abstract class Table
      * Retrieves the table name.
      * @return such reference.
      */
+    @NotNull
     public String getName()
     {
         return m__strName;
@@ -128,7 +128,7 @@ public abstract class Table
      * Specifies the table alias.
      * @param alias the alias.
      */
-    private void immutableSetTableAliasName(final String alias)
+    private void immutableSetTableAliasName(@NotNull final String alias)
     {
         m__strTableAliasName = alias;
     }
@@ -137,7 +137,8 @@ public abstract class Table
      * Specifies the table alias name.
      * @param alias the alias.
      */
-    protected void setTableAliasName(final String alias)
+    @SuppressWarnings("unused")
+    protected void setTableAliasName(@NotNull final String alias)
     {
         immutableSetTableAliasName(alias);
     }
@@ -146,6 +147,7 @@ public abstract class Table
      * Retrieves the table alias name.
      * @return such reference.
      */
+    @Nullable
     protected String getTableAliasName()
     {
         return m__strTableAliasName;
@@ -155,7 +157,7 @@ public abstract class Table
      * Specifies the table alias reference.
      * @param reference the reference.
      */
-    protected void setTableAliasReference(final WeakReference reference)
+    protected void setTableAliasReference(@NotNull final WeakReference<TableAlias> reference)
     {
         m__TableAliasReference = reference;
     }
@@ -164,7 +166,8 @@ public abstract class Table
      * Retrieves the table alias reference.
      * @return such reference.
      */
-    protected WeakReference getTableAliasReference()
+    @Nullable
+    protected WeakReference<TableAlias> getTableAliasReference()
     {
         return m__TableAliasReference;
     }
@@ -178,14 +181,14 @@ public abstract class Table
     {
         @Nullable TableAlias result = null;
 
-        WeakReference t_TableAliasReference =
+        @Nullable final WeakReference<TableAlias> t_TableAliasReference =
             getTableAliasReference();
 
-        String t_strTableAliasName = getTableAliasName();
+        @Nullable final String t_strTableAliasName = getTableAliasName();
 
         if  (t_TableAliasReference != null)
         {
-            result = (TableAlias) t_TableAliasReference.get();
+            result = t_TableAliasReference.get();
         }
 
         if  (result == null)
@@ -193,7 +196,7 @@ public abstract class Table
             if  (t_strTableAliasName != null)
             {
                 result = new TableAlias(t_strTableAliasName, this);
-                setTableAliasReference(new WeakReference(result));
+                setTableAliasReference(new WeakReference<TableAlias>(result));
             }
         }
 
@@ -204,11 +207,13 @@ public abstract class Table
      * Outputs a text version of the table.
      * @return such text.
      */
+    @Override
+    @NotNull
     public String toString()
     {
-        @NotNull StringBuffer result = new StringBuffer();
+        @NotNull final StringBuilder result = new StringBuilder();
 
-        @Nullable TableAlias t_TableAlias = getTableAlias();
+        @Nullable final TableAlias t_TableAlias = getTableAlias();
 
         if  (t_TableAlias != null) 
         {

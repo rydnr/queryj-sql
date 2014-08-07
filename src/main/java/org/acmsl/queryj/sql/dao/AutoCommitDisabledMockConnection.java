@@ -34,10 +34,8 @@
 package org.acmsl.queryj.sql.dao;
 
 /*
- * Importing some project classes.
+ * Importing NotNull annotations.
  */
-import org.acmsl.queryj.sql.dao.MockConnection;
-import org.acmsl.queryj.sql.dao.MockDataSource;
 import org.jetbrains.annotations.NotNull;
 
 /*
@@ -57,11 +55,10 @@ public class AutoCommitDisabledMockConnection
      * Constructs a MockConnection using both objects.
      * @param connection the actual connection to wrap.
      * @param mockDataSource the data source to be notified of events.
-     * @precondition connection != null
      */
     public AutoCommitDisabledMockConnection(
         @NotNull final Connection connection,
-        final MockDataSource mockDataSource)
+        @NotNull final MockDataSource mockDataSource)
       throws  SQLException
     {
         super(connection, mockDataSource);

@@ -34,9 +34,9 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing NotNull annotations.
  */
-import org.acmsl.queryj.sql.Table;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents SQL fields.
@@ -58,10 +58,8 @@ public class TableAlias
      * Creates a table alias using given information.
      * @param name the field name.
      * @param table the table.
-     * @precondition name != null
-     * @precondition table != null
      */
-    public TableAlias(final String name, final Table table)
+    public TableAlias(@NotNull final String name, @NotNull final Table table)
     {
         immutableSetName(name);
         immutableSetTable(table);
@@ -71,7 +69,7 @@ public class TableAlias
      * Specifies the alias name.
      * @param name the name.
      */
-    private void immutableSetName(final String name)
+    protected final void immutableSetName(@NotNull final String name)
     {
         m__strName = name;
     }
@@ -80,7 +78,7 @@ public class TableAlias
      * Specifies the alias name.
      * @param name the name.
      */
-    protected void setName(final String name)
+    protected void setName(@NotNull final String name)
     {
         immutableSetName(name);
     }
@@ -89,6 +87,7 @@ public class TableAlias
      * Retrieves the alias name.
      * @return such reference.
      */
+    @NotNull
     public String getName()
     {
         return m__strName;
@@ -98,7 +97,7 @@ public class TableAlias
      * Specifies the table.
      * @param table the table.
      */
-    private void immutableSetTable(final Table table)
+    protected final void immutableSetTable(@NotNull final Table table)
     {
         m__Table = table;
     }
@@ -107,7 +106,7 @@ public class TableAlias
      * Specifies the table.
      * @param table the table.
      */
-    protected void setTable(final Table table)
+    protected void setTable(@NotNull final Table table)
     {
         immutableSetTable(table);
     }
@@ -116,15 +115,18 @@ public class TableAlias
      * Retrieves the table.
      * @return such reference.
      */
+    @NotNull
     public Table getTable()
     {
         return m__Table;
     }
 
     /**
-     * Outputs a text version of the tablealias.
+     * Outputs a text version of the tabl ealias.
      * @return such text.
      */
+    @Override
+    @NotNull
     public String toString()
     {
         return getName();

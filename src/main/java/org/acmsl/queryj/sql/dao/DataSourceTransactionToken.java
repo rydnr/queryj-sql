@@ -33,11 +33,6 @@
 package org.acmsl.queryj.sql.dao;
 
 /*
- * Importing some ACM-SL classes.
- */
-import org.acmsl.queryj.sql.dao.TransactionToken;
-
-/*
  * Importing Spring classes.
  */
 import org.springframework.transaction.support.DefaultTransactionStatus;
@@ -58,7 +53,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 /*
- * Importing JetBrains annotations.
+ * Importing NotNull annotations.
  */
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,12 +80,10 @@ public class DataSourceTransactionToken
      * Creates a new <code>DataSourceTransactionToken</code> instance.
      * @param transactionStatus the original transaction status.
      * @param dataSource the data source.
-     * @precondition transactionStatus != null
-     * @precondition dataSource != null
      */
     public DataSourceTransactionToken(
         @NotNull final DefaultTransactionStatus transactionStatus,
-        final DataSource dataSource)
+        @NotNull final DataSource dataSource)
     {
         super(
             transactionStatus.getTransaction(),
@@ -107,7 +100,7 @@ public class DataSourceTransactionToken
      * Specifies the transaction status.
      * @param status such status.
      */
-    private void immutableSetTransactionStatus(final TransactionStatus status)
+    protected final void immutableSetTransactionStatus(@NotNull final TransactionStatus status)
     {
         m__TransactionStatus = status;
     }
@@ -116,7 +109,8 @@ public class DataSourceTransactionToken
      * Specifies the transaction status.
      * @param status such status.
      */
-    protected void setTransactionStatus(final TransactionStatus status)
+    @SuppressWarnings("unused")
+    protected void setTransactionStatus(@NotNull final TransactionStatus status)
     {
         immutableSetTransactionStatus(status);
     }
@@ -125,6 +119,8 @@ public class DataSourceTransactionToken
      * Retrieves the transaction status.
      * @return such information.
      */
+    @SuppressWarnings("unused")
+    @Nullable
     protected TransactionStatus getTransactionStatus()
     {
         return m__TransactionStatus;
@@ -134,9 +130,9 @@ public class DataSourceTransactionToken
      * Specifies the data source.
      * @param dataSource the connection to use inside the whole transaction.
      */
-    protected final void immutableSetDataSource(final DataSource dataSource)
+    protected final void immutableSetDataSource(@NotNull final DataSource dataSource)
     {
-        DataSource t_DataSource = immutableGetDataSource();
+        final DataSource t_DataSource = immutableGetDataSource();
 
         if  (t_DataSource != dataSource)
         {
@@ -148,7 +144,7 @@ public class DataSourceTransactionToken
      * Specifies the data source.
      * @param dataSource the connection to use inside the whole transaction.
      */
-    protected void setDataSource(final DataSource dataSource)
+    protected void setDataSource(@NotNull final DataSource dataSource)
     {
         immutableSetDataSource(dataSource);
     }
@@ -157,6 +153,7 @@ public class DataSourceTransactionToken
      * Retrieves the data source.
      * @return the data source used inside the whole transaction.
      */
+    @NotNull
     protected final DataSource immutableGetDataSource()
     {
         return m__DataSource;
@@ -166,6 +163,7 @@ public class DataSourceTransactionToken
      * Retrieves the data source.
      * @return the data source used inside the whole transaction.
      */
+    @NotNull
     public DataSource getDataSource()
     {
         return immutableGetDataSource();
@@ -225,7 +223,6 @@ public class DataSourceTransactionToken
      * Retrieves the hash code.
      * @param dataSource the data source.
      * @return such information.
-     * @precondition dataSource != null
      *
     protected int hashCode(final DataSource dataSource)
     {
@@ -255,7 +252,7 @@ public class DataSourceTransactionToken
         * Creates a _DataSourceWrapper using given data source.
         * @param dataSource the data source to wrap.
         */
-        public _DataSourceWrapper(final DataSource dataSource)
+        public _DataSourceWrapper(@NotNull final DataSource dataSource)
         {
             immutableSetDataSource(dataSource);
         }
@@ -264,7 +261,7 @@ public class DataSourceTransactionToken
          * Specifies the data source.
          * @param dataSource the data source.
          */
-        private void immutableSetDataSource(final DataSource dataSource)
+        protected final void immutableSetDataSource(@NotNull final DataSource dataSource)
         {
             m__DataSource = dataSource;
         }
@@ -273,7 +270,7 @@ public class DataSourceTransactionToken
          * Specifies the data source.
          * @param dataSource the data source.
          */
-        protected void setDataSource(final DataSource dataSource)
+        protected void setDataSource(@NotNull final DataSource dataSource)
         {
             immutableSetDataSource(dataSource);
         }
@@ -282,6 +279,7 @@ public class DataSourceTransactionToken
          * Retrieves the data source.
          * @return the data source.
          */
+        @NotNull
         public DataSource getDataSource()
         {
             return m__DataSource;
@@ -291,7 +289,7 @@ public class DataSourceTransactionToken
          * Specifies the JDBC connection.
          * @param connection the connection.
          */
-        protected final void immutableSetConnection(final Connection connection)
+        protected final void immutableSetConnection(@NotNull final Connection connection)
         {
             m__Connection = connection;
         }
@@ -300,7 +298,7 @@ public class DataSourceTransactionToken
          * Specifies the JDBC connection.
          * @param connection the connection.
          */
-        protected void setConnection(final Connection connection)
+        protected void setConnection(@NotNull final Connection connection)
         {
             immutableSetConnection(connection);
         }
@@ -309,6 +307,7 @@ public class DataSourceTransactionToken
          * Retrieves the JDBC connection.
          * @return such connection.
          */
+        @Nullable
         protected Connection getInternalConnection()
         {
             return m__Connection;
@@ -318,6 +317,8 @@ public class DataSourceTransactionToken
          * Attempts to establish a database connection.
          * @return the connection.
          */
+        @Override
+        @NotNull
         public Connection getConnection()
             throws  SQLException
         {
@@ -333,15 +334,15 @@ public class DataSourceTransactionToken
          * @param dataSource the data source.
          * @return the connection.
          */
+        @NotNull
         protected Connection getConnection(
-            final Connection internalConnection,
-            @Nullable final DataSource dataSource)
+            @Nullable final Connection internalConnection,
+            @NotNull final DataSource dataSource)
           throws  SQLException
         {
             Connection result = internalConnection;
 
-            if  (   (result == null)
-                 && (dataSource != null))
+            if  (result == null)
             {
                 result = dataSource.getConnection();
                 setConnection(result);
@@ -357,8 +358,10 @@ public class DataSourceTransactionToken
          * @param password the user password connection settings.
          * @return the connection.
          */
+        @Override
+        @NotNull
         public Connection getConnection(
-            final String userName, final String password)
+            @NotNull final String userName, @NotNull final String password)
             throws  SQLException
         {
             return
@@ -374,17 +377,17 @@ public class DataSourceTransactionToken
          * @param dataSource the data source.
          * @return the connection.
          */
+        @NotNull
         public Connection getConnection(
-            final String userName,
-            final String password,
-            final Connection connection,
-            @Nullable final DataSource dataSource)
+            @NotNull final String userName,
+            @NotNull final String password,
+            @Nullable final Connection connection,
+            @NotNull final DataSource dataSource)
           throws  SQLException
         {
             Connection result = connection;
 
-            if  (   (result == null)
-                 && (dataSource != null) )
+            if  (result == null)
             {
                 result = dataSource.getConnection(userName, password);
                 setConnection(result);
@@ -399,6 +402,7 @@ public class DataSourceTransactionToken
          * wait while attempting to connect to a database.
          * @return such timeout.
          */
+        @Override
         public int getLoginTimeout()
             throws  SQLException
         {
@@ -428,6 +432,7 @@ public class DataSourceTransactionToken
          * Retrieves the log writer for this data source.
          * @return such log writer.
          */
+        @Override
         @Nullable
         public PrintWriter getLogWriter()
             throws  SQLException
@@ -458,6 +463,7 @@ public class DataSourceTransactionToken
          * wait while attempting to connect to a database.
          * @param seconds the timeout.
          */
+        @Override
         public void setLoginTimeout(final int seconds)
             throws  SQLException
         {
@@ -484,7 +490,8 @@ public class DataSourceTransactionToken
          * Specifies the log writer for this data source.
          * @param out the log writer.
          */
-        public void setLogWriter(final PrintWriter out)
+        @Override
+        public void setLogWriter(@NotNull final PrintWriter out)
             throws  SQLException
         {
             setLogWriter(out, getDataSource());
@@ -496,19 +503,17 @@ public class DataSourceTransactionToken
          * @param dataSource the data source.
          */
         protected void setLogWriter(
-            final PrintWriter out, @Nullable final DataSource dataSource)
+            @NotNull final PrintWriter out, @NotNull final DataSource dataSource)
           throws  SQLException
         {
-            if  (dataSource != null) 
-            {
-                dataSource.setLogWriter(out);
-            }
+            dataSource.setLogWriter(out);
         }
 
         /**
          * {@inheritDoc}
          */
-        public boolean isWrapperFor(final Class wrapperClass)
+        @Override
+        public boolean isWrapperFor(@NotNull final Class<?> wrapperClass)
         {
             return isWrapperFor(wrapperClass, getDataSource());
         }
@@ -519,7 +524,7 @@ public class DataSourceTransactionToken
          * @param wrappedDataSource the wrapped data source.
          * @return <code>true</code> if the wrapped data source is compatible with given class.
          */
-        protected boolean isWrapperFor(final Class wrapperClass, @Nullable final Object wrappedDataSource)
+        protected boolean isWrapperFor(final Class<?> wrapperClass, @Nullable final Object wrappedDataSource)
         {
             return
                 (   (wrappedDataSource != null)
@@ -529,8 +534,9 @@ public class DataSourceTransactionToken
         /**
          * {@inheritDoc}
          */
+        @Override
         @Nullable
-        public Object unwrap(final Class wrapperClass)
+        public <T> T unwrap(final Class<T> wrapperClass)
         {
             return unwrap(wrapperClass, getDataSource());
         }
@@ -541,14 +547,19 @@ public class DataSourceTransactionToken
          * @param wrappedDataSource the wrapped data source.
          * @return the wrapped data source if it's compatible.
          */
+        @SuppressWarnings("unchecked")
         @Nullable
-        protected Object unwrap(final Class wrapperClass, final Object wrappedDataSource)
+        protected <T> T unwrap(final Class<T> wrapperClass, final Object wrappedDataSource)
         {
-            @Nullable Object result = null;
+            @Nullable final T result;
 
             if  (isWrapperFor(wrapperClass, wrappedDataSource))
             {
-                result = wrappedDataSource;
+                result = (T) wrappedDataSource;
+            }
+            else
+            {
+                result = null;
             }
 
             return result;
@@ -559,7 +570,7 @@ public class DataSourceTransactionToken
          */
         @Override
         public Logger getParentLogger()
-	    throws SQLFeatureNotSupportedException
+	        throws SQLFeatureNotSupportedException
         {
             return getDataSource().getParentLogger();
         }
@@ -569,7 +580,8 @@ public class DataSourceTransactionToken
          * @param object the object to compare to.
          * @return true if both data sources represents the same entity.
          */
-        public boolean equals(final Object object)
+        @Override
+        public boolean equals(@Nullable final Object object)
         {
             return equals(object, getDataSource());
         }
@@ -581,14 +593,13 @@ public class DataSourceTransactionToken
          * @return true if both data sources represents the same entity.
          */
         protected boolean equals(
-            @Nullable final Object object, final DataSource dataSource)
+            @Nullable final Object object, @NotNull final DataSource dataSource)
         {
             boolean result = false;
 
-            if  (   (object != null)
-                 && (object instanceof DataSource))
+            if  (object instanceof DataSource)
             {
-                @NotNull DataSource t_GivenDataSource = (DataSource) object;
+                @NotNull final DataSource t_GivenDataSource = (DataSource) object;
 
                 result =
                     (   (t_GivenDataSource == dataSource)
@@ -602,6 +613,7 @@ public class DataSourceTransactionToken
          * Retrieves the hash code.
          * @return such value.
          */
+        @Override
         public int hashCode()
         {
             return hashCode(getDataSource());
@@ -614,7 +626,7 @@ public class DataSourceTransactionToken
          */
         protected int hashCode(@Nullable final DataSource dataSource)
         {
-            int result = 0;
+            final int result;
 
             if  (dataSource != null)
             {
@@ -632,7 +644,8 @@ public class DataSourceTransactionToken
          * Retrieves the textual version of this instance.
          * @return such information.
          */
-        @Nullable
+        @Override
+        @NotNull
         public String toString()
         {
             return toString(getDataSource());
@@ -643,10 +656,10 @@ public class DataSourceTransactionToken
          * @param dataSource the wrapped data source.
          * @return such information.
          */
-        @Nullable
+        @NotNull
         protected String toString(@Nullable final DataSource dataSource)
         {
-            @Nullable String result = null;
+            @Nullable final String result;
 
             if  (dataSource == null)
             {

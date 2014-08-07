@@ -34,17 +34,13 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing NotNull annotations.
  */
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.ConditionOperator;
-import org.acmsl.queryj.sql.Field;
 import org.jetbrains.annotations.NotNull;
 
 /*
  * Importing JDK classes.
  */
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -58,28 +54,21 @@ public class VariableCondition
      * Creates a variable condition using given information.
      * @param field the left-side field.
      * @param operator the operator.
-     * @precondition field != null
-     * @precondition operator != null
      */
     public VariableCondition(
-        final Field field, final ConditionOperator operator)
+        @NotNull final Field field, @NotNull final ConditionOperator operator)
     {
         super(field, operator, "?");
     }
 
     /**
-     * Retrieves the variable conditions.
-     * @return such collection.
+     * {@inheritDoc}
      */
+    @Override
     @NotNull
-    public Collection getVariableConditions()
+    public Collection<VariableCondition> getVariableConditions()
     {
-        Collection result = super.getVariableConditions();
-
-        if  (result == null)
-        {
-            result = new ArrayList();
-        }
+        @NotNull final Collection<VariableCondition> result = super.getVariableConditions();
 
         result.add(this);
 

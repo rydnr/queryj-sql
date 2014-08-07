@@ -39,8 +39,6 @@ package org.acmsl.queryj.sql.dao;
 /*
  * Importing Spring classes.
  */
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
 /*
@@ -53,6 +51,11 @@ import org.acmsl.commons.patterns.Singleton;
  * Importing some extension classes.
  */
 import javax.sql.DataSource;
+
+/*
+ * Importing NotNull annotations.
+ */
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Has the responsibility of creating transaction tokens. Right now, it
@@ -96,20 +99,11 @@ public class TransactionTokenFactory
      * @param dataSource the data source to use inside the same transaction.
      * @return the transaction token, or null if the connection is invalid.
      */
-    @Nullable
+    @NotNull
     public DataSourceTransactionToken createTransactionToken(
-        @Nullable final DefaultTransactionStatus transactionStatus,
-        @Nullable final DataSource dataSource)
+        @NotNull final DefaultTransactionStatus transactionStatus,
+        @NotNull final DataSource dataSource)
     {
-        @Nullable DataSourceTransactionToken result = null;
-
-        if  (   (transactionStatus != null)
-             && (dataSource != null))
-        {
-            result =
-                new DataSourceTransactionToken(transactionStatus, dataSource);
-        }
-
-        return result;
+        return new DataSourceTransactionToken(transactionStatus, dataSource);
     }
 }

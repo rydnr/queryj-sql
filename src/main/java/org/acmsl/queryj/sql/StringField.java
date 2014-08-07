@@ -33,14 +33,13 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some project classes.
- */
-import org.acmsl.queryj.sql.Field;
-
-/*
  * Importing some ACM-SL Commons classes.
  */
 import org.acmsl.commons.utils.StringUtils;
+
+/*
+ * Importing NotNull annotations.
+ */
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,10 +54,8 @@ public class StringField
      * Creates a String field using given information.
      * @param name the field name.
      * @param table the table.
-     * @precondition name != null
-     * @precondition table != null
      */
-    public StringField(final String name, final Table table)
+    public StringField(@NotNull final String name, @NotNull final Table table)
     {
         super(name, table);
     }
@@ -69,7 +66,7 @@ public class StringField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition equals(final String value)
+    public Condition equals(@NotNull final String value)
     {
         return
             equals(
@@ -87,13 +84,10 @@ public class StringField
      * {@link ConditionOperatorRepository} instance.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
-     * @precondition stringUtils != null
      */
     @NotNull
     protected Condition equals(
-        final String value,
+        @NotNull final String value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository,
         @NotNull final StringUtils stringUtils)
@@ -110,8 +104,9 @@ public class StringField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
-    public Condition notEquals(final String value)
+    public Condition notEquals(@NotNull final String value)
     {
         return
             notEquals(
@@ -129,13 +124,10 @@ public class StringField
      * {@link ConditionOperatorRepository} instance.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
-     * @precondition stringUtils != null
      */
     @NotNull
     protected Condition notEquals(
-        final String value,
+        @NotNull final String value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository,
         @NotNull final StringUtils stringUtils)
@@ -153,7 +145,7 @@ public class StringField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition like(final String value)
+    public Condition like(@NotNull final String value)
     {
         return
             like(
@@ -171,13 +163,10 @@ public class StringField
      * {@link ConditionOperatorRepository} instance.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
-     * @precondition stringUtils != null
      */
     @NotNull
     protected Condition like(
-        final String value,
+        @NotNull final String value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository,
         @NotNull final StringUtils stringUtils)
@@ -195,8 +184,9 @@ public class StringField
      * @param value the value.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
-    public Condition notLike(final String value)
+    public Condition notLike(@NotNull final String value)
     {
         return
             like(
@@ -215,13 +205,11 @@ public class StringField
      * {@link ConditionOperatorRepository} instance.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
-     * @precondition stringUtils != null
      */
+    @SuppressWarnings("unused")
     @NotNull
     protected Condition notLike(
-        final String value,
+        @NotNull final String value,
         @NotNull final ConditionFactory conditionFactory,
         @NotNull final ConditionOperatorRepository conditionOperatorRepository,
         @NotNull final StringUtils stringUtils)
@@ -240,7 +228,7 @@ public class StringField
      * @return such kind of condition.
      */
     @NotNull
-    public Condition in(final String[] values)
+    public Condition in(@NotNull final String[] values)
     {
         return
             in(
@@ -259,9 +247,6 @@ public class StringField
      * {@link ConditionOperatorRepository} instance.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
-     * @precondition stringUtils != null
      */
     @NotNull
     protected Condition in(
@@ -282,14 +267,12 @@ public class StringField
      * @param values the values.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such list.
-     * @precondition values != null
-     * @precondition stringUtils != null
      */
     protected String toQuotedCsv(@Nullable final String[] values, @NotNull final StringUtils stringUtils)
     {
-        @NotNull StringBuilder t_sbResult = new StringBuilder();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
-        int t_iCount = (values != null) ? values.length : 0;
+        final int t_iCount = (values != null) ? values.length : 0;
 
         @Nullable String t_strValue;
 
@@ -317,8 +300,9 @@ public class StringField
      * @param values the values.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
-    public Condition notIn(final String[] values)
+    public Condition notIn(@NotNull final String[] values)
     {
         return
             notIn(
@@ -337,9 +321,6 @@ public class StringField
      * {@link ConditionOperatorRepository} instance.
      * @param stringUtils the {@link StringUtils} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
-     * @precondition stringUtils != null
      */
     @NotNull
     protected Condition notIn(
@@ -379,8 +360,6 @@ public class StringField
      * @param conditionOperatorRepository the
      * {@link ConditionOperatorRepository} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition in(
@@ -400,6 +379,7 @@ public class StringField
      * @param count the parameter count.
      * @return such kind of condition.
      */
+    @SuppressWarnings("unused")
     @NotNull
     public VariableCondition notIn(final int count)
     {
@@ -418,8 +398,6 @@ public class StringField
      * @param conditionOperatorRepository the
      * {@link ConditionOperatorRepository} instance.
      * @return such kind of condition.
-     * @precondition conditionFactory != null
-     * @precondition conditionOperatorRepository != null
      */
     @NotNull
     protected VariableCondition notIn(

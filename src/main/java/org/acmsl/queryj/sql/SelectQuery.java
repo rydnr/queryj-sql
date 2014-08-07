@@ -33,12 +33,8 @@
 package org.acmsl.queryj.sql;
 
 /*
- * Importing some ACM-SL classes.
+ * Importing NotNull annotations.
  */
-import org.acmsl.queryj.sql.Condition;
-import org.acmsl.queryj.sql.Field;
-import org.acmsl.queryj.sql.Query;
-import org.acmsl.queryj.sql.Table;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +42,6 @@ import org.jetbrains.annotations.Nullable;
  * Importing some JDK classes.
  */
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -93,6 +88,7 @@ public class SelectQuery
      * Specifies new ordering field collection.
      * @param list the new list.
      */
+    @SuppressWarnings("unused")
     protected void setOrderingFields(@NotNull final List<Field> list)
     {
         immutableSetOrderingFields(list);
@@ -111,7 +107,6 @@ public class SelectQuery
     /**
      * Adds a new ordering field.
      * @param orderingField the ordering field to add.
-     * @precondition orderingField != null
      */
     protected void addOrderingField(@NotNull final Field orderingField)
     {
@@ -122,11 +117,9 @@ public class SelectQuery
      * Adds a new ordering field to given collection.
      * @param orderingField the ordering field to add.
      * @param orderingFields the ordering fields.
-     * @precondition orderingField != null
-     * @precondition orderingFields != null
      */
     protected void addOrderingField(
-        @NotNull final Field orderingField, @NotNull final List orderingFields)
+        @NotNull final Field orderingField, @NotNull final List<Field> orderingFields)
     {
         orderingFields.add(orderingField);
     }
@@ -137,6 +130,7 @@ public class SelectQuery
      * @return its position, or -1 if such field doesn't belong to
      * this query.
      */
+    @SuppressWarnings("unused")
     protected int getOrderingFieldIndex(@NotNull final Field field)
     {
         return getIndex(getOrderingFields(), field);
@@ -146,7 +140,7 @@ public class SelectQuery
      * Specifies new grouping field collection.
      * @param list the new list.
      */
-    private void immutableSetGroupingFields(@NotNull List list)
+    protected final void immutableSetGroupingFields(@NotNull final List<Field> list)
     {
         m__lGroupingFields = list;
     }
@@ -155,7 +149,8 @@ public class SelectQuery
      * Specifies new grouping field collection.
      * @param list the new list.
      */
-    protected void setGroupingFields(@NotNull List<Field> list)
+    @SuppressWarnings("unused")
+    protected void setGroupingFields(@NotNull final List<Field> list)
     {
         immutableSetGroupingFields(list);
     }
@@ -173,7 +168,6 @@ public class SelectQuery
     /**
      * Adds a new grouping field.
      * @param groupingField the grouping field to add.
-     * @precondition groupingField != null
      */
     protected void addGroupingField(@NotNull final Field groupingField)
     {
@@ -184,11 +178,9 @@ public class SelectQuery
      * Adds a new grouping field.
      * @param groupingField the grouping field to add.
      * @param groupingFields the grouping fields.
-     * @precondition groupingField != null
-     * @precondition groupingFields != null
      */
     protected void addGroupingField(
-        @NotNull final Field groupingField, @NotNull final List groupingFields)
+        @NotNull final Field groupingField, @NotNull final List<Field> groupingFields)
     {
         groupingFields.add(groupingField);
     }
@@ -198,8 +190,8 @@ public class SelectQuery
      * @param field the field to find.
      * @return its position, or -1 if such field doesn't belong to
      * this query.
-     * @precondition field != null
      */
+    @SuppressWarnings("unused")
     protected int getGroupingFieldIndex(@NotNull final Field field)
     {
         return getIndex(getGroupingFields(), field);
@@ -208,7 +200,6 @@ public class SelectQuery
     /**
      * Selects a field.
      * @param field the field to select.
-     * @precondition field != null
      */
     public void select(@NotNull final Field field)
     {
@@ -219,11 +210,10 @@ public class SelectQuery
      * Selects the fields (typically, via <code>Table.getAll</code>
      * meaning <i>select </i>.
      * @param fields the fields to select.
-     * @precondition fields != null
      */
     public void select(@NotNull final Field[] fields)
     {
-        int t_iCount = (fields != null) ? fields.length : 0;
+        final int t_iCount = fields.length;
 
         Field t_Field;
 
@@ -241,7 +231,6 @@ public class SelectQuery
     /**
      * Indicates which table participates in the query.
      * @param table the table.
-     * @precondition table != null
      */
     public void from(@NotNull final Table table)
     {
@@ -251,7 +240,6 @@ public class SelectQuery
     /**
      * Indicates a query condition.
      * @param condition such condition.
-     * @precondition condition != null
      */
     public void where(@NotNull final Condition condition)
     {
@@ -261,7 +249,6 @@ public class SelectQuery
     /**
      * Indicates a query variable condition.
      * @param variableCondition such variable condition.
-     * @precondition variableCondition != null
      */
     public void where(@NotNull final VariableCondition variableCondition)
     {
@@ -272,8 +259,8 @@ public class SelectQuery
     /**
      * Indicates a field to be used to group the results.
      * @param groupingField such field.
-     * @precondition groupingField != null
      */
+    @SuppressWarnings("unused")
     public void groupBy(@NotNull final Field groupingField)
     {
         addGroupingField(groupingField);
@@ -282,8 +269,8 @@ public class SelectQuery
     /**
      * Indicates a field to be used to order the results.
      * @param orderingField such field.
-     * @precondition orderingField != null
      */
+    @SuppressWarnings("unused")
     public void orderBy(@NotNull final Field orderingField)
     {
         addOrderingField(orderingField);
@@ -294,13 +281,14 @@ public class SelectQuery
      * @return the result set.
      * @exception SQLException if an error occurs.
      */
+    @SuppressWarnings("unused")
     @Nullable
     public QueryResultSet retrieveMatchingResults()
         throws  SQLException
     {
         @Nullable QueryResultSet result = null;
 
-        Statement t_Statement = getPreparedStatement();
+        @Nullable final Statement t_Statement = getPreparedStatement();
 
         if  (t_Statement != null)
         {
@@ -315,16 +303,15 @@ public class SelectQuery
 
     /**
      * Executes given update operation using field references.
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
      * @param fields the fields.
-     * @return (Taken from Sun's Javadoc) either the row count for INSERT,
+     * @return (Taken from Sun Javadoc) either the row count for INSERT,
      * UPDATE or DELETE statements, or 0 for SQL statements that return
      * nothing.
      * @throws SQLException if an error occurs.
-     * @precondition sql != null
-     * @precondition fields != null
      */
+    @SuppressWarnings("unused")
     public int executeUpdate(@NotNull final String sql, @NotNull final Field[] fields)
         throws  SQLException
     {
@@ -335,24 +322,22 @@ public class SelectQuery
 
     /**
      * Executes given update operation using field references.
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
      * @param fields the fields.
      * @param preparedStatement the {@link PreparedStatement}.
-     * @return (Taken from Sun's Javadoc) either the row count for INSERT,
+     * @return (Taken from Sun Javadoc) either the row count for INSERT,
      * UPDATE or DELETE statements, or 0 for SQL statements that return
      * nothing.
      * @throws SQLException if an error occurs.
-     * @precondition sql != null
-     * @precondition fields != null
      */
     protected int executeUpdate(
         @NotNull final String sql,
         @NotNull final Field[] fields,
-        @NotNull final PreparedStatement preparedStatement)
+        @Nullable final PreparedStatement preparedStatement)
       throws  SQLException
     {
-        int result = 0;
+        final int result;
 
         if  (preparedStatement == null) 
         {
@@ -360,7 +345,7 @@ public class SelectQuery
         }
         else
         {
-            @NotNull int[] t_aiIndexes = new int[fields.length];
+            @NotNull final int[] t_aiIndexes = new int[fields.length];
 
             for  (int t_iIndex = 0; t_iIndex < fields.length; t_iIndex++) 
             {
@@ -375,15 +360,13 @@ public class SelectQuery
 
     /**
      * Executes given update operation using field references.
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
      * @param fields the fields.
-     * @return (Taken from Sun's Javadoc) true if the first result is a
+     * @return (Taken from Sun Javadoc) true if the first result is a
      * ResultSet object; false if it is an update count or there are no
      * results.
      * @throws SQLException if an error occurs.
-     * @precondition sql != null
-     * @precondition fields != null
      */
     public boolean execute(@NotNull final String sql, @NotNull final Field[] fields)
         throws  SQLException
@@ -393,24 +376,22 @@ public class SelectQuery
 
     /**
      * Executes given update operation using field references.
-     * @param sql (Taken from Sun's Javadoc) must be an SQL INSERT, UPDATE
+     * @param sql (Taken from Sun Javadoc) must be an SQL INSERT, UPDATE
      * or DELETE statement or an SQL statement that returns nothing.
      * @param fields the fields.
      * @param preparedStatement the {@link PreparedStatement}.
-     * @return (Taken from Sun's Javadoc) true if the first result is a
+     * @return (Taken from Sun Javadoc) true if the first result is a
      * ResultSet object; false if it is an update count or there are no
      * results.
      * @throws SQLException if an error occurs.
-     * @precondition sql != null
-     * @precondition fields != null
      */
     protected boolean execute(
         @NotNull final String sql,
         @NotNull final Field[] fields,
-        @NotNull final PreparedStatement preparedStatement)
+        @Nullable final PreparedStatement preparedStatement)
       throws  SQLException
     {
-        boolean result = false;
+        final boolean result;
 
         if  (preparedStatement == null) 
         {
@@ -418,7 +399,7 @@ public class SelectQuery
         }
         else
         {
-            @NotNull int[] t_aiIndexes = new int[fields.length];
+            @NotNull final int[] t_aiIndexes = new int[fields.length];
 
             for  (int t_iIndex = 0; t_iIndex < fields.length; t_iIndex++) 
             {
@@ -436,30 +417,27 @@ public class SelectQuery
      * @param tables the tables to process.
      * @param separator the separator.
      * @return the processed tables.
-     * @precondition tables != null
-     * @precondition separator != null
      */
     @NotNull
-    protected List processTables(@NotNull final List tables, @NotNull final String separator)
+    protected List<String> processTables(@NotNull final List<Table> tables, @NotNull final String separator)
     {
-        @NotNull List result = new ArrayList();
+        @NotNull final List<String> result = new ArrayList<String>();
 
-        Iterator t_itTables = tables.iterator();
+        @NotNull final Iterator<Table> t_itTables = tables.iterator();
 
-        @Nullable Table t_CurrentTable = null;
+        @Nullable Table t_CurrentTable;
 
-        @Nullable TableAlias t_CurrentTableAlias = null;
+        @Nullable TableAlias t_CurrentTableAlias;
 
-        @Nullable StringBuffer t_sbCurrentTable = null;
+        @Nullable StringBuilder t_sbCurrentTable;
 
-        while  (   (t_itTables != null)
-                && (t_itTables.hasNext()))
+        while  (t_itTables.hasNext())
         {
-            t_CurrentTable = (Table) t_itTables.next();
+            t_CurrentTable = t_itTables.next();
 
             if  (t_CurrentTable != null)
             {
-                t_sbCurrentTable = new StringBuffer();
+                t_sbCurrentTable = new StringBuilder();
 
                 t_sbCurrentTable.append(t_CurrentTable.getName());
 
@@ -471,7 +449,7 @@ public class SelectQuery
                     t_sbCurrentTable.append(t_CurrentTableAlias);
                 }
 
-                result.add(t_sbCurrentTable);
+                result.add(t_sbCurrentTable.toString());
             }
         }
         
@@ -484,6 +462,7 @@ public class SelectQuery
      * Outputs a text version of the query, in SQL format.
      * @return the SQL query.
      */
+    @Override
     @NotNull
     public String toString()
     {
@@ -506,12 +485,6 @@ public class SelectQuery
      * @param orderingFields the <i>order by</i> fields.
      * @param queryUtils the {@link QueryUtils} instance.
      * @return the SQL query.
-     * @precondition tables != null
-     * @precondition fields != null
-     * @precondition conditions != null
-     * @precondition groupingFields != null
-     * @precondition orderingFields != null
-     * @precondition queryUtils != null
      */
     @NotNull
     protected String toString(
@@ -522,7 +495,7 @@ public class SelectQuery
         @NotNull final List<Field> orderingFields,
         @NotNull final QueryUtils queryUtils)
     {
-        @NotNull StringBuffer t_sbResult = new StringBuffer();
+        @NotNull final StringBuilder t_sbResult = new StringBuilder();
 
         t_sbResult.append("SELECT ");
 
