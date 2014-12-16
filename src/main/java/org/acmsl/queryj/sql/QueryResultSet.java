@@ -1504,6 +1504,7 @@ public class QueryResultSet
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecated")
     @Override
     public BigDecimal getBigDecimal(final int index, final int scale)
         throws  SQLException
@@ -1534,6 +1535,7 @@ public class QueryResultSet
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecated")
     @Override
     public BigDecimal getBigDecimal(@NotNull final String columnName, final int scale)
         throws  SQLException
@@ -1887,6 +1889,7 @@ public class QueryResultSet
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecated")
     @Override
     public InputStream getUnicodeStream(final int index)
         throws  SQLException
@@ -1915,6 +1918,7 @@ public class QueryResultSet
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecated")
     @Override
     public InputStream getUnicodeStream(final String columnName)
         throws  SQLException
