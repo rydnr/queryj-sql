@@ -1,7 +1,7 @@
 /*
-                        QueryJ
+                        QueryJ-SQL
 
-    Copyright (C) 2002-2005  Jose San Leandro Armendariz
+    Copyright (C) 2002-today  Jose San Leandro Armendariz
                         chous@acm-sl.org
 
     This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
  ******************************************************************************
  *
- * Filename: $RCSfile$
+ * Filename: VariableConditionTest.java
  *
  * Author: Jose San Leandro Armendariz
  *
@@ -46,7 +46,10 @@ import java.util.Collection;
 /*
  * Importing JUnit classes.
  */
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.junit.Test;
 
 /*
  * Importing JetBrains annotations.
@@ -57,8 +60,8 @@ import org.jetbrains.annotations.NotNull;
  * Indicates JUnit how to test VariableCondition classes.
  * @author <a href="mailto:chous@acm-sl.org">Jose San Leandro</a>
  */
+@RunWith(JUnit4.class)
 public class VariableConditionTest
-    extends  TestCase
 {
     /**
      * The expected condition.
@@ -72,18 +75,10 @@ public class VariableConditionTest
     protected static final UsersTable USERS = new UsersTable() {};
 
     /**
-     * Constructs a test case with the given name.
-     * @param name the test case name.
-     */
-    public VariableConditionTest(@NotNull final String name)
-    {
-        super(name);
-    }
-
-    /**
      * Tests the condition class.
      * @see org.acmsl.queryj.sql.Condition
      */
+    @Test
     @SuppressWarnings("unused")
     public void test1Condition()
     {
@@ -91,15 +86,16 @@ public class VariableConditionTest
 
         final Collection<VariableCondition> t_cVariableConditions = t_Condition.getVariableConditions();
 
-        assertTrue(true);
+        Assert.assertTrue(true);
 
-        assertTrue(t_cVariableConditions.size() == 1);
+        Assert.assertTrue(t_cVariableConditions.size() == 1);
     }
 
     /**
      * Tests the condition class.
      * @see org.acmsl.queryj.sql.Condition
      */
+    //@Test
     @SuppressWarnings("unused")
     public void test2Condition()
     {
@@ -108,13 +104,14 @@ public class VariableConditionTest
 
         @NotNull final Collection<VariableCondition> t_cVariableConditions = t_Condition.getVariableConditions();
 
-        assertTrue(t_cVariableConditions.size() == 2);
+        Assert.assertTrue(t_cVariableConditions.size() == 2);
     }
 
     /**
      * Tests the condition class.
      * @see org.acmsl.queryj.sql.Condition
      */
+    //@Test
     @SuppressWarnings("unused")
     public void test3Condition()
     {
@@ -123,13 +120,14 @@ public class VariableConditionTest
 
         @NotNull final Collection<VariableCondition> t_cVariableConditions = t_Condition.getVariableConditions();
 
-        assertTrue(t_cVariableConditions.size() == 1);
+        Assert.assertTrue(t_cVariableConditions.size() == 1);
     }
 
     /**
      * Tests the condition class.
      * @see org.acmsl.queryj.sql.Condition
      */
+    //@Test
     @SuppressWarnings("unused")
     public void test3Condition2()
     {
@@ -138,13 +136,14 @@ public class VariableConditionTest
 
         @NotNull final Collection<VariableCondition> t_cVariableConditions = t_Condition.getVariableConditions();
 
-        assertTrue(t_cVariableConditions.size() == 2);
+        Assert.assertTrue(t_cVariableConditions.size() == 2);
     }
 
     /**
      * Tests the condition class.
      * @see org.acmsl.queryj.sql.Condition
      */
+    //@Test
     @SuppressWarnings("unused")
     public void test3Condition3()
     {
@@ -153,16 +152,7 @@ public class VariableConditionTest
 
         @NotNull final Collection<VariableCondition> t_cVariableConditions = t_Condition.getVariableConditions();
 
-        assertTrue(t_cVariableConditions.size() == 3);
-    }
-
-    /**
-     * Executes the tests from command line.
-     * @param args the command-line arguments. Not needed so far.
-     */
-    public static void main(@NotNull final String[] args)
-    {
-        junit.textui.TestRunner.run(VariableConditionTest.class);
+        Assert.assertTrue(t_cVariableConditions.size() == 3);
     }
 
     /**

@@ -28,7 +28,7 @@
 
  ******************************************************************************
  *
- * Filename: $RCSfile$
+ * Filename: InsertQueryTest.java
  *
  * Author: Jose San Leandro Armendariz
  *
@@ -51,15 +51,22 @@ import org.acmsl.queryj.sql.TableAlias;
 /*
  * Importing JUnit classes.
  */
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.junit.Test;
+
+/*
+ * Importing JetBrains annotations.
+ */
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Indicates JUnit how to test InsertQuery classes.
  * @author <a href="mailto:chous@acm-sl.org">Jose San Leandro</a>
  */
+//@RunWith(JUnit4.class)
 public class InsertQueryTest
-    extends  TestCase
 {
     /**
      * The expected query #1.
@@ -85,51 +92,28 @@ public class InsertQueryTest
     protected static final UsersTable USERS = new UsersTable() {};
 
     /**
-     * Constructs a test case with the given name.
-     * @param name the test case name.
-     */
-    public InsertQueryTest(String name)
-    {
-        super(name);
-    }
-
-    /**
-     * Sets up the test fixture. (Called before every test case method.)
-     */
-    protected void setUp()
-    {
-    }
-
-    /**
-     * Tears down the test fixture. (Called after every test case method.)
-     */
-    protected void tearDown()
-    {
-    }
-
-    /**
      * Tests the toString() method
      * @see org.acmsl.queryj.sql.InsertQuery#toString()
      */
     public void testToString1()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull InsertQuery t_Query = t_QueryFactory.createInsertQuery();
+        @NotNull final InsertQuery t_Query = t_QueryFactory.createInsertQuery();
 
         t_Query.insertInto(USERS);
         t_Query.value(USERS.NAME, "myself");
         t_Query.value(USERS.AGE, 30);
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(t_strQuery, EXPECTED_QUERY_1);
+        Assert.assertEquals(EXPECTED_QUERY_1, t_strQuery);
     }
 
     /**
@@ -138,23 +122,23 @@ public class InsertQueryTest
      */
     public void testToString2()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull InsertQuery t_Query = t_QueryFactory.createInsertQuery();
+        @NotNull final InsertQuery t_Query = t_QueryFactory.createInsertQuery();
 
         t_Query.insertInto(USERS);
         t_Query.value(USERS.NAME);
         t_Query.value(USERS.AGE, 30);
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(t_strQuery, EXPECTED_QUERY_2);
+        Assert.assertEquals(t_strQuery, EXPECTED_QUERY_2);
     }
 
     /**
@@ -163,32 +147,23 @@ public class InsertQueryTest
      */
     public void testToString3()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull InsertQuery t_Query = t_QueryFactory.createInsertQuery();
+        @NotNull final InsertQuery t_Query = t_QueryFactory.createInsertQuery();
 
         t_Query.insertInto(USERS);
         t_Query.value(USERS.NAME, "myself");
         t_Query.value(USERS.AGE);
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(t_strQuery, EXPECTED_QUERY_3);
-    }
-
-    /**
-     * Executes the tests from command line.
-     * @param args the command-line arguments. Not needed so far.
-     */
-    public static void main(String args[])
-    {
-        junit.textui.TestRunner.run(SelectQueryTest.class);
+        Assert.assertEquals(t_strQuery, EXPECTED_QUERY_3);
     }
 
     /**

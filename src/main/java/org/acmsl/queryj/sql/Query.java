@@ -3798,7 +3798,9 @@ public abstract class Query
     /**
      * {@inheritDoc}
      */
+    @Override
     @Nullable
+    @SuppressWarnings("unchecked")
     public Object unwrap(final Class wrapperClass)
     {
         return unwrap(wrapperClass, getPreparedStatement());

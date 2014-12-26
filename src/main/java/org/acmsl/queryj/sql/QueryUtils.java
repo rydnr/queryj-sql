@@ -1,4 +1,3 @@
-//;-*- mode: java -*-
 /*
                         QueryJ SQL
 
@@ -182,19 +181,32 @@ public class QueryUtils
      */
     public boolean shouldBeEscaped(@Nullable final Object object)
     {
-        boolean result = false;
+        final boolean result;
 
         if  (object != null) 
         {
-            result = true;
-
             if  (   (object instanceof Field)
                  || (object instanceof Integer) 
                  || (object instanceof Long)
-                 || (object instanceof Double))
+                 || (object instanceof Double)
+                 || (object instanceof Field[])
+                 || (object instanceof Integer[])
+                 || (object instanceof int[])
+                 || (object instanceof Long[])
+                 || (object instanceof long[])
+                 || (object instanceof Double[])
+                 || (object instanceof double[]))
             {
                 result = false;
             }
+            else
+            {
+                result = true;
+            }
+        }
+        else
+        {
+            result = false;
         }
 
         return result;

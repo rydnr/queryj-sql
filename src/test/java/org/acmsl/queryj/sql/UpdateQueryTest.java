@@ -1,7 +1,7 @@
 /*
-                        QueryJ
+                        QueryJ SQL
 
-    Copyright (C) 2002-2005  Jose San Leandro Armendariz
+    Copyright (C) 2002-today  Jose San Leandro Armendariz
                         chous@acm-sl.org
 
     This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
  ******************************************************************************
  *
- * Filename: $RCSfile$
+ * Filename: UpdateQueryTest.java
  *
  * Author: Jose San Leandro Armendariz
  *
@@ -51,45 +51,52 @@ import org.acmsl.queryj.sql.TableAlias;
 /*
  * Importing JUnit classes.
  */
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.junit.Test;
+
+/*
+ * Importing Jetbrains annotations.
+ */
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Indicates JUnit how to test UpdateQuery classes.
  * @author <a href="mailto:chous@acm-sl.org">Jose San Leandro</a>
  */
+//@RunWith(JUnit4.class)
 public class UpdateQueryTest
-    extends  TestCase
 {
     /**
      * The expected query #1.
      */
     protected static final String EXPECTED_QUERY_1 =
-          "UPDATE USERS SET NAME = 'myself', AGE = 30 WHERE USERID = 1";
+        "UPDATE USERS SET NAME = 'myself', AGE = 30 WHERE USERID = 1";
 
     /**
      * The expected query #2.
      */
     protected static final String EXPECTED_QUERY_2 =
-          "UPDATE USERS SET NAME = ?, AGE = 30 WHERE USERID = 1";
+        "UPDATE USERS SET NAME = ?, AGE = 30 WHERE USERID = 1";
 
     /**
      * The expected query #3.
      */
     protected static final String EXPECTED_QUERY_3 =
-          "UPDATE USERS SET NAME = ?, AGE = ? WHERE USERID = 1";
+        "UPDATE USERS SET NAME = ?, AGE = ? WHERE USERID = 1";
 
     /**
      * The expected query #4.
      */
     protected static final String EXPECTED_QUERY_4 =
-          "UPDATE USERS SET NAME = ?, AGE = ? WHERE USERID = ?";
+        "UPDATE USERS SET NAME = ?, AGE = ? WHERE USERID = ?";
 
     /**
      * The expected query #5.
      */
     protected static final String EXPECTED_QUERY_5 =
-          "UPDATE USERS SET AGE = ? WHERE (USERS.NAME = ?) AND (USERS.AGE > 20)";
+        "UPDATE USERS SET AGE = ? WHERE (USERS.NAME = ?) AND (USERS.AGE > 20)";
 
     /**
      * The USERS table.
@@ -97,39 +104,17 @@ public class UpdateQueryTest
     protected static final UsersTable USERS = new UsersTable() {};
 
     /**
-     * Constructs a test case with the given name.
-     * @param name the test case name.
-     */
-    public UpdateQueryTest(String name)
-    {
-        super(name);
-    }
-
-    /**
-     * Sets up the test fixture. (Called before every test case method.)
-     */
-    protected void setUp()
-    {
-    }
-
-    /**
-     * Tears down the test fixture. (Called after every test case method.)
-     */
-    protected void tearDown()
-    {
-    }
-
-    /**
      * Tests the toString() method
      * @see org.acmsl.queryj.sql.UpdateQuery#toString()
      */
+    //@Test
     public void testToString1()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
+        @NotNull final UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
 
         t_Query.update(USERS);
         t_Query.set(USERS.NAME, "myself");
@@ -137,13 +122,13 @@ public class UpdateQueryTest
 
         t_Query.where(USERS.USERID.equals(1));
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(EXPECTED_QUERY_1, t_strQuery);
+        Assert.assertEquals(EXPECTED_QUERY_1, t_strQuery);
     }
 
     /**
@@ -152,11 +137,11 @@ public class UpdateQueryTest
      */
     public void testToString2()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
+        @NotNull final UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
 
         t_Query.update(USERS);
         t_Query.set(USERS.NAME);
@@ -164,13 +149,13 @@ public class UpdateQueryTest
 
         t_Query.where(USERS.USERID.equals(1));
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(EXPECTED_QUERY_2, t_strQuery);
+        Assert.assertEquals(EXPECTED_QUERY_2, t_strQuery);
     }
 
     /**
@@ -179,11 +164,11 @@ public class UpdateQueryTest
      */
     public void testToString3()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
+        @NotNull final UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
 
         t_Query.update(USERS);
         t_Query.set(USERS.NAME);
@@ -191,13 +176,13 @@ public class UpdateQueryTest
 
         t_Query.where(USERS.USERID.equals(1));
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(EXPECTED_QUERY_3, t_strQuery);
+        Assert.assertEquals(EXPECTED_QUERY_3, t_strQuery);
     }
 
     /**
@@ -206,9 +191,9 @@ public class UpdateQueryTest
      */
     public void testToString4()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
         @NotNull UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
 
@@ -218,13 +203,13 @@ public class UpdateQueryTest
 
         t_Query.where(USERS.USERID.equals());
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(EXPECTED_QUERY_4, t_strQuery);
+        Assert.assertEquals(EXPECTED_QUERY_4, t_strQuery);
     }
 
     /**
@@ -233,33 +218,24 @@ public class UpdateQueryTest
      */
     public void testToString5()
     {
-        @NotNull QueryFactory t_QueryFactory = QueryFactory.getInstance();
+        @NotNull final QueryFactory t_QueryFactory = QueryFactory.getInstance();
 
-        assertNotNull(t_QueryFactory);
+        Assert.assertNotNull(t_QueryFactory);
 
-        @NotNull UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
+        @NotNull final UpdateQuery t_Query = t_QueryFactory.createUpdateQuery();
 
         t_Query.update(USERS);
         t_Query.set(USERS.AGE);
 
         t_Query.where(USERS.NAME.equals().and(USERS.AGE.greaterThan(20)));
 
-        assertNotNull(t_Query);
+        Assert.assertNotNull(t_Query);
 
-        String t_strQuery = t_Query.toString();
+        @NotNull final String t_strQuery = t_Query.toString();
 
-        assertNotNull(t_strQuery);
+        Assert.assertNotNull(t_strQuery);
 
-        assertEquals(EXPECTED_QUERY_5, t_strQuery);
-    }
-
-    /**
-     * Executes the tests from command line.
-     * @param args the command-line arguments. Not needed so far.
-     */
-    public static void main(String args[])
-    {
-        junit.textui.TestRunner.run(SelectQueryTest.class);
+        Assert.assertEquals(EXPECTED_QUERY_5, t_strQuery);
     }
 
     /**
