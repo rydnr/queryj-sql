@@ -1,12 +1,10 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.acmsl.queryj</groupId>
   <artifactId>queryj-sql</artifactId>
   <packaging>jar</packaging>
-  <version>latest-SNAPSHOT</version>
+  <version>3.3.0007</version>
   <name>QueryJ SQL</name>
   <url>https://www.acm-sl.org/projects/queryj</url>
   <inceptionYear>2002</inceptionYear>
@@ -21,25 +19,21 @@
     <name>ACM-SL</name>
     <url>https://www.acm-sl.org</url>
   </organization>
-
   <parent>
     <groupId>org.acmsl</groupId>
     <artifactId>acmsl-pom</artifactId>
-    <version>latest-SNAPSHOT</version>
+    <version>3.3.0007</version>
   </parent>
-
   <scm>
     <connection>scm:git:https://github.com/rydnr/queryj-sql.git</connection>
     <developerConnection>scm:git:https://github.com/rydnr/queryj-sql.git</developerConnection>
     <url>scm:git:https://github.com/rydnr/queryj-sql.git</url>
     <tag>HEAD</tag>
   </scm>
-
   <issueManagement>
     <system>github</system>
     <url>https://github.com/rydnr/queryj-sql.git/</url>
   </issueManagement>
-
   <ciManagement>
     <system>Jenkins</system>
     <url>https://jenkins.acm-sl.org/job/queryj-sql</url>
@@ -56,7 +50,6 @@
       </notifier>
     </notifiers>
   </ciManagement>
-
   <dependencies>
     <dependency>
       <groupId>org.acmsl</groupId>
@@ -83,7 +76,6 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -92,5 +84,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
